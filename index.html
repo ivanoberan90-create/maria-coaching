@@ -1,0 +1,1381 @@
+<!doctype html>
+<!-- Coaching aplikacija · Maria Matas · verzija 17 – RC6 (upper 45 + noge 18 dinamičkih serija tjedno, izometrija se ne broji; plan NACRT; kilaža po seriji; shema podataka 3, učitava i podatke v11/v12) -->
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Trening · Maria</title>
+<style>
+:root{--bg:#F3F2F0;--card:#fff;--ink:#14110F;--mute:#5F5954;--line:#E2DED9;--acc:#B54512;--on:#fff;--ok:#12805C;--okbg:#E2F4EC;--err:#B42318;--errbg:#FDECEA;--wbg:#FFF4D6;--wink:#5C3F00;--wbd:#C08A00;--navh:64px;--tmh:0px}
+@media (prefers-color-scheme:dark){:root{--bg:#15120F;--card:#201C18;--ink:#F3EEE9;--mute:#B3AAA1;--line:#3A332C;--acc:#FF9D5C;--on:#15120F;--ok:#4FD1A1;--okbg:#12332A;--err:#FF8A80;--errbg:#3A1714;--wbg:#3A2E10;--wink:#F5D58A;--wbd:#C08A00}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:56px;scroll-padding-bottom:calc(var(--navh) + var(--tmh) + 24px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.45 "Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.top{position:sticky;top:0;z-index:20;background:var(--bg);padding-top:env(safe-area-inset-top,0px);border-bottom:1px solid var(--line)}
+.top .wrap{padding-top:6px;padding-bottom:6px}
+.tline{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:.8125rem;color:var(--mute)}
+.sv.bad{color:var(--err);font-weight:800}
+.tmini{display:none;margin-left:auto;font-weight:800;color:var(--acc)}
+body.kb .tmini.on{display:inline}
+.tbn{margin:0 0 4px;padding:4px 8px;border-radius:6px;background:var(--err);color:#fff;font-size:.75rem;font-weight:800}
+main{padding-bottom:calc(var(--navh) + var(--tmh) + 28px)}
+body.kb main{padding-bottom:40px}
+h1{font-size:1.625rem;font-weight:800;margin:18px 0 4px;letter-spacing:-.01em}
+h2{font-size:1.125rem;font-weight:800;margin:22px 0 6px}
+h3{font-size:1rem;font-weight:700;margin:0}
+.h3{margin:16px 0 4px}
+p{margin:6px 0}
+ul{margin:6px 0;padding-left:20px}
+code{font-size:.75rem;word-break:break-all}
+.sub{color:var(--mute);font-size:.875rem;margin:0}
+article,.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+article>h2:first-child{margin-top:0}
+.hero{border:2px solid var(--acc)}
+.hero h2{margin:2px 0 2px;font-size:1.25rem}
+.bn{padding:10px 12px;border-left:4px solid var(--acc);background:var(--card);border-radius:8px;font-size:.875rem;margin:10px 0}
+.bn.w{border-left-color:var(--wbd);background:var(--wbg);color:var(--wink)}
+.bn.e{border-left-color:var(--err);background:var(--errbg)}
+.bn.ok{border-left-color:var(--ok);background:var(--okbg)}
+.h{color:var(--mute);font-size:.8125rem;margin:4px 0 0}
+.lab{font-size:.8125rem;color:var(--mute);margin:0;font-weight:600}
+.lab2{margin:12px 0 0;font-size:.8125rem;color:var(--mute)}
+.er{color:var(--err);font-size:.875rem;font-weight:700;margin:8px 0 0}
+.okt{color:var(--ok);font-weight:700;font-size:.875rem;margin:8px 0 0}
+.sg{color:var(--acc);font-size:.875rem;font-weight:600;margin:8px 0 0}
+.empty{color:var(--mute);font-size:.875rem;background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:14px;margin:10px 0}
+button,a.btn,a.btn2{font:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent}
+.btn{display:block;width:100%;min-height:48px;padding:12px 14px;border-radius:12px;border:0;background:var(--acc);color:var(--on);font-weight:800;font-size:1rem;margin-top:10px;text-align:center;text-decoration:none}
+.btn2{display:block;width:100%;min-height:44px;padding:10px 14px;border-radius:12px;border:1px solid var(--acc);background:transparent;color:var(--acc);font-weight:700;margin-top:8px;text-align:center;text-decoration:none}
+.btn3{min-height:44px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-weight:700;margin:6px 6px 0 0}
+.lnk{background:none;border:0;color:var(--acc);font-weight:700;padding:10px 0;min-height:44px;text-decoration:underline;text-underline-offset:3px;text-align:left}
+.lnk.sm{min-height:36px;padding:4px 0;font-size:.8125rem}
+button:disabled{opacity:.4;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav .wrap{display:flex;gap:4px;padding-top:6px;padding-bottom:6px}
+.nav button{flex:1 1 0;min-width:0;min-height:50px;border:0;border-radius:12px;background:transparent;color:var(--mute);font-weight:700;font-size:.9375rem;position:relative;padding:4px 1px;overflow-wrap:anywhere;hyphens:auto;line-height:1.15}
+.nav button[aria-current="page"]{color:var(--acc);background:var(--bg)}
+.nav button[aria-current="page"]::before{content:'';position:absolute;left:25%;right:25%;top:0;height:3px;border-radius:2px;background:var(--acc)}
+.tm{position:fixed;left:0;right:0;bottom:var(--navh);z-index:29;background:var(--ink);color:var(--bg)}
+.tm .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding-top:8px;padding-bottom:8px}
+.tm strong{font-size:1.75rem;font-variant-numeric:tabular-nums;font-weight:800;line-height:1}
+.tm span{flex:1 1 4rem;min-width:0;font-size:.875rem}
+.tm button{min-height:44px;padding:8px 16px;border-radius:10px;border:1px solid var(--bg);background:transparent;color:var(--bg);font-weight:800}
+body.kb .nav,body.kb .tm{display:none}
+.seg{display:flex;gap:4px;padding:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;flex-wrap:wrap}
+.seg button{flex:1 1 0;min-width:5.5rem;min-height:44px;border:0;border-radius:9px;background:transparent;font-weight:700;color:var(--mute);padding:6px 4px;font-size:.875rem}
+.seg button[aria-pressed="true"]{background:var(--acc);color:var(--on)}
+.top2{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;align-items:baseline}
+.top2 h3{flex:1 1 9rem;min-width:0}
+.v{font-weight:800;color:var(--acc);white-space:nowrap}
+.fl{display:flex;flex-direction:column;gap:4px;font-size:.8125rem;color:var(--mute);min-width:0;margin-top:8px}
+input[type=text],input[type=date],select,textarea{width:100%;min-height:46px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:1rem}
+input[type=file]{font-size:.875rem;min-height:44px}
+textarea{min-height:88px;line-height:1.4;resize:vertical}
+.in{display:grid;grid-template-columns:minmax(4.4rem,1.2fr) repeat(var(--n),minmax(0,1fr));gap:8px;margin-top:6px;align-items:end}
+.in .fl{overflow-wrap:anywhere}
+.sets{display:grid;gap:8px;margin-top:6px}.srow{display:grid;grid-template-columns:1.6rem minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:end}.srow .snum{font-weight:700;padding-bottom:.75rem}.srow+.srow .lt{display:none}.srow .fl,.sl .fl,.sl .btn3{overflow-wrap:anywhere;min-width:0}.g2.sl{grid-template-columns:1fr}.pt td,.pt th{white-space:nowrap}.cnt{font-weight:600}.sl{align-items:end}
+@media (max-width:400px){.in{grid-template-columns:repeat(var(--n),minmax(0,1fr))}.in>.fl:first-child{grid-column:1/-1}}
+.in input{font-weight:700;font-size:1.125rem;font-variant-numeric:tabular-nums;padding:10px 8px}
+.in input::placeholder{font-weight:600;font-size:.875rem;opacity:.6}
+input.bad{border-color:var(--err);border-width:2px}
+.st{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.st button{flex:1 1 0;min-width:40px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--mute);font-weight:800}
+.st button[aria-pressed="true"]{background:var(--acc);color:var(--on);border-color:var(--acc)}
+.st.col{flex-direction:column}
+.rst{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:.8125rem;color:var(--mute);flex-wrap:wrap}
+.rst button{min-height:44px;min-width:64px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-weight:700;color:var(--ink)}
+fieldset{border:1px solid var(--line);border-radius:12px;padding:6px 10px 10px;margin:10px 0 0;min-width:0}
+legend{font-weight:700;font-size:.875rem;padding:0 4px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.alt{margin-top:6px}
+.cf{border:2px solid var(--acc)}
+.sum{list-style:none;padding:0}
+.sum li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:.875rem}
+.sum li b{text-align:right}
+.snav{display:flex;align-items:center;gap:8px;margin:8px 0}
+.ib{min-width:48px;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:1.5rem;font-weight:800;line-height:1}
+.sttl{flex:1;text-align:center;min-width:0}
+.sttl strong{display:block;font-size:1.125rem}
+.sttl span{font-size:.8125rem;color:var(--mute)}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0}
+.strip button{min-height:54px;border:1px solid var(--line);background:var(--card);border-radius:12px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px 2px}
+.strip button small{font-size:.6875rem;font-weight:600;color:var(--mute);line-height:1.2;text-align:center}
+.strip button[aria-current="true"]{border:2px solid var(--ink)}
+.strip button.act{background:var(--acc);color:var(--on);border-color:var(--acc)}
+.strip button.act small{color:var(--on)}
+.strip button.cl{background:var(--okbg)}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5rem),1fr));gap:10px}
+.kv div{background:var(--bg);border-radius:10px;padding:10px}
+.kv strong{font-size:1.75rem;font-weight:800;display:block;line-height:1.1}
+.kv strong small{font-size:1rem;color:var(--mute);font-weight:700}
+.kv span{font-size:.8125rem;color:var(--mute)}
+.gval{margin:2px 0 0;line-height:1.1}.gval strong{font-size:2.25rem;font-weight:800}.gval small{font-size:1.125rem;color:var(--mute);font-weight:700}
+#goal .kv,#wgoal .kv{margin-top:10px}.kv.k3{grid-template-columns:repeat(3,minmax(0,1fr))}.kv.k3 strong{font-size:1.3rem}.kv.k3 strong small{font-size:.8125rem}
+.kv strong.gok{font-size:1.125rem;color:var(--ok)}b.gok{color:var(--ok)}
+.gbar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:12px 0 0}.gbar i{display:block;height:100%;background:var(--acc);border-radius:3px}
+.gol{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:6 4;opacity:.75}.goltx{fill:var(--ink);font-size:10px;font-weight:700;font-family:inherit}
+.lg .lgo{width:16px;height:0;border-top:2px dashed var(--ink);opacity:.75}
+.tw{overflow-x:auto;margin:8px 0;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:.8125rem}
+th,td{padding:8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--mute);font-weight:700;background:var(--bg)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tr.cur td{background:var(--okbg)}
+td small,th small{color:var(--mute)}
+.ch{position:relative;margin:8px 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
+.ch svg{display:block;width:100%;height:auto}
+.gl{stroke:var(--line);stroke-width:1}.gv{stroke-dasharray:2 3}
+.ax{fill:var(--mute);font-size:10px;font-family:inherit}
+.ln{fill:none;stroke:var(--acc);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.mk{fill:var(--acc);stroke:var(--card);stroke-width:2}
+.dt{fill:var(--card);stroke:var(--mute);stroke-width:2}
+.lastp.wrn{border-color:var(--warn,#c9a227)}.vrf{margin:.4rem 0}.srow.iso{grid-template-columns:1.6rem minmax(0,1fr)}
+.lastp{border:1px solid var(--line,#ddd);border-radius:12px;padding:10px 12px;margin:8px 0}.lastp p{margin:.15rem 0}.lastp .lab{font-weight:700;margin:0 0 .2rem}.lsets{list-style:none;margin:.2rem 0;padding:0;font-weight:600}.lsets .mute,.lastp .mute{color:var(--mute);font-weight:400}.gd summary{cursor:pointer;font-weight:600;padding:.4rem 0}.gl2{margin:.3rem 0 .3rem 1.1rem;padding:0}
+.ho{fill:var(--card);stroke:var(--acc);stroke-width:2;stroke-dasharray:2 2}
+.pt tr.sub td{color:var(--mute);font-size:.9em}
+.hit{fill:transparent;cursor:pointer}
+.tt{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.75rem;padding:6px 8px;border-radius:8px;white-space:nowrap;transform:translate(-50%,-115%);z-index:2}
+.lg{display:flex;gap:16px;font-size:.75rem;color:var(--mute);margin:4px 4px 0;flex-wrap:wrap}
+.lg i{display:inline-block;vertical-align:middle;margin-right:5px}
+.lg .ld{width:9px;height:9px;border-radius:50%;border:2px solid var(--mute)}
+.lg .ll{width:16px;height:3px;border-radius:2px;background:var(--acc)}
+details{margin:10px 0}
+summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700;color:var(--acc)}
+details.card summary{color:var(--ink)}
+.mrow{display:flex;flex-wrap:wrap;gap:0 8px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.mrow .fl{flex:1 1 5.5rem}
+.mrow .fl.pr{flex:2 1 10rem}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:10px 0;font-size:.875rem;min-height:44px}
+.chk input{width:24px;height:24px;flex:0 0 auto;margin:0}
+.rfl li{margin:4px 0;font-size:.875rem}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px}
+.ex.pv{opacity:.92}
+</style>
+</head>
+<body>
+<div class="top" id="top"><div class="wrap">
+ <p class="tbn" id="tbn" hidden></p>
+ <div class="tline"><span class="sv" id="sv"></span><span class="tmini" id="tmini"></span></div>
+ <div id="warn"></div>
+ <div id="stale"></div>
+</div></div>
+<main class="wrap" id="app">
+ <section id="v-home" aria-label="Početna" hidden></section>
+ <section id="v-train" aria-label="Trening" hidden></section>
+ <section id="v-prog" aria-label="Napredak" hidden></section>
+</main>
+<div class="tm" id="tm" hidden><div class="wrap"><strong id="tmt" aria-hidden="true"></strong><span id="tml"></span><button type="button" data-act="tstop" id="tmb">Zaustavi</button></div></div>
+<nav class="nav" id="nav" aria-label="Glavna navigacija"><div class="wrap">
+ <button type="button" data-tab="home">Početna</button><button type="button" data-tab="train">Trening</button><button type="button" data-tab="prog">Napredak</button>
+</div></nav>
+<div id="live" class="sr" aria-live="polite"></div>
+<script>
+'use strict';
+/* ===================== TRENERSKE POSTAVKE =====================
+   Ovaj dio mijenja samo trener u izvornom kodu prije objave.
+   Aplikacija nema lozinku, PIN ni trenerski pristup: odobrenje plana je ovdje, u kodu. */
+const CFG={
+ clientId:'maria-matas',clientName:'Maria Matas',
+ cycleId:'2026-11-30',start:'2026-11-30',tz:'Europe/Zagreb',
+ weeks:12,perWeek:4,keys:['A','B','C','D'],
+ progressionPolicy:'sequence_resume',  /* unutar aktivnog ciklusa nastavak prvim nezatvorenim treningom */
+ expiresAt:'2027-02-21',                /* ciklus traje točno 12 kalendarskih tjedana: zadnji dan unosa treninga 21.2.2027. uključivo; od 22.2.2027. ciklus je završen.
+                                           Preskočeni trening ili tjedan NE produljuje ciklus; nema 13. tjedna. */
+ windowDays:84,checkEvery:15,checkOffsets:[0,15,30,45,60,75,83],
+ coachEmail:'ivan.oberan90@gmail.com'
+};
+/* PLAN = nacrt iz naredbe (odjeljak 8).
+   status:'nacrt'   -> Maria vidi vježbe, ali ne može unositi treninge.
+   status:'odobren' -> upiši i approvedOn ('GGGG-MM-DD'); aktivacija tek nakon trenerske provjere i potrebne procjene tegoba.
+   Svaka promjena plana: promijeni version. Već započeti i zatvoreni treninzi zadržavaju verziju po kojoj su rađeni. */
+const PLAN={
+ version:'2026-11-25-v17-rc6',
+ status:'nacrt',
+ approvedOn:null,
+ dose:{},                /* IZNIMKA doze po vježbi – samo izričitom odlukom trenera i samo za RIR, npr. {hamstring_curl:{rirMin:2,rirMax:3,note:'stabilna tolerancija'}}. Manje od 3 serije se ne prihvaća.
+                            Bez unosa vrijedi redovna doza iz DAYS (3 radne serije, RIR 2–3). Aplikacija nikad sama ne smanjuje broj serija (nema automatske probne faze). */
+ startLoad:{},           /* NE KORISTI SE (odluka trenera): početne kilaže se ne postavljaju; Maria nakon 1–2 uvodna seta sama bira radnu težinu. */
+ lowerProgramDefined:true, /* program nogu definirao trener 23.11.2026. (DAYS): prilagođen tendinopatiji stražnje lože; bez leg pressa, čučnja, iskoraka, bugarskog čučnja i RDL-a */
+ checks:{finalQA:false,measurementsConfirmed:true,startDateConfirmed:true}   /* trener 23.11.2026.: datum početka 30.11.2026. i 6 obaveznih obujmova potvrđeni; završni QA još nije napravljen. Tek nakon QA: finalQA:true, status 'odobren', approvedOn */
+};
+/* Podsjetnici i kontrole (odlučuje trener): vaganje 'optional' = neobavezno, bez dogovorenog kalendara;
+   (fleksibilno: bilo koji dan, korisnica bira datum, bez propuštenog vaganja). Ako trener ikad želi raspored: {mode:'weekdays',days:[…]} (0 = ned … 6 = sub) ili {mode:'daily'}. Očekivane mjere kontrole: sve ili podskup. Pravila pogoršanja boli: trener ih zadaje, aplikacija ne dijagnosticira.
+   PHT (tendinopatija stražnje lože): bol 5/10+ = zaustavi i provjeri dozu; odgođena reakcija: porast 0–2 boda nije sam po sebi pogoršanje, porast 3+ boda, lošije sjedenje ili hod = pogoršanje. */
+/* CILJ TJELESNE TEŽINE OVOG CIKLUSA – postavlja trener, samo ovdje u kodu. Aplikacija ga nikad sama ne mijenja,
+   ne sprema ga u korisničke podatke i kopija (backup) ga ne može prepisati. Rok = zadnji dan ciklusa. */
+const GOALS=Object.freeze({weightKg:79.0,weightDate:'2027-02-21'});
+const REM={weigh:{mode:'optional'},expectedMetrics:['chest_cm','waist_cm','abdomen_cm','hips_cm','thigh_cm','upper_arm_cm'],painEscalate:{level:5,rise:3},followWindowH:168};
+/* ===================== PLAN: VJEŽBE I TRENINZI ===================== */
+const EX={
+ neutral_lat_pulldown:{n:'Lat pulldown, neutralni hvat',reg:'upper',reps:[10,12],rest:[90,120]},
+ bilateral_chest_supported_row:{n:'Veslanje na spravi s osloncem za prsa',reg:'upper',reps:[10,12],rest:[90,120]},
+ machine_preacher_curl:{n:'Preacher curl na spravi',reg:'upper',reps:[10,15],rest:[60,90]},
+ horizontal_machine_chest_press:{n:'Chest press na spravi (vodoravni)',reg:'upper',reps:[8,12],rest:[90,120]},
+ machine_shoulder_press:{n:'Shoulder press na spravi',reg:'upper',reps:[10,12],rest:[90,120]},
+ machine_lateral_raise:{n:'Lateral raise na spravi',reg:'upper',reps:[12,15],rest:[60,90],h:'Ako sprave nema, na sajli. Drži se iste varijante da napredak bude usporediv.'},
+ rope_triceps_pushdown:{n:'Triceps pushdown na sajli (uže)',reg:'upper',reps:[10,15],rest:[60,90]},
+ reverse_pec_deck:{n:'Reverse pec deck',reg:'upper',reps:[12,15],rest:[60,90]},
+ cable_biceps_curl:{n:'Biceps curl na sajli',reg:'upper',reps:[10,15],rest:[60,90]},
+ incline_machine_chest_press:{n:'Kosi chest press na spravi',reg:'upper',reps:[10,12],rest:[90,120]},
+ pec_deck:{n:'Pec deck (chest fly na spravi)',reg:'upper',reps:[12,15],rest:[60,90],h:'Samo u podnošljivom opsegu.'},
+ seated_leg_curl_existing:{n:'Sjedeći leg curl (stara uvjetna proba)',legacy:true,reg:'lower',reps:[10,15],rest:[60,90],h:'Lagano opterećenje, bez forsiranja krajnjeg istezanja. Prekini ako izazove poznate tegobe.'},
+ supported_calf_raise:{n:'Calf raise uz oslonac (stara uvjetna proba)',legacy:true,reg:'lower',reps:[12,15],rest:[60,90],bw:true,h:'Samo ako je oslonac bezbolan. 0 kg = bez dodatnog utega.'},
+ hamstring_bridge_iso:{n:'Hamstring bridge – izometrija (dvonožno)',reg:'lower',kind:'iso',reps:[30,45],rest:[90,90],bw:true,pht:true,h:'Rehabilitacijski blok: 5 držanja po 30–45 s, odmor 90 s. Dvonožna izvedba, kvalitetna kontrakcija, bez forsiranja simptoma. Upiši trajanje svakog držanja u sekundama. Ne broji se u radne serije.'},
+ hamstring_curl:{n:'Hamstring curl',reg:'lower',reps:[10,15],rest:[60,90],rir:[3,3],vary:true,pht:true,h:'Tempo približno 2 s podizanje / 3 s spuštanje. Početni cilj oko RIR 3; RIR 2–3 tek nakon stabilne tolerancije, po odluci trenera. Obavezno odaberi varijaciju.'},
+ hip_abductor_machine:{n:'Abductor sprava',reg:'lower',reps:[12,15],rest:[60,90]},
+ leg_extension:{n:'Leg extension',reg:'lower',reps:[10,15],rest:[60,90]},
+ hip_adductor_machine:{n:'Adductor sprava',reg:'lower',reps:[12,15],rest:[60,90]},
+ glute_bridge:{n:'Glute bridge, dvonožni',reg:'lower',reps:[10,15],rest:[60,90],bw:true,pht:true,h:'Kontrolirana izvedba, tempo približno 2 s podizanje / 3 s spuštanje. 0 kg = bez dodatnog tereta. Ako provocira poznatu bol na ishodištu lože, ne nastavljaj i označi tegobe.'}
+};
+/* [vježba, radne serije]. Gornji dio (trenerska odluka): svaka redovna vježba 3 radne serije – A9 B12 C12 D12 = 45 tjedno.
+   Donji dio (trener, 23.11.2026.): A6 B6 C3 D3 = 18 dinamičkih radnih serija tjedno; hamstring bridge izometrija (A i C, 5 × 30–45 s) je rehabilitacijski blok i NE broji se u volumen.
+   Leg press, čučanj, iskoraci, bugarski čučanj i RDL nisu u programu. Stare uvjetne probe (sjedeći curl, calf raise) ostaju samo u povijesti. */
+const DAYS={
+ A:{f:'Povlačenja + noge (stražnja loža)',x:[['neutral_lat_pulldown',3],['bilateral_chest_supported_row',3],['machine_preacher_curl',3],['hamstring_bridge_iso',5],['hamstring_curl',3],['hip_abductor_machine',3]]},
+ B:{f:'Potisci + noge',x:[['horizontal_machine_chest_press',3],['machine_shoulder_press',3],['machine_lateral_raise',3],['rope_triceps_pushdown',3],['leg_extension',3],['hip_adductor_machine',3]]},
+ C:{f:'Povlačenja + noge (gluteus)',x:[['bilateral_chest_supported_row',3],['neutral_lat_pulldown',3],['reverse_pec_deck',3],['cable_biceps_curl',3],['hamstring_bridge_iso',5],['glute_bridge',3]]},
+ D:{f:'Potisci + noge',x:[['incline_machine_chest_press',3],['pec_deck',3],['machine_lateral_raise',3],['rope_triceps_pushdown',3],['leg_extension',3]]}
+};
+/* ===================== KONSTANTE ===================== */
+const N=CFG.weeks*CFG.perWeek, SCHEMA=3, SCHEMA_OLD=2;
+const QS=new URLSearchParams(location.search),DEMO=QS.has('demo'),TEST=QS.has('test')||DEMO;   /* ?demo = jasno odvojen demonstracijski način s izmišljenim podacima */
+const KEY=`coaching:${CFG.clientId}:${CFG.cycleId}:v2`+(TEST?':test':'');
+const METRICS=[['chest_cm','Prsa',0],['waist_cm','Struk',0],['abdomen_cm','Trbuh',0],['hips_cm','Kukovi',0],['thigh_cm','Natkoljenica',1],['calf_cm','List',1],['upper_arm_cm','Nadlaktica',1],['forearm_cm','Podlaktica',1],['neck_cm','Vrat',0]];
+const PROTO_EX={thigh_cm:'npr. 15 cm iznad gornjeg ruba patele',calf_cm:'npr. najširi dio lista, stojeći',upper_arm_cm:'npr. sredina između ramena i lakta, ruka opuštena',forearm_cm:'npr. najširi dio, ispod lakta, ruka opuštena'};
+const MK=new Set(METRICS.map(m=>m[0])),MLAB=Object.fromEntries(METRICS.map(m=>[m[0],m[1]])),UNI=new Set(METRICS.filter(m=>m[2]).map(m=>m[0]));
+const REGIONS=[['glute_ham','Ispod stražnjice / ishodište stražnje lože'],['ant_hip','Prednji kuk / prepona'],['ant_thigh','Prednja natkoljenica']];
+const RK=new Set(REGIONS.map(r=>r[0])),RSHORT={glute_ham:'ispod stražnjice',ant_hip:'prednji kuk/prepona',ant_thigh:'prednja natkoljenica'};
+const SIDES=[['L','lijevo'],['D','desno'],['LD','obje strane'],['?','ne znam']];
+const SIDEK=new Set(SIDES.map(s=>s[0])),SLAB=Object.fromEntries(SIDES);
+const PH=[['before','Prije rada'],['during','Najviše tijekom'],['after','Odmah nakon']],PHK=PH.map(p=>p[0]);
+const OMIT=[['pain','bol / poznate tegobe'],['busy','sprava zauzeta'],['other','drugi razlog']];
+const OMITK=new Set(OMIT.map(o=>o[0])),OLAB=Object.fromEntries(OMIT);
+const REASONS=[['pain','bol / tegobe'],['time','nedostatak vremena'],['busy','sprava zauzeta'],['other','drugo']],RSN=Object.fromEntries(REASONS);
+const ST={not_started:'nije započet',in_progress:'u tijeku',completed:'potpuno odrađen',partial:'djelomično odrađen',skipped_pain:'prekinut zbog boli prije rada',excused_by_coach:'izostavljen po dogovoru s trenerom'};
+const STS={not_started:'',in_progress:'u tijeku',completed:'✓ potpuno',partial:'◐ djelomično',skipped_pain:'bol',excused_by_coach:'dogovor'};
+const CLOSED=new Set(['completed','partial','skipped_pain','excused_by_coach']);
+const EXST={done:'odrađeno',short:'skraćeno',none:'nije upisano',omitted:'izostavljeno',inactive:'neaktivno (čeka provjeru)'};
+/* ===================== POMOĆNE ===================== */
+const $=s=>document.querySelector(s);
+const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const r1=x=>Math.round(x*10)/10,r2=x=>Math.round(x*100)/100;
+const fm=x=>x==null?'–':String(r2(x)).replace('.',',').replace('-','−');
+const sgn=x=>x==null?'–':x>0?'+'+fm(x):x<0?fm(x):'0';
+const dec=x=>String(r2(x)).replace('.',',');
+const clone=o=>JSON.parse(JSON.stringify(o));
+const plDan=n=>n%10===1&&n%100!==11?'dan':'dana';
+/* datumi: uvijek lokalni datum u Europe/Zagreb */
+const ZF=new Intl.DateTimeFormat('en-CA',{timeZone:CFG.tz,year:'numeric',month:'2-digit',day:'2-digit'});
+const TF=new Intl.DateTimeFormat('hr-HR',{timeZone:CFG.tz,hour:'2-digit',minute:'2-digit',hour12:false});
+function ymdOf(ts){const p={};ZF.formatToParts(new Date(ts)).forEach(x=>p[x.type]=x.value);return `${p.year}-${p.month}-${p.day}`}
+const today=()=>ymdOf(Date.now());
+const dnum=s=>{const a=s.split('-').map(Number);return Math.round(Date.UTC(a[0],a[1]-1,a[2])/864e5)};
+const dstr=n=>new Date(n*864e5).toISOString().slice(0,10);
+const addD=(s,k)=>dstr(dnum(s)+k),dd=(a,b)=>dnum(b)-dnum(a);
+const isYmd=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&dstr(dnum(s))===s;
+const hd=s=>{const a=s.split('-').map(Number);return `${a[2]}.${a[1]}.${a[0]}.`};
+const hs=s=>{const a=s.split('-').map(Number);return `${a[2]}.${a[1]}.`};
+const ht=ts=>TF.format(new Date(ts));
+const hdt=ts=>`${hd(ymdOf(ts))} u ${ht(ts)}`;
+const DOW=['ned','pon','uto','sri','čet','pet','sub'],dow=d=>DOW[new Date(dnum(d)*864e5).getUTCDay()];
+const WEND=addD(CFG.start,CFG.windowDays-1);   /* 21.2.2027. = CFG.expiresAt */
+const cycleEnded=()=>today()>CFG.expiresAt;
+const shownAct=()=>cycleEnded()?-1:activeIdx();   /* nakon kraja ciklusa nijedan trening nije „aktivni” */
+/* unos brojeva: prihvaća 82,5 i 82.5; prazno je null, ne 0 */
+function pNum(raw,max,min){min=min||0;raw=String(raw==null?'':raw).trim();if(raw==='')return{v:null};
+ if(/^-/.test(raw))return{err:'Vrijednost ne može biti negativna.'};
+ if(!/^\d{1,3}([.,]\d{1,2})?$/.test(raw))return{err:'Upiši broj, npr. 82,5 ili 82.5.'};
+ const v=parseFloat(raw.replace(',','.'));if(v>max)return{err:`Najviše ${fm(max)}.`};if(v<min)return{err:`Najmanje ${fm(min)}.`};return{v}}
+function pInt(raw,max){raw=String(raw==null?'':raw).trim();if(raw==='')return{v:null};if(!/^\d{1,2}$/.test(raw)||+raw>max)return{err:`Upiši cijeli broj od 0 do ${max}.`};return{v:+raw}}
+const pIntN=(raw,max)=>{raw=String(raw==null?'':raw).trim();if(raw==='')return{v:null};if(!/^\d{1,3}$/.test(raw)||+raw>max)return{err:`Upiši cijeli broj sekundi od 0 do ${max}.`};return{v:+raw}};
+const typingNum=raw=>/^\d{1,3}[.,]$/.test(String(raw).trim());
+/* ===================== PLAN I SLIJED ===================== */
+/* ODOBRENJE (tvrda provjera): unos treninga otvara se samo kad je SVE ispunjeno */
+function approvalMissing(){const C=PLAN.checks||{},m=[];
+ if(PLAN.status!=='odobren')m.push('status plana nije „odobren”');
+ if(PLAN.lowerProgramDefined!==true)m.push('program nogu nije definiran');
+ if(C.finalQA!==true)m.push('završni QA nije potvrđen');
+ if(C.measurementsConfirmed!==true)m.push('obujmovi nisu potvrđeni');
+ if(C.startDateConfirmed!==true)m.push('datum početka nije potvrđen');
+ if(!isYmd(PLAN.approvedOn))m.push('datum odobrenja (approvedOn) nije valjan');
+ return m}
+const approved=()=>approvalMissing().length===0;
+const approvalBlocked=()=>PLAN.status==='odobren'&&!approved();   /* označen kao odobren, ali neka obavezna provjera nije ispunjena */
+/* iznimka doze za redovnu upper vježbu: objekt bez serija ili sa sets:3; dopušta samo drugačiji RIR (ne ispod 2) */
+const doseOk=d=>!!d&&typeof d==='object'&&(d.sets==null||d.sets===3)&&(d.rirMin==null||Number.isInteger(d.rirMin))&&(d.rirMax==null||Number.isInteger(d.rirMax));
+function buildRx(key){return DAYS[key].x.map(([k,tgt])=>{const e=EX[k];
+ if(e.kind==='iso')return{k,n:e.n,region:e.reg,kind:'iso',sets:tgt,repsMin:e.reps[0],repsMax:e.reps[1],rirMin:null,rirMax:null,rest:e.rest,active:true,mandatory:true,phase:'radna',doseNote:'',bw:true,vary:false,pht:!!e.pht};
+ const d=PLAN.dose&&PLAN.dose[k],x=doseOk(d)?d:null;   /* iznimka smije mijenjati samo RIR; manje od 3 serije se ne prihvaća, stari tekst 'proba' se zanemaruje */
+ const df=e.rir||[2,3],r1=x&&Number.isInteger(x.rirMin)?x.rirMin:df[0],r2_=x&&Number.isInteger(x.rirMax)?x.rirMax:df[1];
+ return{k,n:e.n,region:e.reg,kind:'dyn',sets:tgt,repsMin:e.reps[0],repsMax:e.reps[1],rirMin:Math.max(2,Math.min(r1,r2_)),rirMax:Math.max(2,r1,r2_),rest:e.rest,active:true,mandatory:true,phase:x?'trener':'radna',doseNote:x&&x.note?String(x.note).slice(0,120):'',bw:!!e.bw,vary:!!e.vary,pht:!!e.pht}})}
+/* stare uvjetne probe nogu: više nisu program; u otvorenom starom treningu postaju neaktivne, zapisi ostaju */
+const PROBE=new Set(['seated_leg_curl_existing','supported_calf_raise']);
+/* tjedni volumen: aktivne radne serije iz TRENUTNOG plana */
+function weeklyVolume(){const o={upper:{},lower:{},lowerActive:0,upperTotal:0,iso:0};CFG.keys.forEach(d=>{const rx=buildRx(d).filter(it=>it.active);o.upper[d]=rx.filter(it=>it.region==='upper').reduce((a,it)=>a+it.sets,0);o.upperTotal+=o.upper[d];o.lower[d]=rx.filter(it=>it.region==='lower'&&it.kind!=='iso').reduce((a,it)=>a+it.sets,0);o.lowerActive+=o.lower[d];o.iso+=rx.filter(it=>it.kind==='iso').length});return o}
+const wkOf=i=>Math.floor(i/CFG.perWeek)+1,kOf=i=>CFG.keys[i%CFG.perWeek];
+const isClosed=s=>CLOSED.has(s.status);
+const activeIdxOf=X=>{const i=X.sessions.findIndex(s=>!isClosed(s));return i<0?N:i};
+let S;
+const activeIdx=()=>activeIdxOf(S),planDone=()=>activeIdx()>=N;
+const rxOf=(s,i)=>{const base=s.rx||buildRx(kOf(i));if(isClosed(s))return base;
+ return base.map(it=>it.active&&PROBE.has(it.k)?Object.assign({},it,{active:false,mandatory:false,revoked:true}):it)};
+/* stanja: 'done' (svih 48 zatvoreno), 'ended' (kalendarski kraj ciklusa – vrijedi i u testnom načinu), 'draft', 'early', null = aktivan unos */
+function gate(){if(planDone())return 'done';if(cycleEnded())return 'ended';if(!approved()&&!TEST)return 'draft';if(today()<CFG.start&&!TEST)return 'early';return null}
+/* v12: kilaža po seriji. e.kgs[j] = kg serije j (novi zapisi). Stari zapisi imaju samo e.kg = jedna kilaža za sve serije (oznaka „stari zapis”). */
+const setKg=(e,j)=>{if(!e)return null;if(Array.isArray(e.kgs))return e.kgs[j]==null?null:e.kgs[j];return e.kg!=null?e.kg:null};
+const isLegacy=e=>!!e&&!Array.isArray(e.kgs)&&e.kg!=null;
+const kgList=(e,n)=>Array.from({length:n},(_,j)=>setKg(e,j));
+/* serija je odrađena: poznata kilaža (> 0 kg; 0 kg samo za vježbu s vlastitom težinom, it.bw) i barem jedno ponavljanje */
+const setDone=(it,e,j)=>{const r=((e&&e.reps)||[])[j];if(it&&it.kind==='iso')return r!=null&&r>0;const k=setKg(e,j);return k!=null&&(k>0||!!(it&&it.bw))&&r!=null&&r>0};
+/* varijacija hamstring curla: obavezna; „druga” traži opis */
+const VARS=[['sjedeci','sjedeći'],['lezeci','ležeći (prone)'],['stojeci','stojeći'],['druga','druga varijacija']],VARK=new Set(VARS.map(v=>v[0])),VLAB=Object.fromEntries(VARS);
+const varOk=e=>!!e&&VARK.has(e.var)&&(e.var!=='druga'||!!String(e.varTxt||'').trim());
+const varKey=e=>!varOk(e)?'':e.var==='druga'?'druga:'+devKey(e.varTxt):e.var;
+const varLab=e=>!e||!VARK.has(e.var)?'':e.var==='druga'?(String(e.varTxt||'').trim()||'druga varijacija'):VLAB[e.var];
+const doneSets=(it,e)=>Array.from({length:it.sets},(_,j)=>j).filter(j=>setDone(it,e,j)).map(j=>({j,kg:setKg(e,j),reps:e.reps[j]}));
+const enteredSets=(it,e)=>Array.from({length:it.sets},(_,j)=>j).filter(j=>setKg(e,j)!=null||((e&&e.reps)||[])[j]!=null).length;
+const exHasData=e=>!!e&&(e.kg!=null||(Array.isArray(e.kgs)&&e.kgs.some(v=>v!=null))||(e.reps||[]).some(v=>v!=null));   /* RIR-only je nacrt unosa, ne izvedena serija */
+function exState(it,e){e=e||{};if(!it.active)return 'inactive';if(e.omit)return 'omitted';
+ if(doneSets(it,e).length===it.sets&&(!it.vary||varOk(e)))return 'done';if(exHasData(e)||(it.vary&&e.var))return 'short';return 'none'}
+const hasWork=s=>Object.values(s.ex||{}).some(exHasData);
+/* potpuno odrađena vježba: sve serije (kg + ponavljanja, ili trajanja za izometriju), završni RIR (ne za izometriju), odgovor o tegobama Da/Ne,
+   a za PHT vježbe (pht:true) i najveća bol tijekom vježbe 0–10. Sprava/postavka je neobavezna. */
+function exComplete(it,e){e=e||{};if(exState(it,e)!=='done')return false;if(it.kind!=='iso'&&e.rir==null)return false;if(e.sym!=='da'&&e.sym!=='ne')return false;if(it.pht&&e.pain==null)return false;return true}
+function exGaps(it,e){e=e||{};const g=[];if(it.kind!=='iso'&&e.rir==null)g.push('završni RIR');if(e.sym!=='da'&&e.sym!=='ne')g.push('tegobe Da/Ne');if(it.pht&&e.pain==null)g.push('bol 0–10');return g}
+function isValid(s,rx){const m=rx.filter(it=>it.mandatory);return m.length>0&&m.every(it=>exComplete(it,s.ex[it.k]))}
+/* povijesni kriterij (sve serije upisane) – za uvoz i ispravke starijih zatvorenih treninga, da ih nova pravila ne odbace */
+function isValidSets(s,rx){const m=rx.filter(it=>it.mandatory);return m.length>0&&m.every(it=>exState(it,s.ex[it.k])==='done')}
+function missing(s,rx){return rx.filter(it=>it.mandatory).map(it=>{const e=s.ex[it.k]||{},x=exState(it,e);if(x==='done'){const g=exGaps(it,e);return g.length?`${it.n} (${g.join(', ')})`:null}if(x==='omitted')return `${it.n} (izostavljena)`;if(x==='none'&&!(it.vary&&e.var))return `${it.n} (nije upisano)`;
+ const p=[];if(it.vary&&!varOk(e))p.push('varijacija');for(let j=0;j<it.sets;j++){if(setDone(it,e,j))continue;const q=[];if(it.kind==='iso'){p.push(`držanje ${j+1}: sekunde`);continue}if(setKg(e,j)==null)q.push('kg');else if(setKg(e,j)===0&&!it.bw)q.push('kg veća od 0');if(!(((e.reps||[])[j])>0))q.push('ponavljanja');p.push(`serija ${j+1}: ${q.join(' i ')}`)}p.push(...exGaps(it,e));return `${it.n} (${p.join('; ')})`}).filter(Boolean)}
+function blankSession(i){return{i,week:wkOf(i),key:kOf(i),status:'not_started',planVersion:null,rx:null,ex:{},sym:{},note:'',startedAt:null,updatedAt:null,closedAt:null,closeReason:null,closeNote:'',follow:[],correctedAt:null}}
+function blankState(){return{schemaVersion:SCHEMA,clientId:CFG.clientId,cycleId:CFG.cycleId,clientName:CFG.clientName,start:CFG.start,timeZone:CFG.tz,
+ progressionPolicy:CFG.progressionPolicy,expiresAt:CFG.expiresAt,plannedSessionCount:N,planVersion:PLAN.version,activeSessionIndex:0,cpAct:{},fuSkip:{},startLoad:{},
+ sessions:Array.from({length:N},(_,i)=>blankSession(i)),weights:{},meas:{},history:{records:[],importedAt:null,sourceFile:null,sourceSha256:null},audit:[],savedAt:null}}
+function counts(X){X=X||S;const c={completed:0,partial:0,skipped_pain:0,excused_by_coach:0,in_progress:0};X.sessions.forEach(s=>{if(c[s.status]!=null)c[s.status]++});c.closed=c.completed+c.partial+c.skipped_pain+c.excused_by_coach;return c}
+/* zatvaranje: samo aktivni trening, samo jednom; completed samo uz valjan zapis svih obveznih stavki */
+function closeSession(i,st,reason,note){
+ if(gate())return{err:'Unos treninga nije otvoren.'};
+ if(i!==activeIdx())return{err:'Ovaj trening nije aktivan.'};
+ const s=S.sessions[i];if(isClosed(s))return{err:'Trening je već zatvoren.'};
+ if(!CLOSED.has(st))return{err:'Nepoznat status.'};
+ if(!s.rx){s.rx=buildRx(kOf(i));s.planVersion=PLAN.version}
+ const eff=rxOf(s,i);   /* ista pravila kao na ekranu: opozvana vježba nije obvezna i ne upisuje se */
+ if(st==='completed'&&!isValid(s,eff))return{err:'Nisu upisane sve obvezne vježbe.'};
+ if(st==='skipped_pain'&&hasWork(s))return{err:'Već postoje upisane serije – zatvori trening kao djelomičan.'};
+ const before=clone(s),now=Date.now();s.rx=eff;s.status=st;s.closedAt=now;if(!s.startedAt)s.startedAt=now;s.updatedAt=now;
+ s.closeReason=reason&&RSN[reason]?reason:null;s.closeNote=String(note||'').trim().slice(0,500);
+ if(!save()){S.sessions[i]=before;S.activeSessionIndex=activeIdx();paintSave();return{err:'Spremanje nije uspjelo – trening NIJE zatvoren. Unosi su još na ekranu, ali nisu trajno spremljeni: preuzmi kopiju i pokušaj ponovno.'}}
+ return{ok:true}}
+function syncPlan(){const A=activeIdx();if(A>=N)return;const s=S.sessions[A];
+ if(s.status==='in_progress'&&s.planVersion!==PLAN.version&&!hasWork(s)&&!gate()){s.rx=buildRx(kOf(A));s.planVersion=PLAN.version;save()}}
+/* „zadnji put”: zadnji zatvoreni trening prije ovoga u kojem je ista vježba stvarno izvedena (barem jedna odrađena serija); ne nužno prošli tjedan ni isti dan A/B/C/D */
+function prevOcc(k,i){for(let j=i-1;j>=0;j--){const s=S.sessions[j];if(!isClosed(s))continue;const e=s.ex[k];if(!e||e.omit)continue;const it=(s.rx||[]).find(x=>x.k===k);if(!it||!doneSets(it,e).length)continue;return{j,s,e,it}}return null}
+/* gornji dio: progresija kroz raspon ponavljanja; nema prijedloga bez RIR-a ili bez odgovora o tegobama */
+/* bol u kartici tegoba koju je Maria povezala s ovom vježbom ("Najviše smetalo uz vježbu") */
+const regSym=(s,k)=>!!s&&Object.values(s.sym||{}).some(v=>v&&v.ex===k&&PHK.some(q=>v[q]>0));
+/* dvostruka progresija: prvo ponavljanja, zatim opterećenje; sve serije, RIR, tegobe (vježba, regija, prošli put), različite kilaže po serijama */
+/* SMJERNICE za samostalni odabir težine – opis današnje izvedbe, NE automatska progresija i nikad konkretna kilaža. Odluku donosi Maria. */
+function evalUp(it,e,p,s){const ds=doneSets(it,e);
+ if(ds.length<it.sets)return 'inc';
+ if(it.vary&&!varOk(e))return 'novar';
+ if(it.kind==='iso'){if(e.sym==='da')return 'sym';if(it.pht&&e.pain!=null&&e.pain>=REM.painEscalate.level)return 'phtstop';if(regSym(s,it.k))return 'symreg';const f0=fuReact(it.k);if(f0&&f0.kind==='relevant')return 'furel';if(f0&&f0.kind==='unknown')return 'fuunk';return 'isook'}
+ if(e.rir==null)return 'norir';if(e.sym==='da')return 'sym';if(e.sym!=='ne')return 'nosym';
+ if(it.pht&&e.pain!=null&&e.pain>=REM.painEscalate.level)return 'phtstop';
+ if(regSym(s,it.k))return 'symreg';
+ const fu=fuReact(it.k);if(fu&&fu.kind==='relevant')return 'furel';if(fu&&fu.kind==='unknown')return 'fuunk';
+ if(p&&p.e&&(p.e.sym==='da'||regSym(p.s,it.k)))return 'prevsym';
+ if(ds.some(x=>x.reps<it.repsMin)||e.rir<=1)return 'heavy';
+ if(e.rir<it.rirMin)return 'heavy';
+ if(ds.every(x=>x.reps>=it.repsMax)&&e.rir>it.rirMax)return 'light';
+ if(e.rir>it.rirMax)return 'easy';
+ return 'ok'}
+const EVT={inc:'nisu odrađene sve serije – ocjena težine nije moguća',norir:'upiši završni RIR – bez njega se ne može procijeniti je li težina odgovarajuća',
+ sym:'prijavljene su tegobe – ne povećavaj opterećenje; primijeni pravila za tegobe i javi treneru',nosym:'označi jesu li se pojavile poznate tegobe',
+ symreg:'uz ovu vježbu označena je bol u kartici tegoba – ne povećavaj opterećenje; javi treneru',
+ prevsym:'zadnji put uz ovu vježbu bile su tegobe – ne povećavaj opterećenje dok se ne potvrdi da ih nema',
+ furel:'nakon nedavnog treninga zabilježeno je odgođeno pogoršanje povezano s ovom vježbom – ne povećavaj dozu; smanji opterećenje, volumen i/ili provokativni opseg i javi treneru',
+ fuunk:'nakon nedavnog treninga zabilježeno je odgođeno pogoršanje (ili lošije sjedenje/hod), a veza s ovom vježbom nije poznata – ne povećavaj dozu dok to ne provjeri trener',
+ heavy:'serija ispod donje granice ponavljanja ili završni RIR ispod cilja RIR {RIR} – prema smjernicama težina je vjerojatno bila previsoka',
+ light:'sve serije na gornjoj granici ili iznad nje uz završni RIR {RIRP} – prema smjernicama možeš razmotriti mali porast težine',
+ easy:'završni RIR {RIRP} lakši je od cilja RIR {RIR} – prije porasta težine pokušaj ostati u rasponu bliže RIR {RIR}',
+ ok:'unutar raspona ponavljanja uz završni RIR {RIR} (cilj) – prema smjernicama težina je odgovarajuća',
+ novar:'odaberi varijaciju – bez nje se izvedba ne može usporediti ni procijeniti',
+ phtstop:'bol 5/10 ili više tijekom vježbe – zaustavi i provjeri dozu s trenerom; ne povećavaj opterećenje',
+ isook:'izometrijski blok odrađen bez prijavljenih tegoba – promjenu doze (trajanje, broj držanja) određuje trener; prati reakciju nakon 24 h'};
+function recTxt(code,it,e){let t=EVT[code];const ds=doneSets(it,e);
+ if(ds.length>1&&ds.some(x=>x.kg!==ds[0].kg))t=`serije su imale različite kilaže (${ds.map(x=>fm(x.kg)+' × '+x.reps).join(' / ')}); završni RIR ${e.rir!=null?rirTxt(e.rir):'–'} odnosi se samo na zadnju seriju (${fm(ds[ds.length-1].kg)} kg), napor ostalih serija nije poznat. `+t;
+ if(it.pht&&code==='light')t+=' – kod stražnje lože samo ako je reakcija nakon 24 h bila uredna (bez porasta boli za 3+ boda, bez lošijeg sjedenja i hoda)';
+ if(it.rirMin!=null)t=t.split('{RIRP}').join((it.rirMax+1)+'+').split('{RIR}').join(rirRng(it));
+ if(code==='furel'||code==='fuunk'){const fu=fuReact(it.k);if(fu)t+=` (${fu.txt})`}
+ else if(['ok','light','easy','heavy','prevsym'].includes(code)){const fu=fuReact(it.k);if(fu&&fu.kind==='unrelated')t+=`. Napomena: nedavno zabilježeno odgođeno pogoršanje povezano je s drugom vježbom (${fu.txt}) i ne mijenja ovu smjernicu`}
+ return t}
+const GUIDE=it=>`<details class="gd"><summary>Kako odabrati težinu</summary><ul class="gl2"><li>Cilj je ostati unutar propisanog raspona ponavljanja (${it.repsMin}–${it.repsMax}).</li><li>Zadnja radna serija cilja približno RIR ${rirRng(it)}.</li><li>Ako ne možeš ostvariti donju granicu ponavljanja ili završiš ${it.rirMin>2?`ispod RIR ${it.rirMin}`:'na RIR 0–1'}, težina je vjerojatno previsoka.</li><li>Ako bez problema prelaziš gornju granicu i imaš RIR ${it.rirMax+1}+, možeš razmotriti mali porast težine.</li><li>Ako si unutar raspona i završavaš na RIR ${rirRng(it)}, težina je odgovarajuća.</li><li>Nije potrebno povećavati težinu samo zato što je novi tjedan.</li><li>Tehnika ima prednost pred povećanjem opterećenja.</li><li>Ako se pojave poznate tegobe ili bol, ne povećavaj opterećenje i označi tegobe.</li></ul><p class="h">To su smjernice, a ne automatska progresija. Odluku o kilaži donosiš ti.</p></details>`;
+const sumR=a=>a.reduce((t,x)=>t+x.reps,0),volOf=a=>r2(a.filter(x=>x.kg>0).reduce((t,x)=>t+x.kg*x.reps,0));
+/* usporedba dvaju izvođenja iste vježbe – samo uz isti propisani i isti izvedeni broj serija */
+const devOf=e=>String((e&&e.dev)||'').trim();
+const devKey=v=>String(v||'').toLowerCase().normalize('NFC').replace(/[\s,.;:/()-]+/g,' ').trim();
+function cmpSets(it,e,pit,pe){const a=doneSets(pit,pe),b=doneSets(it,e),da=devOf(pe),db=devOf(e);
+ if(da&&db&&devKey(da)!==devKey(db))return{ok:false,dev:true,why:`druga sprava ili postavka („${da}” → „${db}”)`};
+ if((it.vary||pit.vary)&&varKey(e)!==varKey(pe))return{ok:false,vary:true,why:`druga varijacija („${varLab(pe)||'nije upisana'}” → „${varLab(e)||'nije upisana'}”)`};
+ const unc=!da||!db?' (sprava/postavka nije upisana – usporedivost sprave nije potvrđena)':'';
+ if(pit.sets!==it.sets)return{ok:false,why:`propisan broj serija se promijenio (${pit.sets} → ${it.sets})`};
+ if(!a.length||!b.length)return{ok:false,why:'nema odrađenih serija u jednom od zapisa'};
+ if(a.length!==pit.sets||b.length!==it.sets){const pairs=b.filter(x=>a.some(y=>y.j===x.j)).map(x=>[a.find(y=>y.j===x.j),x]),d=pairs.map(([q,c])=>`serija ${c.j+1}: ${fm(q.kg)} × ${q.reps} → ${fm(c.kg)} × ${c.reps}`).join('; ');
+  return{ok:false,partial:true,why:`${a.length!==b.length?'izveden je različit broj serija':'oba zapisa su nepotpuna'} (${a.length} → ${b.length} od ${it.sets})${d?' – '+d:''}; bez ocjene napretka cijele vježbe${unc}`}}
+ const dk=b.map((x,j)=>r2(x.kg-a[j].kg)),up=dk.some(v=>v>0),dn=dk.some(v=>v<0),ra=sumR(a),rb=sumR(b),dr=rb-ra,dv=r2(volOf(b)-volOf(a)),sg=v=>(v>0?'+':'')+fm(v);
+ const kgT=up||dn?`kilaža po seriji ${dk.map(sg).join(' / ')} kg`:'iste kilaže',tail=` · ponavljanja ${sg(dr)} · volumen ${sg(dv)} kg`,below=b.some(x=>x.reps<it.repsMin)?' · dio serija ispod raspona ponavljanja':'';
+ if(!up&&!dn)return dr>0?{ok:true,code:'up',txt:`više ponavljanja uz iste kilaže${tail}${unc}`}:dr<0?{ok:true,code:'down',txt:`manje ponavljanja uz iste kilaže${tail}${unc}`}:{ok:true,code:'same',txt:'iste kilaže i ponavljanja'+unc};
+ if(up&&!dn)return dr>=0?{ok:true,code:'up',txt:`veća kilaža uz jednak ili veći broj ponavljanja (${kgT})${tail}${unc}`}:{ok:true,code:'trade',txt:`veća kilaža, manje ponavljanja (${kgT})${tail}${below} – uobičajen korak dvostruke progresije, ali nisu porasli svi pokazatelji${unc}`};
+ if(dn&&!up)return dr>0?{ok:true,code:'trade',txt:`manja kilaža, više ponavljanja (${kgT})${tail}${unc}`}:{ok:true,code:'down',txt:`manja kilaža (${kgT})${tail}${unc}`};
+ return{ok:true,code:'mixed',txt:`kilaže su se mijenjale u oba smjera (${kgT})${tail}${unc}`}}
+const repsTxt=(it,e)=>Array.from({length:it.sets},(_,j)=>{const v=(e.reps||[])[j];return v==null?'–':v}).join('/');
+function setsTxt(it,e){if(it.kind==='iso')return Array.from({length:it.sets},(_,j)=>{const r=(e.reps||[])[j];return r==null?'–':r+' s'}).join(' · ')+' (izometrija)';
+ if(isLegacy(e))return `${fm(e.kg)} kg × ${repsTxt(it,e)} (stari zapis: jedna kilaža za sve serije)`;
+ return Array.from({length:it.sets},(_,j)=>{const k=setKg(e,j),r=(e.reps||[])[j];return `${k==null?'–':fm(k)+' kg'} × ${r==null?'–':r}`}).join(' · ')}
+const rirRng=it=>it.rirMin==null?'–':it.rirMin===it.rirMax?String(it.rirMin):`${it.rirMin}–${it.rirMax}`;
+const rirTxt=v=>v>=5?'5+':String(v);
+const rxTxt=it=>it.kind==='iso'?`${it.sets} × ${it.repsMin}–${it.repsMax} s`:`${it.sets} × ${it.repsMin}–${it.repsMax}`;
+const restTxt=r=>r[0]===r[1]?`${r[0]} s`:`${r[0]}–${r[1]} s`;
+function phaseName(h){return h<16?'rana kontrola':h<=36?'kontrola ~24 h':h<=60?'kontrola ~48 h':'kasna kontrola'}
+/* ===================== VALIDACIJA I POHRANA ===================== */
+const isTs=v=>typeof v==='number'&&isFinite(v)&&v>0;
+const isInt=(v,a,b)=>Number.isInteger(v)&&v>=a&&v<=b;
+const isNum=(v,a,b)=>typeof v==='number'&&isFinite(v)&&v>=a&&v<=b;
+const str=(v,n)=>typeof v==='string'?v.slice(0,n):'';
+function vRx(a,bad,dayKey,strict){if(a==null)return null;if(!Array.isArray(a)||a.length>12){bad('plan treninga');return null}const out=[],seen=new Set(),dayKs=dayKey&&DAYS[dayKey]?DAYS[dayKey].x.map(x=>x[0]).concat(dayKey==='A'||dayKey==='C'?[...PROBE]:[]):null;   /* stare uvjetne probe ostaju valjane u povijesti A i C */
+ for(const it of a){const iso=!!it&&it.kind==='iso';if(!it||!EX[it.k]||!isInt(it.sets,1,iso?5:3)||!isInt(it.repsMin,1,iso?120:50)||!isInt(it.repsMax,1,iso?120:50)||it.repsMin>it.repsMax||(!iso&&(!isInt(it.rirMin,0,6)||!isInt(it.rirMax,0,6)||it.rirMin>it.rirMax))){bad('stavka plana');continue}
+  if(seen.has(it.k)){bad('ponovljena vježba u planu');continue}seen.add(it.k);if(strict&&dayKs&&!dayKs.includes(it.k)){bad('vježba ne pripada ovom danu');continue}
+  const e=EX[it.k];out.push({k:it.k,n:e.n,region:e.reg,sets:it.sets,repsMin:it.repsMin,repsMax:it.repsMax,rirMin:iso?null:it.rirMin,rirMax:iso?null:it.rirMax,rest:e.rest,kind:iso?'iso':'dyn',vary:!!e.vary,pht:!!e.pht,active:it.active===true,mandatory:it.active===true,phase:['radna','proba','trener'].includes(it.phase)?it.phase:null,doseNote:typeof it.doseNote==='string'?it.doseNote.slice(0,120):'',revoked:it.revoked===true,bw:!!e.bw})}
+ return out}
+function vEx(o,bad){const X={};if(o==null)return X;if(typeof o!=='object'||Array.isArray(o)){bad('zapisi vježbi');return X}
+ for(const k of Object.keys(o)){const e=o[k];if(!EX[k]||!e||typeof e!=='object'||Array.isArray(e)){bad('vježba');continue}const c={};
+  if(e.kg!=null){if(isNum(e.kg,0,400))c.kg=e.kg;else bad('kg')}
+  if(e.kgs!=null){if(Array.isArray(e.kgs)&&e.kgs.length<=5&&e.kgs.every(v=>v===null||isNum(v,0,400))){c.kgs=e.kgs.slice();if(c.kg!=null){bad('kg i kilaže po serijama istodobno');delete c.kg}}else bad('kilaže po serijama')}
+  if(e.reps!=null){if(Array.isArray(e.reps)&&e.reps.length<=5&&e.reps.every(v=>v===null||isInt(v,0,300)))c.reps=e.reps.slice();else bad('ponavljanja')}
+  if(e.rir!=null){if(isInt(e.rir,0,5))c.rir=e.rir;else bad('RIR')}
+  if(e.sym!=null){if(e.sym==='ne'||e.sym==='da')c.sym=e.sym;else bad('tegobe')}
+  if(e.omit!=null){if(OMITK.has(e.omit))c.omit=e.omit;else bad('izostavljanje')}
+  if(e.dev!=null){if(typeof e.dev==='string'&&e.dev.length<=60)c.dev=e.dev;else bad('sprava')}
+  if(e.var!=null){if(VARK.has(e.var))c.var=e.var;else bad('varijacija')}
+  if(e.varTxt!=null){if(typeof e.varTxt==='string'&&e.varTxt.length<=60)c.varTxt=e.varTxt;else bad('varijacija')}
+  if(e.pain!=null){if(isInt(e.pain,0,10))c.pain=e.pain;else bad('bol tijekom vježbe')}
+  X[k]=c}
+ return X}
+function vSym(o,bad){const X={};if(o==null)return X;if(typeof o!=='object'||Array.isArray(o)){bad('simptomi');return X}
+ for(const r of Object.keys(o)){const v=o[r];if(!RK.has(r)||!v||typeof v!=='object'){bad('regija');continue}const c={};
+  if(v.side!=null){if(SIDEK.has(v.side))c.side=v.side;else bad('strana')}
+  for(const p of PHK)if(v[p]!=null){if(isInt(v[p],0,10))c[p]=v[p];else bad('bol')}
+  if(v.ex!=null){if(EX[v.ex])c.ex=v.ex;else bad('vježba uz simptom')}
+  X[r]=c}
+ return X}
+function vFollow(a,bad){if(a==null)return[];if(!Array.isArray(a)){bad('kontrole');return[]}const out=[];
+ for(const f of a){if(!f||!isTs(f.at)||!isNum(f.hours,0,1e6)){bad('kontrola');continue}
+  const c={at:f.at,hours:f.hours,reg:{},gait:f.gait==='da'||f.gait==='ne'?f.gait:null,sit:f.sit==='da'||f.sit==='ne'?f.sit:null,note:str(f.note,500)};
+  if(f.reg&&typeof f.reg==='object')for(const r of Object.keys(f.reg)){const v=f.reg[r];if(!RK.has(r)||!v){bad('regija kontrole');continue}c.reg[r]={side:SIDEK.has(v.side)?v.side:null,pain:isInt(v.pain,0,10)?v.pain:null}}
+  c.partial=!fComplete(c);out.push(c)}
+ return out}
+function vSession(s,i,bad,strict){const X=blankSession(i);if(!s||typeof s!=='object'){bad('trening '+(i+1));return X}
+ if(!ST[s.status]){bad('status treninga '+(i+1));return X}
+ X.status=s.status;X.planVersion=s.planVersion==null?null:str(s.planVersion,60);X.rx=vRx(s.rx,bad,kOf(i),strict);X.ex=vEx(s.ex,bad);X.sym=vSym(s.sym,bad);X.note=str(s.note,1000);
+ for(const f of ['startedAt','updatedAt','closedAt','correctedAt'])X[f]=isTs(s[f])?s[f]:null;
+ X.closeReason=s.closeReason&&RSN[s.closeReason]?s.closeReason:null;X.closeNote=str(s.closeNote,500);X.follow=vFollow(s.follow,bad);
+ if(CLOSED.has(X.status)&&!X.closedAt){bad('vrijeme zatvaranja treninga '+(i+1));X.closedAt=X.updatedAt||Date.now()}
+ if(strict){const rx=X.rx;
+  if(X.status!=='not_started'&&!rx)bad('trening '+(i+1)+' nema zapis propisa');
+  if(rx){const ks=new Set(rx.map(it=>it.k));Object.keys(X.ex).forEach(k=>{if(!ks.has(k))bad('vježba '+k+' ne pripada treningu '+(i+1))});
+   rx.forEach(it=>{const e=X.ex[it.k];if(e&&((e.reps&&e.reps.length>it.sets)||(e.kgs&&e.kgs.length>it.sets)))bad('previše serija za '+it.k)});
+   if(X.status==='completed'&&!isValidSets(X,rx))bad('trening '+(i+1)+' je „potpuno odrađen” bez odrađenih obveznih stavki');
+   if(X.status==='skipped_pain'&&hasWork(X))bad('trening '+(i+1)+' je „prekinut prije rada”, a ima serije')}}
+ return X}
+function vMeasSnap(m,bad){const v={},side={},proto={};
+ for(const [k] of METRICS){const x=m.v&&m.v[k];if(x==null)v[k]=null;else if(isNum(x,5,300))v[k]=x;else{bad('mjera '+k);v[k]=null}
+  if(UNI.has(k)){const sd=m.side&&m.side[k];side[k]=sd==='L'||sd==='D'?sd:null;proto[k]=str(m.proto&&m.proto[k],80)}}
+ return{v,side,proto,note:str(m.note,300),at:isTs(m.at)?m.at:null,cp:typeof m.cp==='string'&&/^cp\d{1,4}$/.test(m.cp)?m.cp:null}}
+function vHistRec(r){if(!r||typeof r!=='object'||typeof r.id!=='string'||!/^[\w-]{1,80}$/.test(r.id))return null;
+ if(r.type==='weight'){if(r.unit!=='kg'||!isNum(r.value,20,400))return null}
+ else if(r.type==='circumference'){if(r.unit!=='cm'||!MK.has(r.metric)||!isNum(r.value,5,300))return null}else return null;
+ if(!isYmd(r.date))return null;
+ return{id:r.id,type:r.type,metric:r.type==='circumference'?r.metric:null,date:r.date,value:r.value,unit:r.unit,sourceFile:str(r.sourceFile,200),sourceSheet:str(r.sourceSheet,80),sourceCell:str(r.sourceCell,20),
+  dateSourceCell:str(r.dateSourceCell,20),dateStatusOriginal:str(r.dateStatusOriginal||r.dateStatus,60),dateStatus:str(r.dateStatus,60),confirmedAt:isTs(r.confirmedAt)?r.confirmedAt:null,
+  rawValue:r.rawValue==null?null:str(String(r.rawValue),40),side:null,issues:Array.isArray(r.issues)?r.issues.filter(x=>typeof x==='string').map(x=>x.slice(0,80)).slice(0,10):[],cycle:str(r.cycle,60)}}
+function vState(o,strict){
+ if(!o||typeof o!=='object'||Array.isArray(o))return{err:'neispravna struktura'};
+ if(o.schemaVersion!==SCHEMA&&o.schemaVersion!==SCHEMA_OLD)return{err:'nepoznata verzija sheme'};
+ if(o.clientId!==CFG.clientId)return{err:'podaci pripadaju drugoj klijentici ili aplikaciji'};
+ if(o.cycleId!==CFG.cycleId)return{err:'podaci pripadaju drugom ciklusu'};
+ if(!Array.isArray(o.sessions)||o.sessions.length!==N)return{err:'neispravan broj treninga'};
+ let drop=0;const bad=strict?m=>{throw new Error(m)}:()=>{drop++};const X=blankState();
+ try{
+  o.sessions.forEach((s,i)=>{X.sessions[i]=vSession(s,i,bad,strict)});
+  const A=activeIdxOf(X);if(X.sessions.some((s,i)=>i>A&&s.status!=='not_started'))bad('slijed treninga nije ispravan');
+  if(o.weights!=null){if(typeof o.weights!=='object'||Array.isArray(o.weights))bad('vaganja');else for(const d of Object.keys(o.weights)){const w=o.weights[d];
+   if(!isYmd(d)||!w||!isNum(w.kg,20,400)||(strict&&!dateOk(d))){bad('vaganje '+d);continue}
+   X.weights[d]={kg:w.kg,note:str(w.note,300),at:isTs(w.at)?w.at:null,prev:Array.isArray(w.prev)?w.prev.filter(p=>p&&isNum(p.kg,20,400)).slice(-20).map(p=>({kg:p.kg,note:str(p.note,300),at:isTs(p.at)?p.at:null})):[]}}}
+  if(o.meas!=null){if(typeof o.meas!=='object'||Array.isArray(o.meas))bad('mjere');else for(const d of Object.keys(o.meas)){const m=o.meas[d];
+   if(!isYmd(d)||!m||typeof m!=='object'||(strict&&!dateOk(d))){bad('mjere '+d);continue}const c=vMeasSnap(m,bad);c.prev=Array.isArray(m.prev)?m.prev.slice(-10).map(p=>vMeasSnap(p||{},()=>{})):[];X.meas[d]=c}}
+  if(o.history&&typeof o.history==='object'){const h=o.history,ids=new Set();
+   if(Array.isArray(h.records))for(const r of h.records){const c=vHistRec(r);if(!c||ids.has(c.id)){bad('povijesni zapis');continue}ids.add(c.id);X.history.records.push(c)}
+   X.history.importedAt=isTs(h.importedAt)?h.importedAt:null;X.history.sourceFile=h.sourceFile==null?null:str(h.sourceFile,200);X.history.sourceSha256=h.sourceSha256==null?null:str(h.sourceSha256,80)}
+  if(o.cpAct!=null){if(typeof o.cpAct!=='object'||Array.isArray(o.cpAct))bad('kontrole mjera');else for(const k of Object.keys(o.cpAct)){const a=o.cpAct[k];
+   if(!/^cp\d{1,4}$/.test(k)||!a||!(a.kind==='defer'||a.kind==='omit')||!isTs(a.at)||(a.kind==='defer'&&!isYmd(a.until))){bad('kontrola '+k);continue}X.cpAct[k]=a.kind==='defer'?{kind:'defer',at:a.at,until:a.until}:{kind:'omit',at:a.at}}}
+  if(o.fuSkip!=null){if(typeof o.fuSkip!=='object'||Array.isArray(o.fuSkip))bad('preskočene kontrole');else for(const k of Object.keys(o.fuSkip)){const a=o.fuSkip[k];if(!/^\d{1,2}$/.test(k)||+k>=N||!a||!isTs(a.at)){bad('preskočena kontrola '+k);continue}X.fuSkip[k]={at:a.at}}}
+  if(Array.isArray(o.audit))X.audit=o.audit.filter(a=>a&&typeof a==='object'&&isTs(a.at)&&typeof a.kind==='string').slice(-500);
+  if(o.startLoad!=null){if(typeof o.startLoad!=='object'||Array.isArray(o.startLoad))bad('početne težine');else for(const k of Object.keys(o.startLoad)){const a=o.startLoad[k];if(!EX[k]||EX[k].reg!=='upper'||!a||!kgOk(a.kg)||!isTs(a.at)||(a.by!=='trener'&&a.by!=='korisnica')){bad('početna težina '+k);continue}X.startLoad[k]={kg:a.kg,at:a.at,by:a.by}}}
+  X.migratedFrom=o.schemaVersion===SCHEMA_OLD?SCHEMA_OLD:(o.migratedFrom===SCHEMA_OLD?SCHEMA_OLD:null);
+  X.savedAt=isTs(o.savedAt)?o.savedAt:null;
+ }catch(e){return{err:e.message}}
+ X.activeSessionIndex=activeIdxOf(X);
+ return{S:X,drop}}
+const dateOk=d=>TEST?d>=CFG.start&&d<=addD(CFG.start,400):d>=CFG.start&&d<=today();   /* strogi uvoz: ne prije ciklusa i nijedan budući datum (testni način ima prošireni simulirani raspon) */
+let saveOK=true,WARN=[],RAWBAD=null,saveFailAnnounced=false;
+function keepRaw(raw){try{localStorage.setItem(KEY+':raw:'+Date.now(),raw)}catch(e){}}
+function load(){let raw=null;
+ try{raw=localStorage.getItem(KEY)}catch(e){WARN.push('Preglednik ne dopušta čitanje spremljenih podataka (privatni prozor ili blokirana pohrana).');S=blankState();return}
+ if(raw==null){S=blankState();return}
+ let p=null;try{p=JSON.parse(raw)}catch(e){}
+ const r=p?vState(p,false):{err:'zapis nije čitljiv'};
+ if(r.err){keepRaw(raw);RAWBAD=raw;S=blankState();WARN.push(`Spremljeni podaci nisu učitani (${r.err}). Izvorni zapis je sačuvan u pregledniku; preuzmi ga na Početnoj („Preuzmi oštećeni zapis”) i pošalji treneru.`)}
+ else{S=r.S;if(p.schemaVersion===SCHEMA_OLD){S.audit.push({at:Date.now(),kind:'migration_v2_v3',note:'jedna kilaža po vježbi ostaje oznacena kao stari zapis'});S.schemaVersion=SCHEMA;S.migratedFrom=SCHEMA_OLD;keepRaw(raw);setTimeout(()=>{try{save()}catch(e){}},0)}if(r.drop){keepRaw(raw);WARN.push(`Dio spremljenih zapisa (${r.drop}) nije bio ispravan i preskočen je. Izvorni zapis je sačuvan u pregledniku.`)}}}
+function save(){S.activeSessionIndex=activeIdx();S.planVersion=PLAN.version;const prev=S.savedAt;S.savedAt=Date.now();
+ try{localStorage.setItem(KEY,JSON.stringify(S));saveOK=true;saveFailAnnounced=false}catch(e){saveOK=false;S.savedAt=prev}
+ paintSave();if(!saveOK&&!saveFailAnnounced){saveFailAnnounced=true;live('Spremanje nije uspjelo.')}return saveOK}
+/* ===================== UI STANJE ===================== */
+const UI={tab:'home',view:null,copen:null,finErr:null,omitOpen:null,corrAsk:false,CORR:null,
+ prog:{ds:'cycle',seg:'w',range:null,metric:'waist_cm'},wPend:null,wEdit:null,mPend:null,mEdit:null,delPend:null,
+ hist:null,histMsg:null,fo:{w:false,m:false},mCp:null,stale:false,rep:null,restore:null,rmsg:null,btext:false,tresetPend:false,msg:{}};
+const ERR={};
+let DIRTY=false,LASTDAY=null;
+function setH(el,h){if(el&&el.__h!==h){el.innerHTML=h;el.__h=h}}
+function put(el,h){if(el){el.innerHTML=h;el.__h=h;if(el.id==='v-home'||el.id==='v-prog')DIRTY=false}}
+function live(m){const l=$('#live');if(!l)return;l.textContent='';setTimeout(()=>{l.textContent=m},60)}
+const opt=(v,l,sel)=>`<option value="${esc(v)}"${sel?' selected':''}>${esc(l)}</option>`;
+const painOpts=cur=>opt('','–',cur==null)+Array.from({length:11},(_,n)=>opt(n,String(n),cur===n)).join('');
+const sideOpts=cur=>opt('','–',!cur)+SIDES.map(([k,l])=>opt(k,l,cur===k)).join('');
+const ynOpts=cur=>opt('','–',!cur)+opt('ne','ne',cur==='ne')+opt('da','da',cur==='da');
+function paintSave(){const el=$('#sv');if(!el)return;
+ if(!saveOK){el.className='sv bad';el.textContent='⚠ Spremanje nije uspjelo – zadnje promjene nisu spremljene'}
+ else{el.className='sv';el.textContent=S.savedAt?`✓ Spremljeno na ovom uređaju · ${ht(S.savedAt)}`:'Podaci se spremaju samo na ovom uređaju'}
+ const msgs=WARN.slice();if(!saveOK)msgs.unshift('Spremanje nije uspjelo. Provjeri da nisi u privatnom prozoru i da u pregledniku ima prostora. Prethodno spremljeni podaci nisu izgubljeni; kad spremanje proradi, preuzmi sigurnosnu kopiju.');
+ setH($('#warn'),msgs.map(m=>`<p class="bn e">${esc(m)}</p>`).join(''))}
+function go(tab){UI.tab=tab;UI.stale=false;setH($('#stale'),'');for(const t of ['home','train','prog']){$('#v-'+t).hidden=t!==tab;const b=document.querySelector(`.nav [data-tab="${t}"]`);if(t===tab)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')}
+ render();window.scrollTo(0,0)}
+function render(){if(UI.tab==='home')renderHome();else if(UI.tab==='train')renderTrain();else renderProg();paintSave();fit()}
+const redFlags=()=>`<ul class="rfl"><li>Bol pri hodu ili osloncu, šepanje ili noćna bol koja se pojačava: javi se na pregled prije daljnjeg opterećivanja nogu.</li><li>Ne možeš stati na nogu ili hodati, bol je nagla i jaka ili je kuk topao i otečen uz temperaturu: potraži hitnu medicinsku pomoć.</li><li>Aplikacija bilježi tegobe, ali ne postavlja dijagnozu i ne odlučuje o opterećenju.</li></ul>`;
+/* ===================== POČETNA ===================== */
+/* puna kontrola: hod i sjedenje odgovoreni, barem jedna regija s boli; bol > 0 traži izričitu stranu (L/D/obje/ne znam), a strana bez boli je nepotpun odgovor */
+const fComplete=f=>{const regs=REGIONS.map(([r])=>f.reg&&f.reg[r]).filter(Boolean);return f.gait!=null&&f.sit!=null&&regs.some(x=>x.pain!=null)&&regs.every(x=>(x.side==null||x.pain!=null)&&(!(x.pain>0)||x.side!=null))};
+/* procjena odgođene boli po regiji: referenca je stanje PRIJE RADA iste regije i iste poznate strane; neposredna reakcija (tijekom/odmah nakon) prikazuje se odvojeno.
+   Pravila upozorenja (REM.painEscalate) zadaje trener: bol >= razina ILI porast >= rise prema stanju prije rada. Nepoznata referenca ili strana = nedovoljno podataka, ne nula. Nije dijagnoza. */
+function painEval(s,f){const L=REM.painEscalate,out=[];REGIONS.forEach(([r])=>{const x=f.reg&&f.reg[r];if(!x||x.pain==null)return;const v=(s.sym||{})[r]||{},base=v.before==null?null:v.before,bs=v.side||null,fs=x.side||null;
+  const sideOk=!!bs&&!!fs&&bs!=='?'&&fs!=='?'&&bs===fs;let st,why;
+  if(x.pain>=L.level){st='worse';why=`bol ${x.pain}/10 doseže dogovorenu razinu ${L.level}`}
+  else if(x.pain===0){st='ok';why='bez boli'}
+  else if(base==null){st='unknown';why='nema upisane boli prije rada – nema usporedivog početnog stanja'}
+  else if(!sideOk){st='unknown';why=`strana nije poznata ili nije ista (prije rada: ${bs?SLAB[bs]:'–'}, sada: ${fs?SLAB[fs]:'–'})`}
+  else if(x.pain-base>=L.rise){st='worse';why=`porast ${base} → ${x.pain} prema stanju prije rada`}
+  else{st='ok';why=`${base} → ${x.pain} prema stanju prije rada`}
+  out.push({r,st,why,base,during:v.during??null,after:v.after??null,delayed:x.pain,side:fs})});return out}
+const painWorse=(s,f)=>painEval(s,f).some(x=>x.st==='worse');
+const painUnknown=(s,f)=>painEval(s,f).some(x=>x.st==='unknown');
+const fWorse=(s,f)=>f.gait==='da'||f.sit==='da'||painWorse(s,f);
+/* odgođena reakcija za preporuku: zadnja kontrola svakog zatvorenog treninga u zadnjih REM.followWindowH sati.
+   relevant = pogoršanje u regiji koju je Maria povezala s ovom vježbom; unrelated = povezano samo s drugom vježbom; unknown = veza nije poznata ili usporedba nije moguća */
+function fuReact(k){const now=Date.now(),hits=[];S.sessions.forEach((s,i)=>{if(!isClosed(s)||!(s.follow||[]).length)return;const f=[...s.follow].sort((a,b)=>b.at-a.at)[0];if((now-f.at)/36e5>REM.followWindowH)return;
+  const pe=painEval(s,f),bad=pe.filter(x=>x.st==='worse'||(x.st==='unknown'&&x.delayed>0)),gs=f.gait==='da'||f.sit==='da';if(!bad.length&&!gs)return;
+  const attr=Object.values(s.sym||{}).map(v=>v&&v.ex).filter(Boolean),rel=x=>{const e=((s.sym||{})[x.r]||{}).ex;return e===k?'relevant':e?'unrelated':'unknown'};
+  const kinds=bad.map(rel);if(gs)kinds.push(attr.includes(k)?'relevant':attr.length?'unrelated':'unknown');
+  const kind=kinds.includes('relevant')?'relevant':kinds.includes('unknown')?'unknown':'unrelated';
+  hits.push({kind,i,txt:`T${wkOf(i)}·${kOf(i)}, kontrola ${fm(f.hours)} h: ${[...bad.map(x=>RSHORT[x.r]+' – '+x.why),...(f.gait==='da'?['hod lošiji']:[]),...(f.sit==='da'?['sjedenje lošije']:[])].join('; ')}`})});
+ for(const kd of ['relevant','unknown','unrelated']){const h=hits.find(x=>x.kind===kd);if(h)return h}return null}
+function followNeed(s){const h=(Date.now()-s.closedAt)/36e5,all=s.follow||[],f=all.filter(x=>!x.partial);
+ const has24=f.some(x=>x.hours>=16&&x.hours<=36),hasLate=f.some(x=>x.hours>36),worse=f.some(x=>fWorse(s,x));
+ if(!has24){if(h<16)return f.length?null:'early';if(h<=36)return '24h';if(!hasLate)return 'late'}
+ if(worse&&!hasLate&&h>=40&&h<=72)return '48h';
+ return null}
+/* sve dospjele kontrole (ne samo najnovijeg treninga); starije od REM.followWindowH više se ne nude; izričito preskakanje je moguće */
+function followTargets(){const out=[];S.sessions.forEach((s,i)=>{if(!isClosed(s)||s.status==='excused_by_coach'||!s.closedAt||S.fuSkip[i])return;if((Date.now()-s.closedAt)/36e5>REM.followWindowH)return;if(followNeed(s))out.push(i)});return out.sort((a,b)=>S.sessions[b].closedAt-S.sessions[a].closedAt)}
+function followForm(i){return `<div class="ff" data-ff="${i}">`+REGIONS.map(([r,l])=>`<fieldset><legend>${esc(l)}</legend><div class="g2"><label class="fl">Strana<select data-ffs="${r}">${sideOpts(null)}</select></label><label class="fl">Bol sada (0–10)<select data-ffp="${r}">${painOpts(null)}</select></label></div></fieldset>`).join('')
+ +`<div class="g2"><label class="fl">Hod lošiji nego inače?<select data-ffg>${ynOpts(null)}</select></label><label class="fl">Sjedenje lošije nego inače?<select data-ffsit>${ynOpts(null)}</select></label></div>`
+ +`<label class="fl">Bilješka (neobavezno)<textarea data-ffn maxlength="500"></textarea></label><p class="er" data-fferr hidden></p><button type="button" class="btn" data-act="fsave" data-i="${i}">Spremi odgovor</button><button type="button" class="lnk sm" data-act="fskip" data-i="${i}">Preskoči ovu kontrolu</button>`
+ +`<details><summary>Kada potražiti pregled</summary>${redFlags()}</details></div>`}
+function followCard(){const ids=followTargets(),msg=UI.msg.follow;UI.msg.follow=null;let h='';
+ if(msg)h+=`<article id="fu"><p class="okt" role="status">${esc(msg)}</p></article>`;
+ ids.forEach((i,n)=>{const s=S.sessions[i],need=followNeed(s),hrs=r1((Date.now()-s.closedAt)/36e5),part=(s.follow||[]).some(x=>x.partial);
+  h+=`<article${n===0&&!msg?' id="fu"':''} data-fu="${i}"><h2>Reakcija nakon treninga</h2><p class="sub">Tjedan ${wkOf(i)} · Trening ${kOf(i)} · zatvoren ${hdt(s.closedAt)} (prije ${fm(hrs)} h)</p>`;
+  h+=`<p>${{early:'Najbolje se javi sutra ujutro, oko 24 sata nakon treninga. Ako upišeš ranije, bilježi se kao rana kontrola sa stvarnim vremenom.','24h':'Kako su noge danas? Ovo je kontrola oko 24 sata nakon treninga.',late:'Kontrola oko 24 sata nije upisana. Upiši kako je sada – bilježi se stvarno vrijeme.','48h':'Zabilježeno je pogoršanje. Dodatna kontrola oko 48 sati pomaže treneru u odluci.'}[need]} Prazno polje znači „nije odgovoreno”, ne 0.</p>`;
+  if(part)h+=`<p class="bn w">Postoji nepotpun odgovor (npr. samo strana bez boli). Takav odgovor ne zatvara kontrolu – dopuni ga.</p>`;
+  h+=followForm(i)+`</article>`});
+ return h}
+function checkList(){const L=CFG.checkOffsets.map(o=>({o,d:addD(CFG.start,o)}));   /* kontrole samo unutar ciklusa (zadnja 21.2.2027.); nema produljenja */
+ return L}
+const expMetrics=()=>{const e=REM.expectedMetrics;return Array.isArray(e)&&e.length?METRICS.map(m=>m[0]).filter(k=>e.includes(k)):METRICS.map(m=>m[0])};
+function checkStatus(){const t=today(),L=checkList(),snaps=Object.keys(S.meas).sort(),EXP=expMetrics();
+ L.forEach(c=>{c.id='cp'+c.o;c.snaps=[];c.have=new Set();c.label=c.o===0?'početno mjerenje':c.o===CFG.windowDays-1?'završna kontrola ciklusa':'kontrola'});
+ /* vezivanje: samo izričit checkpointId ili upis točno na dan kontrole; slobodan unos druge date ne zatvara ništa */
+ snaps.forEach(d=>{const m=S.meas[d],c=m.cp?L.find(x=>x.id===m.cp):L.find(x=>x.d===d);if(c){c.snaps.push(d);METRICS.forEach(([k])=>{if(m.v[k]!=null)c.have.add(k)})}});
+ L.forEach((c,j)=>{const nx=L[j+1],act=S.cpAct[c.id]||null;c.exp=EXP.length;c.n=EXP.filter(k=>c.have.has(k)).length;c.act=act;
+  if(c.n>=c.exp)c.st='done';
+  else if(act&&act.kind==='omit')c.st='omitted';
+  else if(act&&act.kind==='defer'&&act.until>=t)c.st='deferred';
+  else if(c.n>0)c.st='partial';
+  else if(c.d>t)c.st='future';
+  else if(dd(c.d,t)<=7&&(!nx||t<nx.d))c.st='due';else c.st='missed'});
+ return L}
+const OPENCP=['due','missed','partial'];
+function weighDue(t){const w=REM.weigh;if(t<CFG.start&&!TEST)return false;if(w.mode==='daily')return true;if(w.mode==='weekdays')return (w.days||[]).includes(new Date(dnum(t)*864e5).getUTCDay());return false}
+function cpText(c,t){return c.st==='partial'?`djelomično upisano: ${c.n}/${c.exp} mjera – dopuni`:c.st==='due'?(c.d===t?'danas':`od ${hd(c.d)}, još nije upisana`):`kasni ${dd(c.d,t)} ${plDan(dd(c.d,t))}, nije upisana`}
+function weighModeTxt(){const w=REM.weigh,DN=['nedjeljom','ponedjeljkom','utorkom','srijedom','četvrtkom','petkom','subotom'];
+ return w.mode==='daily'?'Vaganje: dogovoreno svaki dan.':w.mode==='weekdays'?`Vaganje: dogovoreno ${(w.days||[]).map(d=>DN[d]).join(' i ')}.`:'Težinu možeš upisati bilo koji dan. Ako se važeš često, pokušaj to raditi ujutro i u sličnim uvjetima. Svaki unos sprema se uz datum koji odabereš.'}
+/* postavke koje mora odrediti trener – aplikacija ih ne izmišlja */
+function coachTodo(){const o=[],badDose=Object.keys(PLAN.dose||{}).filter(k=>PLAN.dose[k]!=null&&(!EX[k]||EX[k].kind==='iso'||EX[k].legacy||!doseOk(PLAN.dose[k]))),v=weeklyVolume(),up=CFG.keys.flatMap(d=>buildRx(d)).filter(it=>it.region==='upper'&&it.active);
+ const C=PLAN.checks||{};
+ o.push(['Odobrenje plana',approved()?`odobren ${hd(PLAN.approvedOn)}`:approvalBlocked()?'BLOKIRANO – plan je označen kao odobren, ali nedostaje: '+approvalMissing().join('; '):'NACRT – nedostaje: '+approvalMissing().join('; '),approved()]);
+ o.push(['Gornji dio',up.every(it=>it.sets===3)?`riješeno – svih ${up.length} redovnih vježbi ima 3 radne serije (${v.upperTotal} tjedno)`:'NEISPRAVNO – postoji redovna vježba s manje od 3 serije',up.every(it=>it.sets===3)]);
+ const lw=CFG.keys.flatMap(d=>buildRx(d)).filter(it=>it.region==='lower'&&it.kind!=='iso'),lok=lw.length>0&&lw.every(it=>it.sets===3);
+ o.push(['Donji dio',PLAN.lowerProgramDefined===true?(lok?`definiran – ${v.lowerActive} dinamičkih radnih serija tjedno (${CFG.keys.map(d=>d+v.lower[d]).join(' · ')}) + izometrija hamstring bridgea ${v.iso}× tjedno (ne broji se); bez leg pressa, čučnja, iskoraka i RDL-a`:'NEISPRAVNO – dinamička vježba nogu bez 3 serije'):'NEDOVRŠEN – trener treba dostaviti vježbe, raspored po A/B/C/D, broj serija, raspon ponavljanja, RIR i ograničenja zbog simptoma',PLAN.lowerProgramDefined===true&&lok]);
+ o.push(['Početne kilaže','ne postavljaju se (odluka trenera) – Maria nakon uvodnih setova sama bira radnu težinu',true]);
+ o.push(['Vaganje',REM.weigh.mode==='optional'?'fleksibilno, bez obaveznih dana (odluka trenera)':weighModeTxt(),true]);
+ o.push(['Završni QA',C.finalQA?'obavljen':'nije obavljen',!!C.finalQA]);
+ o.push(['Obujmovi',C.measurementsConfirmed?'popis obujmova potvrđen':'trener treba potvrditi popis obujmova ('+expMetrics().length+' obaveznih: '+expMetrics().map(k=>MLAB[k].toLowerCase()).join(', ')+')',!!C.measurementsConfirmed]);
+ o.push(['Datum početka',C.startDateConfirmed?`potvrđen: ${hd(CFG.start)}`:`trener treba potvrditi datum početka (${hd(CFG.start)})`,!!C.startDateConfirmed]);
+ if(badDose.length)o.push(['Neispravne postavke',badDose.map(k=>'dose '+k).join(', ')+' – zanemarene (redovna vježba ne smije imati manje od 3 serije; izometrija i stare probe nemaju iznimke)',false]);
+ return o}
+function measCard(){const t=today();let h=`<article id="mc"><h2>Mjerenja i podsjetnici</h2>`;
+ if(t<CFG.start&&!TEST)h+=`<p class="h">Vaganje i mjere novog ciklusa upisuju se od ${hd(CFG.start)} Početne vrijednosti ostaju prazne do stvarnog upisa.</p>`;
+ else{const w=S.weights[t];h+=w?`<p>Današnje vaganje: <b>${fm(w.kg)} kg</b></p>`:weighDue(t)?`<p class="sg">Danas vaganje (prema rasporedu): još nije upisano.</p>`:'';h+=`<p class="h">${weighModeTxt()}</p>`}
+ const ck=checkStatus(),open=ck.filter(c=>OPENCP.includes(c.st)),nx=ck.find(c=>c.st==='future'),def=ck.filter(c=>c.st==='deferred');
+ open.forEach(c=>{h+=`<div class="rmd" data-cp="${c.id}"><p class="sg"><b>Kontrola obujmova ${hd(c.d)} (dan ${c.o})</b>: ${cpText(c,t)}.</p><div class="g2"><button type="button" class="btn2" data-act="gomeas" data-v="m" data-cp="${c.id}">Upiši</button><button type="button" class="btn2" data-act="cpdefer" data-id="${c.id}">Odgodi 7 dana</button></div><button type="button" class="lnk sm" data-act="cpomit" data-id="${c.id}">Izostavi ovu kontrolu</button></div>`});
+ ck.filter(c=>c.st==='omitted').forEach(c=>{h+=`<p class="h">Kontrola ${hd(c.d)} (dan ${c.o}) izostavljena. <button type="button" class="lnk sm" data-act="cpundo" data-id="${c.id}">Vrati</button></p>`});
+ def.forEach(c=>{h+=`<p class="h">Kontrola ${hd(c.d)} odgođena do ${hd(c.act.until)}. <button type="button" class="lnk sm" data-act="cpundo" data-id="${c.id}">Vrati odmah</button></p>`});
+ if(nx){h+=`<p>Sljedeća predložena kontrola obujmova: <b>${hd(nx.d)}</b> (dan ${nx.o}).${dd(t,nx.d)<=3?` <button type="button" class="lnk sm" data-act="gomeas" data-v="m" data-cp="${nx.id}">Upiši ranije</button>`:''}</p>`}
+ h+=`<p class="h">Na kontroli se obavezno upisuje ${expMetrics().length} mjera: ${expMetrics().map(k=>MLAB[k].toLowerCase()).join(', ')}.${METRICS.filter(([k])=>!expMetrics().includes(k)).length?' Dobrovoljno: '+METRICS.filter(([k])=>!expMetrics().includes(k)).map(([,l])=>l.toLowerCase()).join(', ')+'.':''} Jednostrane mjere uz stranu (L/D) i mjesto mjerenja. Kontrola je dovršena kad su upisane sve obavezne; odgođena ili izostavljena kontrola vidi se kao takva.</p>`;
+ h+=`<p class="h">Podsjetnici su kartice u aplikaciji i vide se samo dok je otvorena. Aplikacija ne šalje push obavijesti ni e-poštu.</p>`;
+ return h+`<div class="g2"><button type="button" class="btn2" data-act="gomeas" data-v="w">Upiši vaganje</button><button type="button" class="btn2" data-act="gomeas" data-v="m">Upiši mjere</button></div></article>`}
+const gmailUrl=(to,su,body)=>`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(su)}&body=${encodeURIComponent(body)}`;
+const mailUrl=(to,su,body)=>`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(su)}&body=${encodeURIComponent(body)}`;
+function reportCard(){const R=UI.rep;
+ let h=`<article id="rep"><h2>Izvještaj treneru</h2><p class="h">Možeš ga pripremiti bilo kada. Uključuje i djelomične treninge, tegobe i trenutni položaj u planu.</p><label class="fl">Raspon<select id="rrange">${opt('14','Zadnjih 14 dana',!R||R.range!=='all')}${opt('all','Cijeli ciklus do sada',!!R&&R.range==='all')}</select></label><button type="button" class="btn2" data-act="rprep">Pripremi izvještaj</button>`;
+ if(R){const su=`Trening · ${CFG.clientName} · ${hd(today())}`,gu=gmailUrl(CFG.coachEmail,su,R.txt);
+  h+=`<textarea id="rt" readonly aria-label="Tekst izvještaja" style="min-height:180px">${esc(R.txt)}</textarea><button type="button" class="btn2" data-act="rcopy">Kopiraj izvještaj</button><a class="btn" href="${esc(gu)}" target="_blank" rel="noopener">Otvori u Gmailu</a><a class="btn2" href="${esc(mailUrl(CFG.coachEmail,su,R.txt))}">Otvori u aplikaciji za e-poštu</a>`;
+  if(gu.length>7500)h+=`<p class="h">Izvještaj je dug pa ga Gmail možda neće prenijeti cijelog. Ako tekst u poruci nije potpun, kopiraj ga i zalijepi.</p>`;
+  h+=`<p class="h">Poruku šalješ ti iz e-pošte (${esc(CFG.coachEmail)}). Aplikacija ne zna je li poruka poslana ni je li je trener zaprimio.</p>`;
+  if(R.msg)h+=`<p class="${R.ok?'okt':'er'}" role="status">${esc(R.msg)}</p>`}
+ return h+`<div class="g2"><button type="button" class="btn2" data-act="csv">Izvoz CSV</button><button type="button" class="btn2" data-act="json">Izvoz JSON</button></div><p class="h">CSV je za Excel (razdjelnik ;, decimalni zarez). JSON je potpuna kopija ciklusa.</p></article>`}
+function summ(X){const c=counts(X),A=activeIdxOf(X);return{closedN:c.closed,closed:`${c.closed}/${N}`,completed:`${c.completed}/${N}`,pos:A>=N?'plan završen':`${cycleEnded()?'ciklus završio · prvi nezatvoreni ':''}tjedan ${wkOf(A)} · ${kOf(A)} (${A+1}/${N})`,
+ w:Object.keys(X.weights).length,m:Object.keys(X.meas).length,h:X.history.records.length,saved:X.savedAt?hdt(X.savedAt):'–'}}
+function restorePlan(){const R=UI.restore,cur=summ(S),nw=summ(R.X);
+ let h=`<div class="card cf"><h3>Plan promjene</h3><div class="tw"><table><thead><tr><th></th><th>Sada</th><th>Iz kopije</th></tr></thead><tbody>${[['Zatvoreni treninzi',cur.closed,nw.closed],['Potpuno odrađeni',cur.completed,nw.completed],['Aktivni položaj',cur.pos,nw.pos],['Vaganja',cur.w,nw.w],['Mjere (datumi)',cur.m,nw.m],['Povijesni zapisi',cur.h,nw.h],['Zadnje spremanje',cur.saved,nw.saved]].map(r=>`<tr><td>${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')}</tbody></table></div>`;
+ if(nw.closedN<cur.closedN)h+=`<p class="bn e">Kopija ima manje zatvorenih treninga (${nw.closedN}) od trenutnog stanja (${cur.closedN}). Zamjenom bi se slijed vratio unatrag i ti bi treninzi ponovno bili otvoreni.</p>`;
+ return h+`<p class="h">Prije zamjene trenutni podaci spremaju se kao prethodna kopija u ovom pregledniku. Preporuka: najprije preuzmi trenutne podatke.</p><button type="button" class="btn2" data-act="bdl">Preuzmi trenutne podatke</button><button type="button" class="btn" data-act="rconfirm">Potvrdi zamjenu</button><button type="button" class="lnk" data-act="rcancel">Odustani</button></div>`}
+const backupObj=()=>({format:'coaching-backup',schemaVersion:SCHEMA,clientId:CFG.clientId,cycleId:CFG.cycleId,clientName:CFG.clientName,planVersion:PLAN.version,exportedAt:new Date().toISOString(),test:TEST,data:S});
+function backupCard(){
+ let h=`<article id="bk"><h2>Podaci i sigurnosna kopija</h2><p class="h">Podaci su spremljeni samo u ovom pregledniku na ovom uređaju (lokalna pohrana, ključ <code>${esc(KEY)}</code>). Nema sinkronizacije, prijave ni trenerskog pristupa. Ako se podaci preglednika obrišu ili promijeniš mobitel, bez kopije ih nema.</p><button type="button" class="btn2" data-act="bdl">Preuzmi sigurnosnu kopiju</button><button type="button" class="btn2" data-act="btext">Prikaži kopiju kao tekst</button>`;
+ if(UI.btext)h+=`<textarea id="bt" readonly aria-label="Sigurnosna kopija kao tekst">${esc(JSON.stringify(backupObj()))}</textarea>`;
+ h+=`<details${UI.restore||UI.rmsg?' open':''}><summary>Vrati podatke iz kopije</summary><label class="fl">Datoteka kopije<input type="file" id="rfile" accept="application/json,.json"></label><label class="fl">ili zalijepi tekst kopije<textarea id="rtext"></textarea></label><button type="button" class="btn2" data-act="rcheck">Provjeri kopiju</button>`;
+ if(UI.rmsg)h+=`<p class="${UI.rmsg.ok?'okt':'er'}" role="status">${esc(UI.rmsg.t)}</p>`;
+ if(UI.restore)h+=restorePlan();
+ h+=`</details>`;
+ if(RAWBAD)h+=`<button type="button" class="btn2" data-act="rawdl">Preuzmi oštećeni zapis</button>`;
+ if(DEMO&&!Object.keys(S.weights).length&&!Object.keys(S.meas).length)h+=`<button type="button" class="btn2" data-act="demoload">Učitaj izmišljene demo podatke (vaganja, mjere i 7 treninga)</button>`;
+ if(TEST)h+=`<button type="button" class="btn2" data-act="treset">${UI.tresetPend?'Potvrdi brisanje testnih podataka':'Obriši testne podatke'}</button>`;
+ return h+`</article>`}
+function endedCard(){const c=counts(),A=activeIdx(),open_=N-c.closed;return `<article class="hero" id="ended"><h2>Ciklus je završio kalendarski</h2><p>Ciklus je trajao 12 kalendarskih tjedana, od ${hd(CFG.start)} do ${hd(CFG.expiresAt)} Zatvoreno ${c.closed}/${N}: potpuno odrađeno ${c.completed}, djelomično ${c.partial}, prekinuto zbog boli ${c.skipped_pain}, po dogovoru s trenerom ${c.excused_by_coach}.</p><p class="h">Nezatvoreni treninzi (${open_}) ne nadoknađuju se, ne označavaju se kao odrađeni i nema 13. tjedna. Novi unos treninga nije moguć. Povijest, izvještaj, grafovi i izvoz ostaju dostupni.</p></article>`}
+function doneCard(){const c=counts();return `<article class="hero"><h2>Plan završen</h2><p>Zatvoreno ${c.closed}/${N}: potpuno odrađeno ${c.completed}, djelomično ${c.partial}, prekinuto zbog boli ${c.skipped_pain}, po dogovoru s trenerom ${c.excused_by_coach}.</p><p class="h">Nema 13. tjedna. Povijest, izvještaj i izvoz ostaju dostupni, kao i završna mjerenja i kontrola simptoma idućeg dana.</p></article>`}
+function renderHome(){const A=activeIdx(),c=counts(),g=gate(),t=today();
+ let h=`<h1>${esc(CFG.clientName)}</h1><p class="sub">Ciklus: ponedjeljak, ${hd(CFG.start)} – nedjelja, ${hd(CFG.expiresAt)} (12 kalendarskih tjedana) · ${CFG.perWeek} treninga tjedno · ${N} planiranih treninga</p>`;
+ if(!approved())h+=`<p class="bn w">Program još nije aktivan.${TEST?' (Testni način: unos treninga je otvoren.)':''} Vježbe možeš pregledati, a vaganje i mjere upisivati od početka ciklusa.</p>`;
+ h+=lowerNote(buildRx('A'));
+ if(A>=N)h+=doneCard();
+ else if(g==='ended')h+=endedCard();
+ else{const s=S.sessions[A];h+=`<article class="hero"><p class="lab">Sljedeći trening</p><h2>Programski tjedan ${wkOf(A)} · Trening ${kOf(A)}</h2><p class="sub">${esc(DAYS[kOf(A)].f)} · ${A+1}. od ${N}${s.status==='in_progress'?' · započet, unosi su sačuvani':''}</p><button type="button" class="btn" data-act="continue">Nastavi trening</button>${g==='draft'?'<p class="h">Program još nije aktivan – vježbe možeš samo pregledati.</p>':g==='early'?`<p class="h">Unos treninga otvara se ${hd(CFG.start)}</p>`:''}</article>`}
+ h+=`<article><div class="kv"><div><strong>${c.completed}<small>/${N}</small></strong><span>potpuno odrađeno</span></div><div><strong>${c.closed}<small>/${N}</small></strong><span>zatvoreno</span></div></div><p class="h">Djelomično: ${c.partial} · prekinuto zbog boli: ${c.skipped_pain} · po dogovoru s trenerom: ${c.excused_by_coach}</p>`;
+ h+=t<CFG.start?`<p class="h">Ciklus počinje za ${dd(t,CFG.start)} ${plDan(dd(t,CFG.start))}.</p>`:(t>CFG.expiresAt?`<p class="h">Ciklus je završio ${hd(CFG.expiresAt)}</p>`:`<p class="h">Kalendar: ${dd(CFG.start,t)+1}. dan od ${CFG.windowDays} · ${Math.floor(dd(CFG.start,t)/7)+1}. od ${CFG.weeks} kalendarskih tjedana · ciklus završava ${hd(CFG.expiresAt)}${dd(t,CFG.expiresAt)>0?` (još ${dd(t,CFG.expiresAt)} ${plDan(dd(t,CFG.expiresAt))})`:' (danas je zadnji dan)'}. Preskočeni trening ili tjedan ne produljuje ciklus.</p>`);
+ h+=`</article>`+followCard()+goalCard()+measCard()+reportCard()+backupCard();
+ h+=`<details class="card"><summary>Kada potražiti pregled</summary>${redFlags()}</details>`;
+ h+=`<details class="card"><summary>O planu i pravilima</summary><p class="h">Tjedni volumen (radne serije): gornji dio ${(()=>{const v=weeklyVolume();return v.upperTotal+' ('+CFG.keys.map(d=>d+v.upper[d]).join(' · ')+')'})()}; donji dio ${(()=>{const v=weeklyVolume();return v.lowerActive+' dinamičkih ('+CFG.keys.map(d=>d+v.lower[d]).join(' · ')+')'})()} + izometrija hamstring bridgea ${weeklyVolume().iso} × tjedno (5 × 30–45 s), koja se ne broji u volumen.</p><p class="h">Ciklus traje 12 kalendarskih tjedana, od 30.11.2026. do 21.2.2027. Preskočeni trening ili tjedan ne produljuje ciklus. Unutar aktivnog razdoblja nastavljaš prvim nezatvorenim treningom. Od 22.2.2027. novi unos treninga nije moguć; povijest, izvještaj, grafovi i izvoz ostaju dostupni.</p><p class="h">Težinu biraš sama prema smjernicama, bez rada do otkaza. Kod vježbi za stražnju ložu vrijede pravila tolerancije (bol 5/10+ = stop; porast 3+ boda idući dan, lošije sjedenje ili hod = ne povećavaj dozu).</p></details>`;   /* coachTodo() se namjerno NE prikazuje klijentici (interni trenerski popis; dostupan kao App.coachTodo() za testove i provjeru prije objave) */
+ put($('#v-home'),h)}
+/* ===================== TRENING ===================== */
+function tgt(){const i=UI.view;if(i==null||i>=N)return null;
+ if(UI.CORR&&UI.CORR.i===i)return{s:UI.CORR.work,i,corr:true};
+ if(i===activeIdx()&&!gate())return{s:S.sessions[i],i,corr:false};return null}
+function touch(T){if(T.corr)return;const s=T.s;if(s.status==='not_started'){s.status='in_progress';s.startedAt=Date.now();if(!s.rx){s.rx=buildRx(kOf(T.i));s.planVersion=PLAN.version}}s.updatedAt=Date.now()}
+function exE(T,k){const rx=rxOf(T.s,T.i),it=rx.find(x=>x.k===k);if(!it||!it.active)return null;return T.s.ex[k]||(T.s.ex[k]={})}
+function sttlHTML(i){const s=S.sessions[i],A=shownAct();return `<strong>Tjedan ${wkOf(i)} · Trening ${kOf(i)}</strong><span>${i+1}. od ${N} · ${ST[s.status]}${i===A?' · aktivni':''}</span>`}
+function stripHTML(w,i){const A=shownAct();return [0,1,2,3].map(j=>{const ii=(w-1)*CFG.perWeek+j,s=S.sessions[ii],cls=[ii===A?'act':'',isClosed(s)?'cl':''].filter(Boolean).join(' ');
+ return `<button type="button" data-act="view" data-i="${ii}" class="${cls}"${ii===i?' aria-current="true"':''} aria-label="Trening ${CFG.keys[j]}, ${ST[s.status]}${ii===A?', aktivni':''}">${CFG.keys[j]}<small>${ii===A&&s.status==='not_started'?'aktivni':STS[s.status]||'&nbsp;'}</small></button>`}).join('')}
+function phaseBanner(rx){const up=rx.filter(it=>it.region==='upper'),tr=rx.filter(it=>it.phase==='trener'),pr=up.filter(it=>it.phase==='proba'),reg=up.filter(it=>it.phase!=='trener'&&it.phase!=='proba');
+ let t=reg.length&&reg.every(it=>it.sets===3)?'Redovna doza gornjeg dijela: 3 radne serije po vježbi, RIR 2–3, bez rada do otkaza.':'Gornji dio: serije prema verziji plana ovog treninga, bez rada do otkaza.';
+ if(tr.length)t+=` Iznimka po izričitoj odluci trenera: ${tr.map(it=>`${esc(it.n)} – ${it.sets} ${it.sets===1?'serija':'serije'}, RIR ${rirRng(it)}${it.doseNote?' ('+esc(it.doseNote)+')':''}`).join('; ')}.`;
+ if(pr.length)t+=` Ovaj trening je započet po starijoj verziji plana s kratkom probom: ${pr.map(it=>`${esc(it.n)} (${it.sets} ser.)`).join(', ')}.`;
+ return `<p class="bn">${t} Sjedenje, ulazak u spravu i oslonac stopala trebaju biti bez tegoba – ako provociraju kuk, prekini vježbu i označi tegobe.</p>`+lowerNote(rx)}
+const PHT_RULES=['Tijekom vježbi za stražnju ložu bol 0–4/10 može biti prihvatljiva ako ne raste tijekom rada.','Bol 5/10 ili više: zaustavi vježbu i provjeri dozu s trenerom.','Važnija je reakcija nakon 24 sata. Porast do 2 boda sljedeći dan sam po sebi ne znači pogoršanje.','Porast 3 ili više boda, pogoršanje koje traje oko 24 h, lošije sjedenje ili lošiji hod = pogoršanje: ne povećavaj dozu, smanji opterećenje, volumen i/ili provokativni opseg i javi treneru.'];
+const phtBox=()=>`<details class="gd"><summary>Pravila tolerancije za stražnju ložu</summary><ul class="gl2">${PHT_RULES.map(x=>`<li>${x}</li>`).join('')}</ul><p class="h">To su dogovorena pravila trenera, ne dijagnoza.</p></details>`;
+function lowerNote(rx){const lw=(rx||[]).filter(it=>it.region==='lower');if(!lw.length)return '';const old=lw.filter(it=>it.revoked);
+ return `<p class="bn">Noge: program prilagođen tegobama stražnje lože. Leg press, čučanj, iskoraci, bugarski čučanj i RDL nisu u programu i ne zamjenjuju se drugim vježbama bez odluke trenera.${old.length?' Stare uvjetne probe ('+old.map(it=>esc(it.n)).join(', ')+') više nisu dio programa; zapisi ostaju.':''}</p>`+(lw.some(it=>it.pht&&it.active)?phtBox():'')}
+function restBtns(r){return [...new Set(r)].map(v=>`<button type="button" data-act="rest" data-v="${v}" aria-label="Pokreni odmor ${v} sekundi">${v>=120?v/60+' min':v+' s'}</button>`).join('')}
+/* noge: „nema automatskog povećanja” NE znači „ponovi istu dozu” – kod tegoba, prevelikog napora ili odgođenog pogoršanja traži se provjera trenera */
+function lowerProbs(it,e,s){const o=[];if(e.sym==='da')o.push('vježba je izazvala tegobe');if(regSym(s,it.k))o.push('u kartici tegoba bol je povezana s ovom vježbom');if(e.rir!=null&&e.rir<it.rirMin)o.push(`RIR ${rirTxt(e.rir)} je ispod cilja ${it.rirMin}–${it.rirMax} (prevelik napor)`);return o}
+function lowerMsg(it,e,p,s,st){const fu=fuReact(it.k),fuP=fu&&fu.kind!=='unrelated'?[`nakon nedavnog treninga zabilježeno je odgođeno pogoršanje${fu.kind==='unknown'?' (veza s vježbom nije poznata)':''} – ${fu.txt}`]:[];
+ if(st==='done'){const pr=[...lowerProbs(it,e,s),...fuP],miss=[e.sym==null?'odgovor o tegobama':'',e.rir==null?'RIR':''].filter(Boolean);
+  if(pr.length)return `<p class="bn w"><b>Nema automatskog povećanja, ali ni ponavljanja iste doze bez provjere:</b> ${esc(pr.join('; '))}. Javi treneru – doza se mora provjeriti i prilagoditi prije sljedeće izvedbe.</p>`;
+  if(miss.length)return `<p class="sg">Nedostaje ${miss.join(' i ')} – bez toga trener ne može procijeniti podnošljivost doze. Nema automatskog povećanja.</p>`;
+  return `<p class="sg">Bez tegoba i uz ciljani RIR. Nema automatskog povećanja – dozu za sljedeći put određuje trener nakon kontrole idućeg dana.</p>`}
+ if(p){const pp=[...lowerProbs(p.it,p.e,p.s),...fuP];return pp.length?`<p class="bn w">Prošli put (${hs(ymdOf(p.s.closedAt))}): ${esc(pp.join('; '))}. Ne ponavljaj istu dozu bez provjere s trenerom.</p>`:`<p class="sg">Prošli put (${hs(ymdOf(p.s.closedAt))}): bez prijavljenih tegoba, RIR ${p.e.rir!=null?rirTxt(p.e.rir):'–'}. Doza je ona koju je odredio trener – nema automatskog povećanja.</p>`}
+ return fuP.length?`<p class="bn w">${esc(fuP[0])}. Prije ove probe provjera s trenerom.</p>`:`<p class="sg">Prva proba: vrlo lagano opterećenje, RIR 4–5. Kilažu određuje proba, ne aplikacija.</p>`}
+const kgOk=v=>typeof v==='number'&&isFinite(v)&&v>0&&v<=400;   /* i dalje za provjeru starih spremljenih početnih težina (S.startLoad) pri učitavanju i uvozu */
+const FIRST_TXT='Napravite 1–2 uvodna seta i postupno odaberite radnu težinu. Cilj je ostati u propisanom rasponu ponavljanja uz urednu tehniku i završiti zadnju radnu seriju približno na RIR 2–3. Uvodni setovi se ne upisuju.';
+/* blok „Zadnji put” na kartici vježbe: stvarne serije, završni RIR, sprava; bez preračunavanja i bez prijedloga kilaže */
+function prevOccVar(k,i,vk){for(let j=i-1;j>=0;j--){const s=S.sessions[j];if(!isClosed(s))continue;const e=s.ex[k];if(!e||e.omit)continue;const it=(s.rx||[]).find(x=>x.k===k);if(!it||!doneSets(it,e).length||varKey(e)!==vk)continue;return{j,s,e,it}}return null}
+/* usporedivo „zadnji put”: za varijantne vježbe samo ista varijacija */
+const prevCmp=(it,i,e)=>it.vary?(varKey(e)?prevOccVar(it.k,i,varKey(e)):null):prevOcc(it.k,i);
+function lastCard(it,p,title,warn){const ds=doneSets(p.it,p.e),dv=devOf(p.e),iso=p.it.kind==='iso';
+ return `<div class="lastp${warn?' wrn':''}"><p class="lab">${title} · ${hd(ymdOf(p.s.closedAt))} <small>(T${wkOf(p.j)}·${kOf(p.j)})</small></p>${warn?`<p class="h"><b>${warn}</b></p>`:''}<ul class="lsets">${Array.from({length:p.it.sets},(_,j)=>{const x=ds.find(q=>q.j===j);return x?`<li>${iso?x.reps+' s':fm(x.kg)+' kg × '+x.reps}</li>`:`<li class="mute">${iso?'držanje':'serija'} ${j+1}: nije izvedena</li>`}).join('')}</ul>
+  ${iso?'':`<p>Završni RIR: <b>${p.e.rir!=null?rirTxt(p.e.rir):'nije upisan'}</b></p>`}${p.it.vary||p.e.var?`<p>Varijacija: <b>${varLab(p.e)?esc(varLab(p.e)):'nije upisana'}</b></p>`:''}${iso?'':`<p>Sprava/postavka: ${dv?esc(dv):'<span class="mute">nije upisana</span>'}</p>`}${p.it.pht&&p.e.pain!=null?`<p>Bol tijekom: ${p.e.pain}/10</p>`:''}${isLegacy(p.e)?'<p class="h">Zapis iz starije verzije: jedna kilaža za sve serije.</p>':''}${p.it.sets!==it.sets?`<p class="h">Tada su bile propisane ${p.it.sets} ${p.it.sets===1?'serija':'serije'}, danas ${it.sets} – rezultati nisu izravno usporedivi.</p>`:''}${ds.length<p.it.sets?`<p class="h">Tada je izvedeno ${ds.length} od ${p.it.sets} ${iso?'držanja':'serija'}.</p>`:''}</div>`}
+function lastBlock(it,i,e){const p=prevOcc(it.k,i);e=e||{};
+ if(!p)return `<div class="lastp first"><p class="lab">Prvi put</p><p>${it.kind==='iso'?'Dvonožna izvedba, 5 držanja po 30–45 s uz 90 s odmora. Kvalitetna kontrakcija, bez forsiranja simptoma. Upiši trajanje svakog držanja.':FIRST_TXT.replace('RIR 2–3','RIR '+rirRng(it))}</p></div>`;
+ if(!it.vary)return lastCard(it,p,'Zadnji put');
+ const vk=varKey(e);
+ if(!vk)return lastCard(it,p,'Zadnji put')+`<p class="h">Odaberi današnju varijaciju: izravna usporedba vrijedi samo uz istu varijaciju i istu spravu/postavku.</p>`;
+ if(varKey(p.e)===vk)return lastCard(it,p,'Zadnji put');
+ const ps=prevOccVar(it.k,i,vk);
+ return lastCard(it,p,'Zadnji zapis – druga varijacija',`Povijesni kontekst: varijacija „${esc(varLab(p.e)||'nije upisana')}”, danas „${esc(varLab(e))}” – nije izravno usporedivo.`)+(ps?lastCard(it,ps,'Zadnji put s istom varijacijom'):`<p class="h">S varijacijom „${esc(varLab(e))}” još nema zapisa – danas je to prvi put za tu varijaciju.</p>`)}
+function varField(it,e,i){const p=prevOcc(it.k,i),lv=p&&varOk(p.e)?p.e:null;
+ return `<div class="vrf"><label class="fl">Varijacija (obavezno)<select data-f="var" data-k="${it.k}" aria-label="${esc(it.n)}: varijacija">${opt('','– odaberi –',!e.var)}${VARS.map(([v,l])=>opt(v,l,e.var===v)).join('')}</select></label>${e.var==='druga'?`<label class="fl">Opis druge varijacije<input type="text" data-f="vartxt" data-k="${it.k}" maxlength="60" autocomplete="off" value="${esc(e.varTxt||'')}" placeholder="npr. jednonožni na sajli"></label>`:''}${!e.var&&lv?`<button type="button" class="btn3" data-act="varlast" data-k="${it.k}">Ista kao zadnji put: ${esc(varLab(lv))}</button>`:''}</div>`}
+/* usporedivost s „zadnji put” – osvježava se uz današnji unos sprave i serija */
+function cmpNote(it,e,p){if(it.kind==='iso')return '';if(it.vary&&!varKey(e))return `<p class="h">Varijacija nije odabrana – usporedba sa zadnjim putem nije moguća.</p>`;if(!p)return it.vary?`<p class="h">Za varijaciju „${esc(varLab(e))}” nema ranijeg zapisa – nema izravne usporedbe.</p>`:'';const da=devOf(p.e),db=devOf(e);let h='';
+ if(da&&db&&devKey(da)!==devKey(db))h+=`<p class="bn w">Druga sprava ili postavka nego zadnji put („${esc(da)}” → „${esc(db)}”) – rezultat nije izravno usporediv.</p>`;
+ else if(!da||!db)h+=`<p class="h">Sprava/postavka ${!da&&!db?'nije upisana ni zadnji put ni danas':!da?'nije upisana zadnji put':'nije upisana danas'} – usporedivost sprave nije potvrđena.</p>`;
+ if(exState(it,e)==='done'&&!(da&&db&&devKey(da)!==devKey(db))){const c=cmpSets(it,e,p.it,p.e);h+=c.ok?`<p class="h"><b>U odnosu na zadnji put:</b> ${esc(c.txt)}.</p>`:`<p class="bn w">Rezultati nisu izravno usporedivi: ${esc(c.why)}.</p>`}
+ return h}
+function dynHTML(it,e,i,corr){e=e||{};let h=Object.keys(ERR).filter(x=>x.startsWith(it.k+'|')).map(x=>`<p class="er">${esc(ERR[x])}</p>`).join('');
+ if(it.active&&!e.omit&&it.sets>1&&setKg(e,0)!=null&&kgList(e,it.sets).some(v=>v==null))h+=`<button type="button" class="btn3" data-act="kgall" data-k="${it.k}">Ista kilaža u svim serijama (${fm(setKg(e,0))} kg)</button>`;
+ if(!saveOK)h+='<p class="er">Zadnja promjena nije spremljena.</p>';
+ const st=exState(it,e);if(st==='omitted')return h;
+ if(it.active&&exHasData(e)){const en=enteredSets(it,e),dn=doneSets(it,e).length;h+=`<p class="h cnt">Propisano ${it.sets} · upisano ${en} · odrađeno ${it.kind==='iso'?'(sekunde)':'(kg i ponavljanja)'} ${dn}</p>`}
+ if(st==='done')h+=`<p class="okt">✓ ${it.kind==='iso'?'Sva držanja imaju upisano trajanje':'Sve serije imaju kilažu i ponavljanja'}</p>`;else if(st==='short')h+=`<p class="h">Upisan dio – za potpun zapis ${it.kind==='iso'?`svako od ${it.sets} držanja treba trajanje u sekundama`:`svaka od ${it.sets} ${it.sets===1?'serije':'serija'} treba svoju kilažu i ponavljanja`}${it.vary&&!varOk(e)?', a varijacija mora biti odabrana':''}.</p>`;
+ if(isLegacy(e))h+=`<p class="h">Stari zapis: jedna kilaža (${fm(e.kg)} kg) vrijedi za sve serije. Promjena kilaže bilo koje serije pretvara zapis u kilaže po serijama.</p>`;
+ if(corr)return h;
+ const p=prevOcc(it.k,i),pv=p?`Prošli put (${hs(ymdOf(p.s.closedAt))}): RIR ${p.e.rir!=null?rirTxt(p.e.rir):'–'}`:'';
+ if(PROBE.has(it.k))return h+lowerMsg(it,e,p,(UI.CORR&&UI.CORR.i===i)?UI.CORR.work:S.sessions[i],st);
+ const ss=(UI.CORR&&UI.CORR.i===i)?UI.CORR.work:S.sessions[i];
+ h+=cmpNote(it,e,prevCmp(it,i,e));
+ if(it.pht&&e.pain!=null)h+=e.pain>=REM.painEscalate.level?`<p class="bn e"><b>Bol ${e.pain}/10:</b> zaustavi ovu vježbu i provjeri dozu s trenerom. Ne povećavaj opterećenje.</p>`:`<p class="h">Bol ${e.pain}/10 – u rasponu 0–4 može biti prihvatljiva ako ne raste tijekom rada. Prati reakciju sljedeći dan.</p>`;
+ h+=`<p class="h sumln">Danas: ${it.kind==='iso'?'':'završni RIR '+(e.rir!=null?rirTxt(e.rir):'nije upisan')+' · '}tegobe uz vježbu: ${e.sym==='da'?'<b>da</b>':e.sym==='ne'?'ne':'nije odgovoreno'}${regSym(ss,it.k)?' · <b>bol u kartici tegoba označena uz ovu vježbu</b>':''}</p>`;
+ if(st==='done')h+=`<p class="sg"><b>Prema smjernicama:</b> ${recTxt(evalUp(it,e,prevCmp(it,i,e),ss),it,e)}.${it.kind==='iso'?'':' <small>Odluku o kilaži donosiš ti.</small>'}</p>`;
+ return h}
+function cardEdit(it,e,i,first,corr){e=e||{};const k=it.k;
+ let h=`<article class="ex" id="ex-${k}"><div class="top2"><h3>${esc(it.n)}</h3><span class="v">${rxTxt(it)}</span></div><p class="h">${it.kind==='iso'?'izometrija · ne broji se u radne serije':'RIR '+rirRng(it)} · odmor ${restTxt(it.rest)}</p>`;
+ if(!it.active)return h+`<p class="bn w">${it.revoked?'Ova vježba (stara uvjetna proba) više nije dio programa – ne izvodi je i ne upisuj dalje. Prethodni zapisi ostaju sačuvani.':'Čeka individualnu provjeru – ne izvodi ovu vježbu dok je trener ne potvrdi.'}</p></article>`;
+ if(first)h+=`<p class="h">Prije prve vježbe 1–2 lakše pripremne serije (ne upisuju se).</p>`;
+ if(EX[k].h)h+=`<p class="h">${esc(EX[k].h)}</p>`;
+ if(!corr&&!PROBE.has(k))h+=lastBlock(it,i,e)+(it.kind==='iso'?'':GUIDE(it))+(it.pht?phtBox():'');
+ if(it.vary)h+=varField(it,e,i);
+ if(e.omit)return h+`<p class="bn w">Izostavljeno: ${esc(OLAB[e.omit])}</p><button type="button" class="btn3" data-act="unomit" data-k="${k}">Poništi izostavljanje</button></article>`;
+ const reps=e.reps||[];
+ if(it.kind==='iso')h+=`<div class="sets" role="group" aria-label="${esc(it.n)}: držanja">`+Array.from({length:it.sets},(_,j)=>`<div class="srow iso"><span class="snum">${j+1}.</span><label class="fl"><span class="lt">sekunde</span><input type="text" inputmode="numeric" autocomplete="off" data-f="rep" data-k="${k}" data-n="${j}" value="${reps[j]==null?'':reps[j]}" placeholder="${it.repsMin}–${it.repsMax}" class="${ERR[k+'|rep'+j]?'bad':''}" aria-label="${esc(it.n)}: ${j+1}. držanje, sekunde"></label></div>`).join('')+`</div>`;
+ else h+=`<div class="sets" role="group" aria-label="${esc(it.n)}: serije">`+Array.from({length:it.sets},(_,j)=>{const kv=setKg(e,j);
+  return `<div class="srow"><span class="snum">${j+1}.</span><label class="fl"><span class="lt">kg</span><input type="text" inputmode="decimal" autocomplete="off" data-f="kg" data-k="${k}" data-n="${j}" value="${kv==null?'':fm(kv)}" placeholder="${it.bw?'0':'kg'}" class="${ERR[k+'|kg'+j]?'bad':''}" aria-label="${esc(it.n)}: ${j+1}. serija, kilogrami"></label><label class="fl"><span class="lt">ponavljanja</span><input type="text" inputmode="numeric" autocomplete="off" data-f="rep" data-k="${k}" data-n="${j}" value="${reps[j]==null?'':reps[j]}" placeholder="${it.repsMin}–${it.repsMax}" class="${ERR[k+'|rep'+j]?'bad':''}" aria-label="${esc(it.n)}: ${j+1}. serija, ponavljanja"></label></div>`}).join('')+`</div>`;
+ if(it.kind!=='iso'){const pv=prevOcc(k,i),pd=pv?devOf(pv.e):'';h+=`<label class="fl dev">Sprava / postavka (neobavezno)<input type="text" data-f="dev" data-k="${k}" maxlength="60" autocomplete="off" value="${esc(e.dev||'')}" placeholder="${pd?'prošli put: '+esc(pd):'npr. naziv sprave, sjedalo 4'}" aria-label="${esc(it.n)}: sprava ili postavka"></label>`}
+ if(it.pht)h+=`<label class="fl">Najveća bol tijekom vježbe (0–10, obavezno)<select data-f="xpain" data-k="${k}" aria-label="${esc(it.n)}: najveća bol tijekom vježbe">${painOpts(e.pain)}</select></label>`;
+ if(it.kind!=='iso')h+=`<p class="lab2">RIR zadnje serije – koliko bi još čistih ponavljanja mogla</p><div class="st" role="group" aria-label="${esc(it.n)}: RIR zadnje serije" data-grp="rir-${k}">${[0,1,2,3,4,5].map(v=>`<button type="button" data-act="rir" data-k="${k}" data-v="${v}" aria-pressed="${e.rir===v}">${rirTxt(v)}</button>`).join('')}</div>`;
+ h+=`<p class="lab2">Je li vježba izazvala poznate tegobe?</p><div class="st" role="group" aria-label="${esc(it.n)}: tegobe tijekom vježbe" data-grp="sym-${k}">${[['ne','Ne'],['da','Da']].map(([v,l])=>`<button type="button" data-act="exsym" data-k="${k}" data-v="${v}" aria-pressed="${e.sym===v}">${l}</button>`).join('')}</div>`;
+ if(!corr)h+=`<div class="rst"><span>Odmor:</span>${restBtns(it.rest)}</div>`;
+ h+=`<div data-dyn="${k}">${dynHTML(it,e,i,corr)}</div>`;
+ if(!exHasData(e))h+=UI.omitOpen===k?`<div class="omit"><p class="lab2">Razlog izostavljanja</p>${OMIT.map(([v,l])=>`<button type="button" class="btn3" data-act="omitr" data-k="${k}" data-v="${v}">${l}</button>`).join('')}<button type="button" class="lnk" data-act="omitx">Odustani</button></div>`:`<button type="button" class="lnk sm" data-act="omit" data-k="${k}">Izostavi vježbu…</button>`;
+ return h+`</article>`}
+function symHTML(s,rx){const acts=rx.filter(it=>it.active);
+ return `<article id="sym"><h3>Tegobe na ovom treningu</h3><p class="h">Bol 0–10 po regiji. Upiši samo ono što znaš: prazno znači „nije odgovoreno”, ne 0. Ako se tegobe pojave tijekom vježbe, prekini je.</p>`
+ +REGIONS.map(([r,l])=>{const v=s.sym[r]||{};return `<fieldset><legend>${esc(l)}</legend><label class="fl">Strana<select data-f="side" data-r="${r}">${sideOpts(v.side)}</select></label><div class="g3">${PH.map(([p,pl])=>`<label class="fl">${pl}<select data-f="pain" data-r="${r}" data-p="${p}">${painOpts(v[p])}</select></label>`).join('')}</div><label class="fl">Najviše smetalo uz vježbu<select data-f="symex" data-r="${r}">${opt('','–',!v.ex)}${acts.map(it=>opt(it.k,it.n,v.ex===it.k)).join('')}</select></label></fieldset>`}).join('')+`</article>`}
+function closeMain(i,s,rx){const ok=isValid(s,rx),miss=missing(s,rx);let h='';
+ if(UI.finErr===i&&!ok)h+=`<p class="er" role="alert">Za potpuno odrađen trening nedostaje: ${esc(miss.join('; '))}. Ako je odrađen samo dio, zatvori ga kao djelomičan.</p>`;
+ h+=`<button type="button" class="btn" data-act="finish" data-i="${i}">Završi trening</button>`;
+ h+=`<p class="h">${ok?'Sve obvezne vježbe su upisane. Trening se zatvara tek ovim gumbom.':'Potpuno odrađen = svaka vježba ima sve serije (kg i ponavljanja, kod izometrije trajanja), završni RIR, odgovor o tegobama, a vježbe za stražnju ložu i bol 0–10. Sprava je neobavezna. Još nedostaje: '+esc(miss.join('; '))+'.'}</p>`;
+ h+=`<div class="alt"><button type="button" class="btn2" data-act="copen" data-v="partial">Zatvori kao djelomičan…</button>`;
+ if(!hasWork(s))h+=`<button type="button" class="btn2" data-act="copen" data-v="skipped_pain">Prekid zbog boli prije rada…</button>`;
+ return h+`<button type="button" class="btn2" data-act="copen" data-v="excused_by_coach">Izostavljeno po dogovoru s trenerom…</button></div>`}
+function closeCf(i,s,rx,st){if(!st)return '';
+ let h=`<article class="cf" id="cf"><h3>${{partial:'Zatvaranje djelomičnog treninga',skipped_pain:'Prekid zbog boli prije rada',excused_by_coach:'Izostanak po dogovoru s trenerom'}[st]}</h3>`;
+ if(st==='partial')h+=`<ul class="sum">${rx.map(it=>{const e=s.ex[it.k]||{},x=exState(it,e);return `<li><span>${esc(it.n)}</span><b>${EXST[x]}${x==='omitted'?' – '+esc(OLAB[e.omit]):''}</b></li>`}).join('')}</ul><label class="fl">Razlog<select id="creason">${opt('','Odaberi…',true)}${REASONS.map(([k,l])=>opt(k,l,false)).join('')}</select></label>`;
+ if(st==='skipped_pain')h+=`<p class="h">Trening se zatvara bez radnih serija. Prije potvrde upiši tegobe u kartici iznad (regija, strana, bol).</p>`;
+ if(st==='excused_by_coach')h+=`<p class="bn w">Ovo je samo lokalna oznaka u aplikaciji. Ne dokazuje da je trener odobrio izostanak – dogovor potvrdite izvan aplikacije.</p>`;
+ return h+`<label class="fl">Bilješka (neobavezno)<textarea id="cnote" maxlength="500"></textarea></label><p class="er" id="cerr" hidden></p><button type="button" class="btn" data-act="cconfirm" data-i="${i}" data-st="${st}">Potvrdi: ${ST[st]}</button><button type="button" class="lnk" data-act="ccancel">Odustani</button></article>`}
+function previewHTML(rx){return rx.map(it=>`<article class="ex pv"><div class="top2"><h3>${esc(it.n)}</h3><span class="v">${rxTxt(it)}</span></div><p class="h">${it.kind==='iso'?`Izometrija · ${it.sets} × ${it.repsMin}–${it.repsMax} s · odmor ${restTxt(it.rest)} · ne broji se u radne serije`:'RIR '+rirRng(it)+' · odmor '+restTxt(it.rest)}</p>${it.active?'':`<p class="bn w">${it.revoked?'Stara uvjetna proba – više nije dio programa.':'Neaktivno.'}</p>`}${EX[it.k].h?`<p class="h">${esc(EX[it.k].h)}</p>`:''}</article>`).join('')}
+function symRowsHTML(sym){const rows=REGIONS.filter(([r])=>sym[r]&&Object.keys(sym[r]).length);if(!rows.length)return '<p class="h">Tegobe nisu upisane.</p>';
+ return `<div class="tw"><table><thead><tr><th>Regija</th><th>Strana</th><th class="n">Prije</th><th class="n">Tijekom</th><th class="n">Nakon</th></tr></thead><tbody>${rows.map(([r,l])=>{const v=sym[r];return `<tr><td>${esc(l)}${v.ex?`<br><small>uz: ${esc(EX[v.ex].n)}</small>`:''}</td><td>${v.side?SLAB[v.side]:'–'}</td><td class="n">${v.before??'–'}</td><td class="n">${v.during??'–'}</td><td class="n">${v.after??'–'}</td></tr>`}).join('')}</tbody></table></div>`}
+function followLine(f){const regs=REGIONS.filter(([r])=>f.reg[r]&&(f.reg[r].pain!=null||f.reg[r].side)).map(([r])=>`${RSHORT[r]}${f.reg[r].side?' ('+SLAB[f.reg[r].side]+')':''} ${f.reg[r].pain??'–'}`);
+ return `${phaseName(f.hours)} (${fm(f.hours)} h, ${hdt(f.at)}): ${regs.join(', ')||'bol nije upisana'} · hod lošiji: ${f.gait||'–'} · sjedenje lošije: ${f.sit||'–'}${f.note?' · '+f.note:''}`}
+function closedHTML(i,s){const rx=rxOf(s,i),A=activeIdx();
+ let h=`<p class="bn ${s.status==='completed'?'ok':'w'}">Zatvoreno: <b>${ST[s.status]}</b> · ${hdt(s.closedAt)}${s.closeReason?' · razlog: '+esc(RSN[s.closeReason]):''}${s.correctedAt?' · ispravljeno '+hdt(s.correctedAt):''}</p>`;
+ if(i===A-1&&A<N)h+=`<button type="button" class="btn" data-act="toactive">Sljedeći trening: tjedan ${wkOf(A)} · Trening ${kOf(A)} →</button>`;
+ if(s.closeNote)h+=`<p class="h">Bilješka uz zatvaranje: ${esc(s.closeNote)}</p>`;
+ h+=`<h2>Vježbe</h2><div class="tw"><table><thead><tr><th>Vježba</th><th>Stanje</th><th>Zapis</th></tr></thead><tbody>${rx.map(it=>{const e=s.ex[it.k]||{},x=exState(it,e);return `<tr><td>${esc(it.n)}<br><small>${rxTxt(it)} · RIR ${rirRng(it)}</small></td><td>${EXST[x]}${x==='omitted'?'<br><small>'+esc(OLAB[e.omit])+'</small>':''}</td><td>${x==='done'||x==='short'?`${setsTxt(it,e).replace(/ · /g,'<br>')}<br>RIR ${e.rir!=null?rirTxt(e.rir):'–'}<br><small>tegobe: ${e.sym||'–'}</small>`:'–'}</td></tr>`}).join('')}</tbody></table></div>`;
+ h+=`<h2>Tegobe</h2>`+symRowsHTML(s.sym);
+ h+=`<h2>Kontrole nakon treninga</h2>`+((s.follow||[]).length?`<ul>${s.follow.map(f=>`<li class="h">${esc(followLine(f))}</li>`).join('')}</ul>`:'<p class="h">Nema upisanih kontrola.</p>');
+ if(s.note)h+=`<h2>Bilješka</h2><p>${esc(s.note)}</p>`;
+ const cs=S.audit.filter(a=>a.kind==='session_correction'&&a.ref===i);
+ if(cs.length)h+=`<h2>Ispravci</h2><ul>${cs.map(a=>`<li class="h">${hdt(a.at)} – ${esc(a.reason)} (prije ispravka: ${ST[a.before&&a.before.status]||'–'})</li>`).join('')}</ul>`;
+ h+=`<p class="h">Zatvoreni trening se samo pregledava; redovan unos ide u aktivni trening.</p>`;
+ if(UI.corrAsk)h+=`<article class="cf"><h3>Ispravak stvarne pogreške</h3><p class="h">Za pogrešno upisan broj ili status. Stari zapis ostaje sačuvan. Ovo je lokalni ispravak na ovom uređaju, ne trenerska ovjera.</p><label class="fl">Razlog ispravka<textarea id="corrr" maxlength="300"></textarea></label>${UI.msg.corr?`<p class="er">${esc(UI.msg.corr)}</p>`:''}<button type="button" class="btn" data-act="corrstart" data-i="${i}">Otvori ispravak</button><button type="button" class="lnk" data-act="corrcancel">Odustani</button></article>`;
+ else h+=`<button type="button" class="lnk" data-act="corrask">Ispravi pogrešku u zapisu…</button>`;
+ UI.msg.corr=null;return h}
+function corrBanner(){return `<p class="bn w">Ispravak zatvorenog treninga. Razlog: ${esc(UI.CORR.reason)}. Stari zapis ostaje sačuvan u povijesti ispravaka. Ovo je lokalni ispravak, ne trenerska ovjera.</p>`}
+/* ispravak: novi zapis mora zadovoljiti nova pravila; trening koji je već bio potpuno odrađen prema starijim pravilima ostaje to ako su serije potpune */
+const corrOk=(C,rx)=>isValid(C.work,rx)||(C.before&&C.before.status==='completed'&&isValidSets(C.work,rx));
+function corrFooter(){const C=UI.CORR,w=C.work,rx=rxOf(w,C.i),ok=corrOk(C,rx),wk=hasWork(w);
+ const o=[['completed',ok],['partial',true],['skipped_pain',!wk],['excused_by_coach',true]];
+ return `<h2>Status nakon ispravka</h2><div class="st col" role="group" aria-label="Status nakon ispravka">${o.map(([v,en])=>`<button type="button" data-act="corrst" data-v="${v}" aria-pressed="${C.st===v}"${en?'':' disabled'}>${ST[v]}</button>`).join('')}</div>${UI.msg.corr?`<p class="er" role="alert">${esc(UI.msg.corr)}</p>`:''}<button type="button" class="btn" data-act="corrsave">Spremi ispravak</button><button type="button" class="lnk" data-act="corrcancel">Odustani bez promjena</button>`}
+function renderTrain(){syncPlan();const A=activeIdx(),g=gate();
+ if(UI.view==null||UI.view>=N)UI.view=Math.min(A,N-1);
+ const i=UI.view,s=S.sessions[i],w=wkOf(i),k=kOf(i),corr=!!(UI.CORR&&UI.CORR.i===i);
+ const mode=corr?'corr':isClosed(s)?'closed':i===A?(g?'locked':'edit'):'future';
+ let h=`<h1>Trening</h1>`;if(A>=N)h+=doneCard();else if(g==='ended')h+=endedCard();
+ h+=`<div class="snav"><button type="button" class="ib" data-act="nav" data-v="-1" aria-label="Prethodni trening"${i===0?' disabled':''}>‹</button><div class="sttl" id="sttl">${sttlHTML(i)}</div><button type="button" class="ib" data-act="nav" data-v="1" aria-label="Sljedeći trening"${i===N-1?' disabled':''}>›</button></div>`;
+ h+=`<div class="strip" id="strip" role="group" aria-label="Treninzi programskog tjedna ${w}">${stripHTML(w,i)}</div>`;
+ if(i!==A&&A<N&&!corr)h+=`<button type="button" class="lnk" data-act="toactive">→ ${g==='ended'?'Prvi nezatvoreni trening':'Na aktivni trening'}: tjedan ${wkOf(A)} · Trening ${kOf(A)}</button>`;
+ if(UI.msg.nav){h+=`<p class="er" role="alert">${esc(UI.msg.nav)}</p>`;UI.msg.nav=null}
+ if(mode==='edit'||mode==='corr'){const T=tgt(),ss=T.s,rx=rxOf(ss,i);
+  if(corr)h+=corrBanner();else{if(ss.status==='in_progress'&&ss.planVersion&&ss.planVersion!==PLAN.version)h+=`<p class="bn">Ovaj trening je započet po prethodnoj verziji plana; promjene vrijede od sljedećeg treninga.</p>`;h+=phaseBanner(rx)}
+  h+=`<h2>${esc(DAYS[k].f)}</h2>`;let first=true;
+  h+=rx.map(it=>{const c=cardEdit(it,ss.ex[it.k],i,first&&it.active,corr);if(it.active)first=false;return c}).join('');
+  h+=symHTML(ss,rx)+`<h2>Bilješka za trenera</h2><textarea data-f="note" maxlength="1000" aria-label="Bilješka za trenera" placeholder="Neobavezno: npr. sprava zauzeta, kako je bilo sjedenje…">${esc(ss.note)}</textarea>`;
+  h+=corr?`<div id="corrft">${corrFooter()}</div>`:`<h2>Završetak</h2><div id="closemain">${closeMain(i,ss,rx)}</div><div id="closecf">${closeCf(i,ss,rx,UI.copen)}</div>`}
+ else if(mode==='closed')h+=closedHTML(i,s);
+ else{h+=mode==='locked'||g==='ended'?`<p class="bn w">${g==='ended'?'Ciklus je završio '+hd(CFG.expiresAt)+' Ovaj trening nije zatvoren i više se ne može upisati ni nastaviti; ne označava se kao odrađen.':g==='draft'?'Program još nije aktivan. Vježbe možeš pregledati.':'Ciklus počinje '+hd(CFG.start)+' Unos se otvara tog dana.'}</p>`:`<p class="bn">Pregled plana. Unos je moguć kad dođeš do ovog treninga u slijedu.</p>`;
+  const rx=rxOf(s,i);h+=phaseBanner(rx)+`<h2>${esc(DAYS[k].f)}</h2>`+previewHTML(rx)}
+ put($('#v-train'),h)}
+function refreshDyn(k){const T=tgt();if(!T)return;const el=document.querySelector(`[data-dyn="${k}"]`),it=rxOf(T.s,T.i).find(x=>x.k===k);if(el&&it)setH(el,dynHTML(it,T.s.ex[k],T.i,T.corr))}
+function refreshMeta(){if(UI.tab!=='train')return;const i=UI.view;setH($('#sttl'),sttlHTML(i));setH($('#strip'),stripHTML(wkOf(i),i));
+ const T=tgt();if(!T)return;if(T.corr)setH($('#corrft'),corrFooter());else setH($('#closemain'),closeMain(i,T.s,rxOf(T.s,i)))}
+function paintGrp(id,val){document.querySelectorAll(`[data-grp="${id}"] button`).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===String(val))))}
+function afterClose(i){UI.copen=null;UI.finErr=null;UI.omitOpen=null;UI.view=i;live(`Trening je zatvoren: ${ST[S.sessions[i].status]}.`);renderTrain();window.scrollTo(0,0)}
+/* ===================== NAPREDAK ===================== */
+function wPoints(src){if(src==='hist')return S.history.records.filter(r=>r.type==='weight').map(r=>({d:r.date,kg:r.value,src:`${r.sourceSheet}!${r.sourceCell}`})).sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);
+ return Object.keys(S.weights).sort().map(d=>({d,kg:S.weights[d].kg,note:S.weights[d].note}))}
+/* cilj težine: računa se SAMO iz vaganja od početka ciklusa do roka cilja (30.11.2026. – 21.2.2027. uključivo).
+   Početna = najraniji, rezultat = kronološki zadnji upis u tom rasponu (tijekom ciklusa = trenutna težina; nakon roka se više ne mijenja).
+   Vaganja nakon roka ostaju u općoj evidenciji, grafu i izvještaju (VAGANJE), ali ne mijenjaju rezultat cilja.
+   Stara povijest (Excel) se nikad ne koristi. Do cilja nikad nije negativno; postotak samo uz barem 2 upisa i početnu iznad cilja, ograničen na 0–100 %. */
+const kg1=x=>x==null?'–':r1(x).toFixed(1).replace('.',',').replace('-','−');
+const sg1=x=>{const v=r1(x);return v>0?'+'+kg1(v):v<0?kg1(v):'0,0'};
+function goalStat(){const T=GOALS.weightKg,real=Object.keys(S.weights).filter(d=>isYmd(d)&&d>=CFG.start&&S.weights[d]&&isNum(S.weights[d].kg,20,400)).sort(),ds=real.filter(d=>d<=GOALS.weightDate),af=real.filter(d=>d>GOALS.weightDate);
+ const o={target:T,date:GOALS.weightDate,ended:today()>GOALS.weightDate,n:ds.length,startD:null,start:null,latestD:null,latest:null,resultD:null,result:null,remaining:null,reached:false,change:null,pct:null,
+  afterD:af.length?af[af.length-1]:null,after:af.length?S.weights[af[af.length-1]].kg:null};
+ if(!ds.length)return o;
+ o.startD=ds[0];o.start=S.weights[ds[0]].kg;o.latestD=o.resultD=ds[ds.length-1];o.latest=o.result=S.weights[o.latestD].kg;
+ o.remaining=r1(Math.max(0,o.latest-T));o.reached=o.latest<=T+1e-9;o.change=r1(o.latest-o.start);
+ if(ds.length>=2&&o.start>T+1e-9)o.pct=Math.round(Math.min(100,Math.max(0,(o.start-o.latest)/(o.start-T)*100)));
+ return o}
+function goalCard(){const g=goalStat();
+ let h=`<article id="goal"><p class="lab">Cilj tjelesne težine</p><p class="gval"><strong>${kg1(g.target)}</strong><small> kg</small></p><p class="sub">do ${hd(g.date)}</p>`;
+ const rl=g.ended?'Rezultat ciklusa':'Trenutna';
+ if(!g.n)h+=`<p class="h">Cilj ovog ciklusa: ${kg1(g.target)} kg</p><p class="h">${g.ended?'U ciklusu nije zabilježena tjelesna težina.':'Početnu težinu postavit će prvi unos.'}</p>`;
+ else{h+=`<div class="kv gkv"><div><strong>${kg1(g.start)}<small> kg</small></strong><span>Početna · ${hs(g.startD)}</span></div><div><strong>${kg1(g.latest)}<small> kg</small></strong><span>${rl} · ${hs(g.latestD)}</span></div><div><strong>${kg1(g.target)}<small> kg</small></strong><span>Cilj</span></div><div>${g.reached?'<strong class="gok">Cilj dosegnut</strong><span>Do cilja</span>':`<strong>${kg1(g.remaining)}<small> kg</small></strong><span>Do cilja</span>`}</div></div>`+goalPct(g)}
+ if(g.ended&&g.afterD)h+=goalAfter(g);
+ if(today()>CFG.expiresAt)h+=`<p class="h">Ciklus je završio ${hd(CFG.expiresAt)} Cilj i ostvareni rezultat ostaju vidljivi u Napretku.</p>`;
+ return h+`</article>`}
+function goalAfter(g){return `<p class="h gaft">Najnovije vaganje: ${kg1(g.after)} kg · ${hd(g.afterD)} – nakon kraja ciklusa; ne ulazi u rezultat cilja.</p>`}
+function goalPct(g){return g.pct==null?'':`<div class="gbar" role="img" aria-label="Napredak prema cilju: ${g.pct}%"><i style="width:${g.pct}%"></i></div><p class="h">Napredak prema cilju: ${g.pct}%</p>`}
+function goalProg(){const g=goalStat(),ended=today()>CFG.expiresAt;
+ let h=`<article id="wgoal"><p class="lab">Cilj tjelesne težine ovog ciklusa · do ${hd(g.date)}</p>`;
+ if(ended)h+=`<p>Ciklus je završio ${hd(CFG.expiresAt)}<br>Cilj ciklusa: <b>${kg1(g.target)} kg</b><br>Rezultat ciklusa: <b>${g.n?kg1(g.latest)+' kg':'–'}</b>${g.n?` (${hd(g.latestD)})`:''}</p>`;
+ h+=`<div class="kv k3"><div><strong>${g.n?kg1(g.start)+'<small> kg</small>':'–'}</strong><span>Početna${g.n?' · '+hs(g.startD):''}</span></div><div><strong>${g.n?kg1(g.latest)+'<small> kg</small>':'–'}</strong><span>${g.ended?'Rezultat ciklusa':'Trenutna'}${g.n?' · '+hs(g.latestD):''}</span></div><div><strong>${kg1(g.target)}<small> kg</small></strong><span>Cilj</span></div></div>`;
+ if(g.n)h+=`<p class="h">${g.reached?'<b class="gok">Cilj dosegnut</b>':`Do cilja: ${kg1(g.remaining)} kg`}</p>`+goalPct(g);
+ else h+=`<p class="h">${g.ended?'U ciklusu nije zabilježena tjelesna težina.':'Početnu težinu postavit će prvi unos.'}</p>`;
+ if(g.ended&&g.afterD)h+=goalAfter(g);
+ return h+`</article>`}
+/* promjena se računa prema prethodnom STVARNOM mjerenju, ne prema praznom danu */
+function withDelta(pts){let prev=null;return pts.map(p=>{const o=Object.assign({},p,{delta:prev?r2(p.kg-prev.kg):null,prevD:prev?prev.d:null});prev=p;return o})}
+/* tjedni prosjek = zbroj stvarnih upisa / njihov broj; tjedan bez upisa = praznina (null), ne 0 */
+function weekly(pts,anchor,end){const n=Math.floor(dd(anchor,end)/7)+1,out=[];
+ for(let w=0;w<n;w++){const a=addD(anchor,7*w),b=addD(a,6),v=pts.filter(p=>p.d>=a&&p.d<=b);out.push({w:w+1,a,b,n:v.length,avg:v.length?r2(v.reduce((s,p)=>s+p.kg,0)/v.length):null})}
+ return out}
+function totalCh(pts){if(pts.length<2)return null;const f=pts[0],l=pts[pts.length-1];return{f,l,ch:r2(l.kg-f.kg),n:pts.length}}
+function lastDataDate(){const ds=Object.keys(S.weights).concat(Object.keys(S.meas)).sort();return ds.length?ds[ds.length-1]:null}
+function autoRange(){const l=lastDataDate();return l&&l>WEND?'full':'init'}
+function rangeAB(){if(UI.prog.range==='last4'){const m=[today(),lastDataDate()||CFG.start,CFG.start].sort().pop();let a=addD(m,-27);if(a<CFG.start)a=CFG.start;return[a,m]}
+ if(UI.prog.range!=='full')return[CFG.start,WEND];const t=today(),l=lastDataDate()||CFG.start;return[CFG.start,[WEND,t,l].sort().pop()]}
+function nice(v){const p=Math.pow(10,Math.floor(Math.log10(v))),f=v/p;return(f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p}
+function svgChart(o){const W=320,H=180,L=40,R=10,T=10,B=24;
+ const ys=o.dots.map(p=>p.y).concat((o.hol||[]).map(p=>p.y),...o.segs.map(s=>s.map(p=>p.y)));if(!ys.length)return '';
+ /* cilj ulazi u Y raspon ako je razumno blizu upisima (najviše max(6 kg, 2 × raspon upisa)); inače bi točke bile stisnute u uski pojas – tada strelica na rubu */
+ let gIn=false;if(o.goal!=null){const lo=Math.min(...ys),hi=Math.max(...ys),gap=o.goal<lo?lo-o.goal:o.goal>hi?o.goal-hi:0;gIn=gap<=Math.max(6,2*(hi-lo));if(gIn)ys.push(o.goal)}
+ let y0=Math.min(...ys),y1=Math.max(...ys);if(y1-y0<1){const m=(y0+y1)/2;y0=m-.5;y1=m+.5}const pd=(y1-y0)*.15;y0-=pd;y1+=pd;
+ const span=Math.max(1,o.x1-o.x0),sx=x=>L+((x-o.x0)/span)*(W-L-R),sy=y=>T+(1-(y-y0)/(y1-y0))*(H-T-B),f1=v=>v.toFixed(1);
+ const st=nice((y1-y0)/4);let g='';
+ for(let v=Math.ceil(y0/st)*st;v<=y1+1e-9;v+=st){const y=sy(v);g+=`<line x1="${L}" x2="${W-R}" y1="${f1(y)}" y2="${f1(y)}" class="gl"/><text x="${L-4}" y="${f1(y+3.5)}" class="ax" text-anchor="end">${fm(r2(v))}</text>`}
+ const xs=span>120?28:span>42?14:7;
+ for(let x=o.x0;x<=o.x1;x+=xs){const px=sx(x);g+=`<line x1="${f1(px)}" x2="${f1(px)}" y1="${T}" y2="${H-B}" class="gl gv"/><text x="${f1(Math.min(Math.max(px,L+12),W-R-12))}" y="${H-B+14}" class="ax" text-anchor="middle">${hs(dstr(x))}</text>`}
+ if(o.goal!=null){if(gIn){const gy=sy(o.goal),ty=gy-4<T+9?gy+12:gy-4;g+=`<line class="gol" x1="${L}" x2="${W-R}" y1="${f1(gy)}" y2="${f1(gy)}"/><text class="goltx" x="${W-R-2}" y="${f1(ty)}" text-anchor="end">Cilj ${kg1(o.goal)} kg</text>`}
+  else{const up=o.goal>y1;g+=`<text class="goltx goff" x="${W-R-2}" y="${up?T+10:H-B-4}" text-anchor="end">${up?'↑':'↓'} Cilj ${kg1(o.goal)} kg (izvan raspona)</text>`}}
+ let m='';o.segs.forEach(s=>{if(s.length>1)m+=`<polyline class="ln" points="${s.map(p=>f1(sx(p.x))+','+f1(sy(p.y))).join(' ')}"/>`});
+ o.segs.forEach(s=>s.forEach(p=>{m+=`<circle class="mk" cx="${f1(sx(p.x))}" cy="${f1(sy(p.y))}" r="4.5"/>`}));
+ (o.hol||[]).forEach(p=>{m+=`<circle class="ho" cx="${f1(sx(p.x))}" cy="${f1(sy(p.y))}" r="5"/>`});
+ o.dots.forEach(p=>{m+=`<circle class="dt" cx="${f1(sx(p.x))}" cy="${f1(sy(p.y))}" r="4"/>`});
+ const hit=o.dots.concat(o.hol||[],...o.segs).map(p=>`<circle class="hit" cx="${f1(sx(p.x))}" cy="${f1(sy(p.y))}" r="11" data-tt="${esc(p.t)}"/>`).join('');
+ return `<div class="ch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label)}">${g}${m}${hit}</svg><div class="tt" hidden></div>${o.legend?`<div class="lg"><span><i class="ld"></i>dnevni upis</span><span><i class="ll"></i>tjedni prosjek</span>${o.goal!=null?`<span><i class="lgo"></i>cilj ${kg1(o.goal)} kg</span>`:''}</div>`:''}${o.note||'<p class="h">Dodirni točku za vrijednost. Isti podaci su u tablici ispod.</p>'}</div>`}
+function weightChart(pts,wk,a,b,label,goal){const x0=dnum(a),x1=dnum(b);
+ const dots=pts.map(p=>({x:dnum(p.d),y:p.kg,t:`${hs(p.d)}: ${fm(p.kg)} kg`}));const segs=[];let cur=[];
+ wk.forEach(w=>{if(w.avg==null){if(cur.length)segs.push(cur);cur=[];return}const xa=Math.max(dnum(w.a),x0),xb=Math.min(dnum(w.b),x1),part=dnum(w.a)<x0;cur.push({x:(xa+xb)/2,y:w.avg,t:`${w.w}. tjedan: prosjek ${fm(w.avg)} kg (n=${w.n})${part?` – djelomičan tjedan, samo prikazani dio od ${hs(dstr(x0))}`:''}`})});if(cur.length)segs.push(cur);
+ return svgChart({x0,x1,dots,segs,legend:true,goal,label:`${label}: ${pts.length} upisa${goal!=null?`, cilj ${kg1(goal)} kg`:''}`})}
+function weekTable(wk,t,a){return `<div class="tw"><table><thead><tr><th>Tjedan</th><th>Datumi</th><th class="n">Prosjek</th><th class="n">n</th></tr></thead><tbody>${wk.map(w=>{const fut=w.a>t,cur=w.a<=t&&w.b>=t;
+ return `<tr${cur?' class="cur"':''}><td>${w.w}.${cur?' <small>u tijeku</small>':''}${a&&w.a<a?` <small>djelomično: samo od ${hs(a)}</small>`:''}</td><td>${hs(w.a)}–${hs(w.b)}</td><td class="n">${w.avg!=null?fm(w.avg)+' kg':fut?'<small>predstoji</small>':'<small>nema upisa</small>'}</td><td class="n">${w.n||(fut?'':'0')}</td></tr>`}).join('')}</tbody></table></div>`}
+function dayTable(a,b,all,cycle){const dm=new Map(withDelta(all).map(p=>[p.d,p])),t=today();let rows='';
+ for(let n=dnum(a);n<=dnum(b);n++){const d=dstr(n),p=dm.get(d);
+  rows+=`<tr${d===t?' class="cur"':''}><td>${hs(d)} <small>${dow(d)}</small></td><td class="n">${p?fm(p.kg):''}</td><td class="n">${p&&p.delta!=null?sgn(p.delta):''}</td><td>${p&&p.note?esc(p.note)+' ':''}${p&&p.src?`<small>${esc(p.src)}</small>`:''}${p&&cycle?`<button type="button" class="lnk sm" data-act="wedit" data-d="${d}">Uredi</button>`:''}</td></tr>`}
+ return `<div class="tw"><table><thead><tr><th>Datum</th><th class="n">kg</th><th class="n">Promjena*</th><th>${cycle?'Bilješka':'Izvor'}</th></tr></thead><tbody>${rows}</tbody></table></div><p class="h">* Promjena od prethodnog stvarnog upisa; prazni dani se preskaču.</p>`}
+function vDate(d){const mx=TEST?addD(CFG.start,400):today();if(!isYmd(d))return 'Odaberi datum.';if(d<CFG.start)return `Datum je prije početka ciklusa (${hd(CFG.start)}).`;if(d>mx)return 'Datum ne može biti u budućnosti.';return null}
+function emptyChart(label){const t=today(),n=dd(t,CFG.start);return `<article class="empty" id="emptych"><p><b>Ovdje će se prikazati graf (${label}) nakon prvog unosa.</b></p><p class="h">Unos novog ciklusa počinje ${hd(CFG.start)}${n>0?` (za ${n} ${plDan(n)})`:''}. Do tada nema crtanih točaka ni izmišljenih vrijednosti.</p></article>`}
+function wForm(){const t=today(),mn=CFG.start,mx=TEST?addD(CFG.start,400):t;
+ if(mx<mn)return `<article><h2>Vaganje</h2><p class="h">Vaganja novog ciklusa upisuju se od ${hd(CFG.start)} Početna težina ostaje prazna do stvarnog upisa.</p></article>`;
+ const E=UI.wEdit||{},dv=E.d||(t<mn?mn:t>mx?mx:t);
+ let h=`<article id="wform"><h2>Vaganje</h2><p class="h">Težinu možeš upisati bilo koji dan. Ako se važeš često, pokušaj to raditi ujutro i u sličnim uvjetima. Svaki unos sprema se uz datum koji odabereš.</p><div class="g2"><label class="fl">Datum<input type="date" id="wd" min="${mn}" max="${mx}" value="${dv}"></label><label class="fl">kg<input type="text" id="wkg" inputmode="decimal" autocomplete="off" value="${E.kg!=null?fm(E.kg):''}" placeholder="npr. 82,5"></label></div><label class="fl">Bilješka (neobavezno)<input type="text" id="wnote" maxlength="300" value="${esc(E.note||'')}"></label>`;
+ if(UI.wPend&&S.weights[UI.wPend.d])h+=`<p class="bn w">Za ${hd(UI.wPend.d)} već postoji ${fm(S.weights[UI.wPend.d].kg)} kg. Zamijeniti s ${fm(UI.wPend.kg)} kg? Stara vrijednost ostaje u povijesti ispravaka.</p><button type="button" class="btn" data-act="wconfirm">Potvrdi zamjenu</button><button type="button" class="lnk" data-act="wcancel">Odustani</button>`;
+ else h+=`<button type="button" class="btn" data-act="wsave">Spremi vaganje</button>`;
+ if(E.d&&S.weights[E.d]&&!UI.wPend)h+=UI.delPend==='w'?`<p class="bn e">Obrisati vaganje za ${hd(E.d)}? Zapis ostaje u povijesti ispravaka.</p><button type="button" class="btn2" data-act="wdelok">Potvrdi brisanje</button><button type="button" class="lnk" data-act="wcancel">Odustani</button>`:`<button type="button" class="lnk sm" data-act="wdel">Obriši vaganje za ${hs(E.d)}</button>`;
+ if(UI.msg.w){h+=`<p class="${UI.msg.w.ok?'okt':'er'}" role="status">${esc(UI.msg.w.t)}</p>`;UI.msg.w=null}
+ return h+`<button type="button" class="lnk" data-act="fclose" data-v="w">Zatvori obrazac</button></article>`}
+/* ===================== SNAGA I RADNE TEŽINE ===================== */
+function exSeries(k){const out=[];S.sessions.forEach((s,i)=>{if(!isClosed(s))return;const e=s.ex[k];if(!e||e.omit)return;const it=(s.rx||[]).find(x=>x.k===k);if(!it)return;
+  const ds=doneSets(it,e);if(!ds.length)return;const known=ds.filter(x=>x.kg>0),reps=sumR(ds),top=Math.max(...ds.map(x=>x.kg));
+  out.push({i,s,e,it,dev:devOf(e),vlab:it.vary?varLab(e):'',dk:devKey(devOf(e))+'|'+(it.vary?varKey(e):''),d:ymdOf(s.closedAt),w:wkOf(i),key:kOf(i),sets:ds,prescribed:it.sets,full:ds.length===it.sets,top,topReps:Math.max(...ds.filter(x=>x.kg===top).map(x=>x.reps)),reps,avgR:r2(reps/ds.length),vol:volOf(ds),volN:known.length,legacy:isLegacy(e),rir:e.rir})});return out}
+const setLine=x=>x.sets.map(q=>`${fm(q.kg)} × ${q.reps}`).join(' · ');
+const SMET={kg:['Radna težina','Najveća radna težina po treningu (kg)',x=>x.top,'kg'],reps:['Ponavljanja','Ukupno ostvarenih ponavljanja po treningu',x=>x.reps,'pon.'],vol:['Volumen','Volumen opterećenja po treningu (kg × ponavljanja)',x=>x.vol,'kg'],sets:['Serije','Broj izvedenih serija po treningu',x=>x.sets.length,'serija']};
+const inProg=k=>CFG.keys.some(d=>DAYS[d].x.some(x=>x[0]===k));
+function progS(){const P=UI.prog,keys=Object.keys(EX).filter(k=>EX[k].kind!=='iso'&&(inProg(k)||exSeries(k).length));
+ const withData=keys.filter(k=>exSeries(k).length);
+ if(!P.ex||!EX[P.ex]||!keys.includes(P.ex))P.ex=withData[0]||keys[0];
+ let h=`<h2>Snaga i radne težine</h2><p class="h">Prikazuju se samo stvarno odrađene serije (kg i ponavljanja) iz zatvorenih treninga. Svaka vježba se prati zasebno: različite vježbe i sprave nisu izravno usporedive.</p>`;
+ h+=`<label class="fl">Vježba (broj treninga s podacima)<select id="xsel">${keys.map(k=>opt(k,`${EX[k].n} (${exSeries(k).length})`,k===P.ex)).join('')}</select></label>`;
+ let ser=exSeries(P.ex);
+ if(!ser.length){return h+`<article class="empty" id="emptys"><p><b>Graf radnih težina prikazat će se nakon prvog zatvorenog treninga s upisanim serijama za ovu vježbu.</b></p><p class="h">Do tada nema crtanih točaka. ${withData.length?'Podaci postoje za druge vježbe – odaberi ih gore.':'Nema još nijednog zapisa radne težine; stara povijest iz Excela sadrži samo tjelesnu težinu i obujmove.'}</p></article>`}
+ /* grupa = ista vježba + ista normalizirana sprava/postavka + ista varijacija; prazna sprava je zasebna grupa „usporedivost sprave nije potvrđena” */
+ /* oznaka grupe: sprava i varijacija uvijek zasebno – varijacija nikad nije naziv sprave */
+ const devLabel=x=>x.dev?`sprava/postavka „${esc(x.dev)}”`:'sprava/postavka nije upisana – usporedivost sprave nije potvrđena',varLabel=x=>x.vlab?`varijacija: ${esc(x.vlab)}`:'';
+ const glabOf=x=>x?devLabel(x)+(x.vlab?' · '+varLabel(x):''):'';
+ const gks=[...new Set(ser.map(x=>x.dk))],P2=UI.prog.grp||(UI.prog.grp={});if(!gks.includes(P2[P.ex]))P2[P.ex]=ser[ser.length-1].dk;
+ const gsel=P2[P.ex];ser=ser.filter(x=>x.dk===gsel);
+ if(gks.length>1)h+=`<label class="fl">Usporediva grupa (sprava/postavka${EX[P.ex].vary?' i varijacija':''})<select id="gsel">${gks.map(g=>{const x=exSeries(P.ex).filter(y=>y.dk===g);const z=x[x.length-1];return opt(g,`${z.dev||'sprava nije upisana'}${z.vlab?' · varijacija: '+z.vlab:''} (${x.length})`,g===gsel)}).join('')}</select></label>`;
+ const last=ser[ser.length-1],grp=ser,other=exSeries(P.ex).length-ser.length,mx=grp.reduce((a,x)=>x.top>a.top?x:a,grp[0]),vol=r2(grp.reduce((a,x)=>a+x.vol,0));
+ const glab=glabOf(last);
+ const lf=[...grp].reverse().find(x=>x.full),ff=lf?grp.find(x=>x.full&&x.prescribed===lf.prescribed):null;
+ let chg;if(!last.full)chg=`<strong>–</strong><span>zadnji trening nije potpun (${last.sets.length}/${last.prescribed} serija) – ne prikazuje se kao napredak</span>`;
+ else if(!ff||ff===lf)chg=`<strong>–</strong><span>još nema dva usporediva treninga (isti broj serija i ista sprava/postavka)</span>`;
+ else chg=`<strong>${sgn(r2(lf.top-ff.top))}<small> kg</small></strong><span>najveća kilaža ${hs(ff.d)} → ${hs(lf.d)} (${ff.prescribed} serije); ponavljanja ${ff.reps} → ${lf.reps}; volumen ${fm(ff.vol)} → ${fm(lf.vol)}</span>`;
+ h+=`<p class="h"><b>Sve brojke, graf i tablice ispod:</b> ${glab}.${other?` ${other} ${other===1?'zapis s drugom spravom/postavkom ili varijacijom nije uključen':'zapisa s drugom spravom/postavkom ili varijacijom nisu uključena'} – odaberi tu grupu iznad.`:''}</p>`;
+ h+=`<article><div class="kv"><div><strong>${fm(mx.top)}<small> kg × ${mx.topReps}</small></strong><span>najveća radna težina · ${hs(mx.d)} (${mx.sets.length}/${mx.prescribed} serija)</span></div><div>${chg}</div><div><strong>${fm(vol)}<small> kg</small></strong><span>ukupni volumen ove grupe (kg × ponavljanja), ${grp.reduce((a,x)=>a+x.volN,0)} serija s poznatim opterećenjem</span></div></div></article>`;
+ const sm=SMET[P.sm]?P.sm:'kg',[,ttl,val,un]=SMET[sm];
+ h+=seg('sm',Object.keys(SMET).map(k=>[k,SMET[k][0]]),sm,'Prikaz snage');
+ const pt=x=>({x:dnum(x.d),y:val(x),t:`${hs(x.d)} · T${x.w}·${x.key}: ${setLine(x)} · ${x.sets.length}/${x.prescribed} serija · ${fm(val(x))} ${un}`});
+ const segs=[],hol=[];let cur=[],pre=null;ser.forEach(x=>{if(!x.full){hol.push(pt(x));return}const key=x.prescribed+'|'+x.dk;if(pre!==null&&key!==pre){if(cur.length)segs.push(cur);cur=[]}pre=key;cur.push(pt(x))});if(cur.length)segs.push(cur);
+ const x0=dnum(ser[0].d),x1=Math.max(dnum(last.d),x0+7);
+ h+=`<h3 class="h3">${ttl}</h3>`+svgChart({x0,x1,dots:[],segs,hol,legend:false,label:`${EX[P.ex].n}: ${ttl.toLowerCase()}, ${ser.length} treninga`,note:`<p class="h">Puna točka i linija: trening sa svim propisanim serijama. <b>Prazna točka</b>: manje izvedenih serija – ne spaja se s linijom i nije izravno usporediva. Linija se prekida i kad se promijeni propisani broj serija ili upisana sprava/postavka. Dodirni točku: kilaže i ponavljanja svih serija.</p>`});
+ if(sm==='kg')h+=`<p class="h">Najveća kilaža sama nije mjera napretka: gledaj je uz ponavljanja i broj serija (prikazi „Ponavljanja”, „Volumen”, „Serije” i tablica).</p>`;
+ h+=`<h3 class="h3">Evidencija treninga</h3><p class="h">Ako se vježba izvodi dvaput tjedno, vide se oba treninga. Usporedba je s prethodnim izvođenjem iste vježbe i samo uz isti broj serija.</p><div class="tw"><table><thead><tr><th>Datum</th><th>Serije (kg × pon.)</th><th class="n">Volumen</th><th>Usporedba s prethodnim</th></tr></thead><tbody>${ser.map((x,j)=>{const pv=j?ser[j-1]:null,c=pv?cmpSets(x.it,x.e,pv.it,pv.e):null;
+  return {x,html:`<tr><td>${hs(x.d)}<br><small>T${x.w}·${x.key}</small></td><td>${setLine(x)}<br><small>${x.sets.length}/${x.prescribed} serija · RIR ${x.rir!=null?rirTxt(x.rir):'–'}${x.dev?' · sprava: '+esc(x.dev):x.vlab?' · sprava nije upisana':''}${x.vlab?' · varijacija: '+esc(x.vlab):''}${x.legacy?' · stari zapis: jedna kilaža za sve serije':''}</small></td><td class="n">${x.volN?fm(x.vol):'–'}</td><td>${!c?'<small>prvi zapis</small>':c.ok?esc(c.txt):`<b>nije usporedivo</b>: ${esc(c.why)}${(()=>{if(!x.full)return '';const q=ser.slice(0,j).reverse().find(y=>y.full&&y.prescribed===x.prescribed);if(!q)return '';const c2=cmpSets(x.it,x.e,q.it,q.e);return c2.ok?`<br><small>prema zadnjem usporedivom (${hs(q.d)}): ${esc(c2.txt)}</small>`:''})()}`}</td></tr>`}}).reverse().map(o=>o.html).join('')}</tbody></table></div>`;
+ const wk={};ser.forEach(x=>{(wk[x.w]=wk[x.w]||[]).push(x)});
+ h+=`<details><summary>Tjedni sažetak (programski tjedni 1–${CFG.weeks})</summary><div class="tw"><table><thead><tr><th>Tj.</th><th class="n">Treninga</th><th class="n">Serija</th><th class="n">Najveća kg</th><th class="n">Ukupno pon.</th><th class="n">Volumen</th></tr></thead><tbody>${Array.from({length:CFG.weeks},(_,j)=>j+1).map(w=>{const L=wk[w];return L?`<tr><td>${w}.</td><td class="n">${L.length}</td><td class="n">${L.reduce((a,x)=>a+x.sets.length,0)}/${L.reduce((a,x)=>a+x.prescribed,0)}</td><td class="n">${fm(Math.max(...L.map(x=>x.top)))}</td><td class="n">${L.reduce((a,x)=>a+x.reps,0)}</td><td class="n">${fm(r2(L.reduce((a,x)=>a+x.vol,0)))}</td></tr>`:`<tr><td>${w}.</td><td class="n" colspan="5"><small>nema podataka</small></td></tr>`}).join('')}</tbody></table></div><p class="h">Tjedni zbrojevi uključuju i nepotpune treninge; broj serija pokazuje koliko ih je izvedeno od propisanih.</p></details>`;
+ return h}
+function progW(){const t=today(),[a,b]=rangeAB(),all=wPoints(),pts=all.filter(p=>p.d>=a&&p.d<=b),hidden=all.filter(p=>p.d>b).length;
+ const wopen=!!(UI.fo.w||UI.wEdit||UI.wPend||(UI.msg.w&&!UI.msg.w.ok));let h=`<h2>Tjelesna težina</h2><p class="h">Evidentirana vaganja u novom ciklusu: ${all.length}. Povijest iz Excela vidi se zasebno (Povijest) i ne postavlja početnu težinu ciklusa.</p>`+goalProg();
+ if(!wopen&&UI.msg.w){h+=`<p class="${UI.msg.w.ok?'okt':'er'}" role="status">${esc(UI.msg.w.t)}</p>`;UI.msg.w=null}
+ if(hidden)h+=`<p class="bn">Postoji ${hidden} upisa nakon ${hd(b)}. <button type="button" class="lnk sm" data-act="seg-range" data-v="full">Prikaži cijeli ciklus</button></p>`;
+ const tot=totalCh(pts);
+ if(tot)h+=`<article><p class="lab">Ukupna promjena u prikazanom rasponu</p><div class="kv"><div><strong>${fm(tot.f.kg)}<small> kg</small></strong><span>prvi upis · ${hs(tot.f.d)}</span></div><div><strong>${fm(tot.l.kg)}<small> kg</small></strong><span>zadnji upis · ${hs(tot.l.d)}</span></div><div><strong>${sgn(tot.ch)}<small> kg</small></strong><span>promjena · upisa ${tot.n}</span></div></div></article>`;
+ const wk=weekly(pts,CFG.start,b).filter(w=>w.b>=a);
+ if(!all.length)h+=emptyChart('težina');
+ else if(pts.length===1)h+=`<p class="empty">Jedan upis u rasponu (${hd(pts[0].d)}: ${fm(pts[0].kg)} kg) – još nema trenda.</p>`;
+ if(pts.length)h+=weightChart(pts,wk,a,b,'Težina u novom ciklusu',GOALS.weightKg);
+ h+=wopen?wForm():`<button type="button" class="btn" data-act="wnew">${t<CFG.start&&!TEST?'Vaganje se otvara '+hd(CFG.start):'Upiši vaganje'}</button>`;
+ h+=`<h2>Tjedni prosjek</h2><p class="h">Prosjek = zbroj stvarnih upisa / broj upisa (n). Tjedni prate kalendar od ${hd(CFG.start)}, ne programske tjedne. Tjedan bez upisa ostaje prazan.</p>`+weekTable(wk,t,a);
+ return h+`<details><summary>Dnevna tablica (${dd(a,b)+1} dana)</summary>${dayTable(a,b,all,true)}</details>`}
+function mSeries(met,src){let pts;
+ if(src==='hist')pts=S.history.records.filter(r=>r.type==='circumference'&&r.metric===met).map(r=>({d:r.date,v:r.value,side:null,proto:'',src:`${r.sourceSheet}!${r.sourceCell}`})).sort((a,b)=>a.d<b.d?-1:1);
+ else pts=Object.keys(S.meas).sort().filter(d=>S.meas[d].v[met]!=null).map(d=>({d,v:S.meas[d].v[met],side:(S.meas[d].side||{})[met]||null,proto:((S.meas[d].proto||{})[met]||'').trim()}));
+ let key=null,base=null;
+ return pts.map(p=>{const k=`${p.side||''}|${(p.proto||'').toLowerCase()}`;let brk=false;if(key===null){key=k;base=p}else if(k!==key){brk=true;key=k;base=p}return Object.assign({},p,{brk,base:base.d,ch:p===base?null:r2(p.v-base.v)})})}
+function measChart(ser,a,b,met){const segs=[];let cur=[];ser.forEach(p=>{if(p.brk&&cur.length){segs.push(cur);cur=[]}cur.push({x:dnum(p.d),y:p.v,t:`${hs(p.d)}: ${fm(p.v)} cm`})});if(cur.length)segs.push(cur);
+ return svgChart({x0:dnum(a),x1:dnum(b),dots:[],segs,label:`${MLAB[met]}: ${ser.length} mjerenja`})}
+function measTable(ser,met,hist){return `<div class="tw"><table><thead><tr><th>Datum</th><th class="n">cm</th><th class="n">Promjena*</th><th>${UNI.has(met)?'Strana / mjesto':'Napomena'}</th></tr></thead><tbody>${ser.map(p=>`<tr><td>${hd(p.d)}</td><td class="n">${fm(p.v)}</td><td class="n">${p.ch!=null?sgn(p.ch):'–'}</td><td>${hist?`<small>${esc(p.src)} · strana i mjesto nisu definirani u izvoru</small>`:UNI.has(met)?`${p.side?SLAB[p.side]:'–'}${p.proto?' · '+esc(p.proto):''}`:''}${p.brk?' <b>· prekid usporedivosti (druga strana ili mjesto)</b>':''}</td></tr>`).join('')}</tbody></table></div><p class="h">* Promjena od prvog usporedivog mjerenja iste regije (ista strana i isto mjesto). Mjere se ne zbrajaju u jedan rezultat.</p>`}
+function allMeasTable(src){let rows;
+ if(src==='hist'){const by={};S.history.records.filter(r=>r.type==='circumference').forEach(r=>{(by[r.date]=by[r.date]||{})[r.metric]=r.value});rows=Object.keys(by).sort().map(d=>({d,v:by[d]}))}
+ else rows=Object.keys(S.meas).sort().map(d=>({d,v:S.meas[d].v,s:S.meas[d].side}));
+ if(!rows.length)return '<p class="empty">Nema upisanih mjera.</p>';
+ return `<div class="tw"><table><thead><tr><th>Datum</th>${METRICS.map(m=>`<th class="n">${m[1]}</th>`).join('')}${src==='cycle'?'<th></th>':''}</tr></thead><tbody>${rows.map(r=>`<tr><td>${hs(r.d)}${r.d.slice(0,4)}.</td>${METRICS.map(([k])=>`<td class="n">${r.v[k]!=null?fm(r.v[k])+(r.s&&r.s[k]?' <small>'+r.s[k]+'</small>':''):''}</td>`).join('')}${src==='cycle'?`<td><button type="button" class="lnk sm" data-act="medit" data-d="${r.d}">Uredi</button></td>`:''}</tr>`).join('')}</tbody></table></div>`}
+function lastProto(){const ds=Object.keys(S.meas).sort().reverse(),side={},proto={};for(const k of UNI){for(const d of ds){const m=S.meas[d];if(m.v[k]!=null){side[k]=m.side[k]||'';proto[k]=m.proto[k]||'';break}}}return{side,proto}}
+function cpBanner(){const id=(UI.mEdit&&UI.mEdit.cp!==undefined?UI.mEdit.cp:null)||UI.mCp;if(!id)return '';const c=checkStatus().find(x=>x.id===id);if(!c)return '';
+ return `<p class="bn">Ovaj upis zatvara kontrolu ${hd(c.d)} (dan ${c.o})${c.st==='partial'?` – već ima ${c.n}/${c.exp} mjera`:''}. Upiši stvarni datum mjerenja (rano ili kasno). <button type="button" class="lnk sm" data-act="mfree">Slobodan unos (ne veže se uz kontrolu)</button></p>`}
+function mForm(){const t=today(),mn=CFG.start,mx=TEST?addD(CFG.start,400):t;
+ if(mx<mn)return `<article><h2>Mjere (cm)</h2><p class="h">Mjere novog ciklusa upisuju se od ${hd(CFG.start)} Početne vrijednosti ostaju prazne do stvarnog mjerenja.</p></article>`;
+ const E=UI.mEdit||{},L=lastProto(),dv=E.d||(t<mn?mn:t>mx?mx:t);
+ let h=`<article id="mform"><h2>Mjere (cm)</h2>${cpBanner()}<label class="fl">Datum mjerenja<input type="date" id="md" min="${mn}" max="${mx}" value="${dv}"></label><p class="h">Prazno polje = nije mjereno. Struk i trbuh su zasebne mjere. Za jednostrane mjere upiši stranu i mjerno mjesto te mjeri uvijek isto.</p>`;
+ h+=METRICS.map(([k,l,u])=>{const v=E.v?E.v[k]:null;let r=`<div class="mrow"><label class="fl">${l} <small>${expMetrics().includes(k)?'(obavezno za kontrolu)':'(dobrovoljno)'}</small><input type="text" id="m-${k}" inputmode="decimal" autocomplete="off" value="${v!=null?fm(v):''}" placeholder="cm"></label>`;
+  if(u){const sd=E.side&&E.side[k]!=null?E.side[k]:(L.side[k]||''),pr=E.proto&&E.proto[k]!=null?E.proto[k]:(L.proto[k]||'');
+   r+=`<label class="fl">Strana<select id="ms-${k}">${opt('','–',!sd)}${opt('L','lijevo',sd==='L')}${opt('D','desno',sd==='D')}</select></label><label class="fl pr">Mjerno mjesto<input type="text" id="mp-${k}" maxlength="80" value="${esc(pr)}" placeholder="${esc(PROTO_EX[k]||'prema dogovorenom protokolu')}"></label>`}
+  return r+`</div>`}).join('');
+ h+=`<label class="fl">Bilješka (neobavezno)<input type="text" id="mnote" maxlength="300" value="${esc(E.note||'')}"></label>`;
+ if(UI.mPend&&S.meas[UI.mPend.d])h+=`<p class="bn w">Za ${hd(UI.mPend.d)} već postoje mjere. Zamijeniti ih novim upisom? Stari upis ostaje u povijesti ispravaka.</p><button type="button" class="btn" data-act="mconfirm">Potvrdi zamjenu</button><button type="button" class="lnk" data-act="mcancel">Odustani</button>`;
+ else h+=`<button type="button" class="btn" data-act="msave">Spremi mjere</button>`;
+ if(E.d&&S.meas[E.d]&&!UI.mPend)h+=UI.delPend==='m'?`<p class="bn e">Obrisati mjere za ${hd(E.d)}? Zapis ostaje u povijesti ispravaka.</p><button type="button" class="btn2" data-act="mdelok">Potvrdi brisanje</button><button type="button" class="lnk" data-act="mcancel">Odustani</button>`:`<button type="button" class="lnk sm" data-act="mdel">Obriši mjere za ${hs(E.d)}</button>`;
+ if(UI.msg.m){h+=`<p class="${UI.msg.m.ok?'okt':'er'}" role="status">${esc(UI.msg.m.t)}</p>`;UI.msg.m=null}
+ return h+`<button type="button" class="lnk" data-act="fclose" data-v="m">Zatvori obrazac</button></article>`}
+function checkTable(){const L=checkStatus(),t=today();return `<div class="tw"><table><thead><tr><th>Dan</th><th>Datum</th><th>Kontrola</th><th>Stanje</th></tr></thead><tbody>${L.map(c=>{const st=c.st==='done'?'upisano '+c.snaps.map(hs).join(', '):c.st==='future'?'predstoji':c.st==='partial'?`djelomično ${c.n}/${c.exp}`:c.st==='omitted'?`izostavljeno <button type="button" class="lnk sm" data-act="cpundo" data-id="${c.id}">Vrati</button>`:c.st==='deferred'?`odgođeno do ${hs(c.act.until)} <button type="button" class="lnk sm" data-act="cpundo" data-id="${c.id}">Vrati</button>`:c.st==='due'?(c.d===t?'danas':'u tijeku'):'nije upisano (kasni)';
+ return `<tr${OPENCP.includes(c.st)?' class="cur"':''}><td>${c.o}</td><td>${hd(c.d)}</td><td>${c.label}</td><td>${st}</td></tr>`}).join('')}</tbody></table></div>`}
+const mCount=(k,src)=>mSeries(k,src||'cycle').length;
+function progM(){const met=UI.prog.metric,[a,b]=rangeAB();
+ const ser=mSeries(met,'cycle'),inR=ser.filter(p=>p.d>=a&&p.d<=b),hidden=ser.length-inR.length;
+ const mopen=!!(UI.fo.m||UI.mEdit||UI.mPend||(UI.msg.m&&!UI.msg.m.ok));let h='';
+ if(!mopen&&UI.msg.m){h+=`<p class="${UI.msg.m.ok?'okt':'er'}" role="status">${esc(UI.msg.m.t)}</p>`;UI.msg.m=null}
+ h+=`<h2>Tjelesne mjere</h2><p class="h">Odaberi mjeru: graf, prva i zadnja vrijednost i promjena u cm. Jednostrane mjere (natkoljenica, list, nadlaktica, podlaktica) uspoređuju se samo uz istu stranu i isto mjesto.</p><label class="fl">Mjera (broj unosa)<select id="msel">${METRICS.map(([k,l])=>opt(k,`${l} (${mCount(k)})`,k===met)).join('')}</select></label>`;
+ const others=METRICS.filter(([k])=>k!==met&&mCount(k)>0);
+ if(!ser.length&&others.length)h+=`<p class="bn">Za „${MLAB[met]}” još nema unosa, ali postoje za: ${others.map(([k,l])=>`<button type="button" class="btn3" data-act="pickmet" data-v="${k}">${l} (${mCount(k)})</button>`).join(' ')}</p>`;
+ if(!ser.length)h+=emptyChart('mjera „'+MLAB[met]+'”');
+ else{if(hidden)h+=`<p class="bn">Postoji ${hidden} mjerenja izvan prikazanog raspona. <button type="button" class="lnk sm" data-act="seg-range" data-v="full">Prikaži cijeli ciklus</button></p>`;
+  if(inR.length)h+=measChart(inR,a,b,met)+measTable(inR,met,false)}
+ h+=mopen?mForm():`<button type="button" class="btn" data-act="mnew">${today()<CFG.start&&!TEST?'Mjere se otvaraju '+hd(CFG.start):'Upiši mjere'}</button>`;
+ const oc=checkStatus().some(c=>['due','missed','partial'].includes(c.st));
+ h+=`<details${oc?' open':''}><summary>Predložene kontrole obujmova</summary><p class="h">Prijedlog svakih 15 dana od početka; to nisu automatski stvorena mjerenja. Kontrola se zatvara samo upisom vezanim uz nju (gumb „Upiši” na kartici) ili upisom točno na dan kontrole; slobodan unos druge date ne zatvara ništa. Kašnjenje ne popunjava praznine starim vrijednostima. Kontrole postoje samo unutar ciklusa; zadnja je 21.2.2027.</p>${checkTable()}</details>`;
+ return h+`<details><summary>Sve mjere po datumu</summary>${allMeasTable('cycle')}</details>`}
+function regularity(){const t=today();if(t<CFG.start)return[];const nw=Math.min(CFG.weeks,Math.floor(dd(CFG.start,t)/7)+1),rows=[];   /* samo 12 kalendarskih tjedana ciklusa */
+ for(let w=1;w<=nw;w++){const a=addD(CFG.start,(w-1)*7),b=addD(a,6),r={w,a,b,cur:t>=a&&t<=b,completed:0,partial:0,skipped_pain:0,excused_by_coach:0};
+  S.sessions.forEach(s=>{if(isClosed(s)){const d=ymdOf(s.closedAt);if(d>=a&&d<=b)r[s.status]++}});rows.push(r)}
+ return rows}
+function progT(){const c=counts(),A=activeIdx();
+ let h=`<article><div class="kv"><div><strong>${c.completed}<small>/${N}</small></strong><span>potpuno odrađeno</span></div><div><strong>${c.closed}<small>/${N}</small></strong><span>zatvoreno</span></div></div><p class="h">Djelomično: ${c.partial} · prekinuto zbog boli: ${c.skipped_pain} · po dogovoru s trenerom: ${c.excused_by_coach} · ${A>=N?'plan završen':cycleEnded()?'ciklus završio '+hd(CFG.expiresAt):'aktivni: tjedan '+wkOf(A)+' · '+kOf(A)}</p></article>`;
+ const rg=regularity();
+ h+=`<h2>Kalendarska redovitost</h2><p class="h">Zatvoreni treninzi po kalendarskom tjednu (prema datumu zatvaranja), uz 4 planirana. Budući dani se ne računaju kao propušteni.</p>`;
+ h+=rg.length?`<div class="tw"><table><thead><tr><th>Tj.</th><th>Datumi</th><th class="n">Potpuno</th><th class="n">Djelom.</th><th class="n">Ostalo</th><th class="n">Plan</th></tr></thead><tbody>${rg.map(r=>`<tr${r.cur?' class="cur"':''}><td>${r.w}.${r.cur?' <small>u tijeku</small>':''}</td><td>${hs(r.a)}–${hs(r.b)}</td><td class="n">${r.completed}</td><td class="n">${r.partial}</td><td class="n">${r.skipped_pain+r.excused_by_coach}</td><td class="n">4</td></tr>`).join('')}</tbody></table></div><p class="h">Ostalo = prekid zbog boli ili izostanak po dogovoru.</p>`:`<p class="empty">Ciklus još nije počeo.</p>`;
+ h+=`<h2>Svi treninzi</h2><div class="tw"><table><thead><tr><th>#</th><th>Trening</th><th>Stanje</th><th>Zatvoren</th></tr></thead><tbody>${S.sessions.map((s,i)=>`<tr${i===A?' class="cur"':''}><td>${i+1}</td><td>T${wkOf(i)} · ${kOf(i)}</td><td>${ST[s.status]}${i===A&&!cycleEnded()?' <small>(aktivni)</small>':''}</td><td>${s.closedAt?hs(ymdOf(s.closedAt))+' ':''}${isClosed(s)||i===A?`<button type="button" class="lnk sm" data-act="openS" data-i="${i}">Otvori</button>`:''}</td></tr>`).join('')}</tbody></table></div>`;
+ const m={};S.sessions.forEach(s=>{if(!isClosed(s))return;Object.keys(s.ex).forEach(k=>{const e=s.ex[k];const it=(s.rx||[]).find(x=>x.k===k);if(!it||e.omit||it.kind==='iso'||EX[k].kind==='iso')return;const ds=doneSets(it,e);if(!ds.length)return;const vy=!!(it.vary||EX[k].vary),g=k+'|'+devKey(devOf(e))+'|'+(vy?varKey(e):'');(m[g]=m[g]||{k,dev:devOf(e),vlab:vy?varLab(e):'',L:[]}).L.push({d:ymdOf(s.closedAt),kg:Math.max(...ds.map(x=>x.kg))})})});
+ const ks=Object.keys(m).sort((a,b)=>Object.keys(EX).indexOf(m[a].k)-Object.keys(EX).indexOf(m[b].k));
+ h+=`<h2>Opterećenje po vježbi</h2><p class="h">Redak = ista vježba, ista upisana sprava/postavka i (za hamstring curl) ista varijacija. Izometrija se ne prikazuje. Ako sprava nije upisana, usporedivost sprave nije potvrđena. Kilaže različitih sprava se ne zbrajaju.</p>`+(ks.length?`<div class="tw"><table><thead><tr><th>Vježba · sprava</th><th class="n">Prvi (najveća)</th><th class="n">Zadnji (najveća)</th><th class="n">Puta</th></tr></thead><tbody>${ks.map(g=>{const L=m[g].L,f=L[0],l=L[L.length-1];return `<tr><td>${esc(EX[m[g].k].n)}<br><small>${m[g].dev?'sprava: '+esc(m[g].dev):'sprava nije upisana – usporedivost nije potvrđena'}${m[g].vlab?' · varijacija: '+esc(m[g].vlab):''}</small></td><td class="n">${fm(f.kg)} kg<br><small>${hs(f.d)}</small></td><td class="n">${fm(l.kg)} kg<br><small>${hs(l.d)}</small></td><td class="n">${L.length}</td></tr>`}).join('')}</tbody></table></div>`:`<p class="empty">Još nema zatvorenih treninga s upisanom kilažom.</p>`);
+ h+=`<h2>Tegobe</h2><p class="h">„–” znači da odgovor nije upisan (to nije 0). Faze: prije rada / najviše tijekom / odmah nakon, te kontrole nakon treninga sa stvarnim brojem sati.</p>`;
+ h+=REGIONS.map(([r,l])=>{const rows=[];S.sessions.forEach((s,i)=>{const v=s.sym[r];if(v&&Object.keys(v).length)rows.push({ts:s.closedAt||s.updatedAt||0,t:`T${wkOf(i)}·${kOf(i)}`,side:v.side,ph:'trening (prije / tijekom / nakon)',val:`${v.before??'–'} / ${v.during??'–'} / ${v.after??'–'}`});
+  (s.follow||[]).forEach(f=>{const x=f.reg[r];if(x)rows.push({ts:f.at,t:`T${wkOf(i)}·${kOf(i)}`,side:x.side,ph:`${phaseName(f.hours)} (${fm(f.hours)} h)`,val:x.pain??'–'})})});
+  rows.sort((x,y)=>x.ts-y.ts);
+  return `<h3 class="h3">${esc(l)}</h3>`+(rows.length?`<div class="tw"><table><thead><tr><th>Datum</th><th>Trening</th><th>Strana</th><th>Faza</th><th class="n">Bol</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${x.ts?hs(ymdOf(x.ts)):''}</td><td>${x.t}</td><td>${x.side?SLAB[x.side]:'–'}</td><td>${x.ph}</td><td class="n">${x.val}</td></tr>`).join('')}</tbody></table></div>`:`<p class="empty">Nema upisa.</p>`)}).join('');
+ const fr=[];S.sessions.forEach((s,i)=>(s.follow||[]).forEach(f=>fr.push({i,f})));fr.sort((a,b)=>a.f.at-b.f.at);
+ h+=`<h3 class="h3">Hod i sjedenje u kontrolama</h3>`+(fr.length?`<div class="tw"><table><thead><tr><th>Datum</th><th>Trening</th><th>Kontrola</th><th>Hod lošiji</th><th>Sjedenje lošije</th></tr></thead><tbody>${fr.map(({i,f})=>`<tr><td>${hs(ymdOf(f.at))}</td><td>T${wkOf(i)}·${kOf(i)}</td><td>${phaseName(f.hours)} (${fm(f.hours)} h)</td><td>${f.gait||'–'}</td><td>${f.sit||'–'}</td></tr>`).join('')}</tbody></table></div>`:`<p class="empty">Nema upisanih kontrola.</p>`);
+ return h}
+function histImportCard(){return `<article><h2>Uvoz stare povijesti</h2><p class="h">Odaberi JSON datoteku pripremljenu iz starog Excela. Prije uvoza vidjet ćeš pregled; podaci ostaju samo na ovom uređaju i ne ulaze u novi ciklus.</p><label class="fl">JSON datoteka<input type="file" id="hfile" accept="application/json,.json"></label>${UI.histMsg?`<p class="${UI.histMsg.ok?'okt':'er'}" role="status">${esc(UI.histMsg.t)}</p>`:''}</article>`}
+function histPreview(){const H=UI.hist,m=H.meta,w=H.recs.filter(r=>r.type==='weight').sort((a,b)=>a.date<b.date?-1:1),c=H.recs.filter(r=>r.type==='circumference'),cd=[...new Set(c.map(r=>r.date))].sort();
+ const have=new Set(S.history.records.map(r=>r.id)),dup=H.recs.filter(r=>have.has(r.id)).length;
+ let h=`<article class="cf"><h2>Pregled prije uvoza</h2><p class="h">Datoteka: ${esc(H.fileName)}<br>Izvor: ${esc(m.sourceFile)}</p><ul><li>Vaganja: ${w.length}${w.length?` (${hd(w[0].date)} – ${hd(w[w.length-1].date)})`:''}</li><li>Obujmovi: ${c.length} vrijednosti u ${cd.length} datuma${cd.length?' ('+cd.map(hd).join(', ')+')':''}</li><li>Ukupno: ${H.recs.length}${m.total!=null&&m.total!==H.recs.length?` – <b>datoteka navodi ${m.total}</b>`:''}</li>${dup?`<li>Već uvezeno: ${dup} (neće se duplicirati)</li>`:''}</ul>`;
+ if(m.importEnabled===false||m.dateIssue)h+=`<p class="bn w">Datoteka je označena za provjeru datuma prije uvoza: početni datumi u izvornom Excelu nisu usklađeni. Datumi se uvoze točno kako su u izvoru, bez pomicanja, i ostaju zasebna povijest.</p>`;
+ h+=`<div class="tw"><table><thead><tr><th>Datum</th><th>Mjera</th><th class="n">Vrijednost</th><th>Izvor</th></tr></thead><tbody>${H.recs.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0).map(r=>`<tr><td>${hd(r.date)}</td><td>${r.type==='weight'?'težina':esc(MLAB[r.metric])}</td><td class="n">${fm(r.value)} ${r.unit}</td><td><small>${esc(r.sourceSheet)}!${esc(r.sourceCell)}</small></td></tr>`).join('')}</tbody></table></div>`;
+ return h+`<label class="chk"><input type="checkbox" id="hok"> <span>Datumi su provjereni s trenerom i uvoze se točno kako su u izvoru.</span></label>${UI.histMsg?`<p class="er" role="alert">${esc(UI.histMsg.t)}</p>`:''}<button type="button" class="btn" data-act="himport">Uvezi u povijest</button><button type="button" class="lnk" data-act="hcancel">Odustani</button></article>`}
+function progHist(){const R=S.history.records,P=UI.prog;
+ if(UI.hist)return histPreview();
+ if(!R.length)return `<p class="empty">Stara povijest nije uvezena. Zapisi iz starog Excela uvoze se zasebno i ne miješaju se s novim ciklusom.</p>`+histImportCard();
+ let h=`<p class="bn">Stara povijest: ${R.length} zapisa${S.history.sourceFile?` iz „${esc(S.history.sourceFile)}”`:''}, uvezeno ${S.history.importedAt?hdt(S.history.importedAt):''}. Datumi su potvrđeni pri uvozu i nisu pomicani. Ne koristi se kao početna vrijednost novog ciklusa.</p>`;
+ if(P.seg==='w'){const pts=wPoints('hist');
+  if(!pts.length)h+=`<p class="empty">U povijesti nema vaganja.</p>`;
+  else{const a=pts[0].d,b=pts[pts.length-1].d,tot=totalCh(pts),wk=weekly(pts,a,b);
+   if(tot)h+=`<article><p>Prvi upis: <b>${hd(tot.f.d)} · ${fm(tot.f.kg)} kg</b><br>Zadnji upis: <b>${hd(tot.l.d)} · ${fm(tot.l.kg)} kg</b><br>Promjena: <b>${sgn(tot.ch)} kg</b> · upisa: ${tot.n}</p></article>`;
+   h+=weightChart(pts,wk,a,b,'Težina u staroj povijesti')+`<h2>Tjedni prosjek</h2><p class="h">Tjedni se ovdje broje od prvog povijesnog zapisa (${hd(a)}).</p>`+weekTable(wk,today())+`<details><summary>Dnevna tablica</summary>${dayTable(a,b,pts,false)}</details>`}}
+ else if(P.seg==='m'){const met=P.metric,ser=mSeries(met,'hist');
+  h+=`<label class="fl">Mjera (broj unosa)<select id="msel">${METRICS.map(([k,l])=>opt(k,`${l} (${mCount(k,'hist')})`,k===met)).join('')}</select></label>`;
+  h+=ser.length?measChart(ser,ser[0].d,ser[ser.length-1].d,met)+measTable(ser,met,true):`<p class="empty">Nema povijesnih mjera za „${MLAB[met]}”.</p>`;
+  h+=`<details><summary>Sve povijesne mjere</summary>${allMeasTable('hist')}</details>`}
+ else h+=`<p class="empty">Stara povijest ne sadrži odrađene treninge ni tegobe – stari Excel sadrži propisani plan, a ne evidenciju treninga.</p>`;
+ h+=`<article><h3>Upravljanje poviješću</h3>${UI.histMsg?`<p class="${UI.histMsg.ok?'okt':'er'}" role="status">${esc(UI.histMsg.t)}</p>`:''}<label class="fl">Ponovni uvoz (postojeći zapisi se ne dupliciraju)<input type="file" id="hfile" accept="application/json,.json"></label>${UI.delPend==='h'?`<p class="bn e">Ukloniti uvezenu povijest s ovog uređaja?</p><button type="button" class="btn2" data-act="hdelok">Potvrdi uklanjanje</button><button type="button" class="lnk" data-act="hcancel">Odustani</button>`:`<button type="button" class="lnk sm" data-act="hdel">Ukloni uvezenu povijest</button>`}</article>`;
+ return h}
+const seg=(name,items,cur,lab)=>`<div class="seg" role="group" aria-label="${lab}">${items.map(([v,l])=>`<button type="button" data-act="seg-${name}" data-v="${v}" aria-pressed="${cur===v}">${l}</button>`).join('')}</div>`;
+function renderProg(){const P=UI.prog;if(P.range==null)P.range=autoRange();
+ if(P.ds==='cycle'&&!P.picked&&mCount(P.metric)===0){const best=METRICS.map(([k])=>[k,mCount(k)]).sort((x,y)=>y[1]-x[1])[0];if(best&&best[1]>0)P.metric=best[0]}
+ let h=`<h1>Napredak</h1>`+seg('ds',[['cycle','Novi ciklus'],['hist','Povijest']],P.ds,'Skup podataka')+seg('seg',[['s','Snaga'],['w','Težina'],['m','Mjere'],['t','Treninzi i simptomi']],P.seg,'Prikaz');
+ if(P.ds==='cycle'&&(P.seg==='w'||P.seg==='m'))h+=seg('range',[['init',`${hs(CFG.start)}–${hs(WEND)}`],['full','Cijeli ciklus'],['last4','Zadnja 4 tj.']],P.range,'Razdoblje');
+ h+=P.ds==='hist'?(P.seg==='s'?`<p class="empty">Stara povijest iz Excela ne sadrži zapise radnih težina po vježbama (samo tjelesnu težinu i obujmove), pa se ovdje ne prikazuje nijedna radna težina.</p>`:progHist()):P.seg==='s'?progS():P.seg==='w'?progW():P.seg==='m'?progM():progT();
+ put($('#v-prog'),h);UI.histMsg=UI.hist?UI.histMsg:null}
+/* ===================== IZVJEŠTAJ I IZVOZ ===================== */
+function sessLines(i,s){const rx=rxOf(s,i),L=[],when=s.closedAt?hdt(s.closedAt):s.updatedAt?'zadnja izmjena '+hdt(s.updatedAt):'';
+ L.push(`T${wkOf(i)}·${kOf(i)} (${i+1}/${N}) · ${ST[s.status]}${when?' · '+when:''}${s.closeReason?' · razlog: '+RSN[s.closeReason]:''}`);
+ rx.forEach(it=>{const e=s.ex[it.k]||{},x=exState(it,e);let l=`  ${it.n}: ${EXST[x]}`;if(x==='omitted')l+=` (${OLAB[e.omit]})`;
+  if(x==='done'||x==='short'){const pv=prevOcc(it.k,i);if(pv&&exHasData(e)){const c=cmpSets(it,e,pv.it,pv.e);l+=` [usporedba s ${hs(ymdOf(pv.s.closedAt))}: ${c.ok?c.txt:'nije usporedivo – '+c.why}]`}}
+  if(x==='done'||x==='short')l+=`${e.dev?' · sprava: '+e.dev:''} · ${setsTxt(it,e)} · RIR ${e.rir!=null?rirTxt(e.rir):'–'} · tegobe ${e.sym||'–'}`;L.push(l)});
+ REGIONS.forEach(([r])=>{const v=s.sym[r];if(v&&Object.keys(v).length)L.push(`  Tegobe – ${RSHORT[r]} (${v.side?SLAB[v.side]:'strana –'}): prije ${v.before??'–'}, tijekom ${v.during??'–'}, nakon ${v.after??'–'}${v.ex?' · uz '+EX[v.ex].n:''}`)});
+ (s.follow||[]).forEach(f=>L.push('  Kontrola: '+followLine(f)));
+ if(s.note.trim())L.push('  Napomena: '+s.note.trim());if(s.closeNote)L.push('  Bilješka uz zatvaranje: '+s.closeNote);
+ const nc=S.audit.filter(a=>a.kind==='session_correction'&&a.ref===i);if(nc.length)L.push(`  Ispravci: ${nc.length} (${nc.map(a=>a.reason).join('; ')})`);
+ return L}
+function report(range){const t=today(),from=range==='14'?addD(t,-13):null,c=counts(),A=activeIdx(),L=[];
+ L.push(`${CFG.clientName} · ciklus od ${hd(CFG.start)} · izvještaj ${hdt(Date.now())}${TEST?' · TESTNI PODACI':''}`);
+ L.push(from?`Raspon: zadnjih 14 dana (${hd(from)} – ${hd(t)})`:'Raspon: cijeli ciklus do sada');
+ L.push(`Program: gornji dio ${weeklyVolume().upperTotal} serija tjedno, donji ${weeklyVolume().lowerActive} dinamičkih + izometrija ${weeklyVolume().iso}× (ne broji se)${Object.keys(PLAN.dose||{}).filter(k=>PLAN.dose[k]&&typeof PLAN.dose[k]==='object').length?' · iznimke doze (trener): '+Object.keys(PLAN.dose).filter(k=>PLAN.dose[k]&&typeof PLAN.dose[k]==='object').map(k=>EX[k]?EX[k].n+' '+PLAN.dose[k].sets+' ser.':k).join(', '):''}`);
+ L.push(`Ciklus: ${hd(CFG.start)} – ${hd(CFG.expiresAt)} (12 kalendarskih tjedana; preskakanje ne produljuje ciklus)${cycleEnded()?' · ZAVRŠEN KALENDARSKI':''}`);
+ L.push(A>=N?`Položaj: plan završen (${N}/${N} zatvoreno)`:cycleEnded()?`Položaj: ciklus završio ${hd(CFG.expiresAt)} sa ${counts().closed}/${N} zatvorenih; nezatvoreno ${N-counts().closed} (ne nadoknađuje se); prvi nezatvoreni: tjedan ${wkOf(A)} · Trening ${kOf(A)}`:`Položaj: programski tjedan ${wkOf(A)} · Trening ${kOf(A)} (${A+1}/${N}) · ${ST[S.sessions[A].status]}`);
+ L.push(`Potpuno odrađeno ${c.completed}/${N} · zatvoreno ${c.closed}/${N} · djelomično ${c.partial} · prekinuto zbog boli ${c.skipped_pain} · po dogovoru s trenerom ${c.excused_by_coach}`);
+ if(t>=CFG.start)L.push(t>CFG.expiresAt?`Kalendar: ciklus završio ${hd(CFG.expiresAt)} (svih ${CFG.weeks} kalendarskih tjedana je prošlo)`:`Kalendar: ${dd(CFG.start,t)+1}. dan od ${CFG.windowDays}, ${Math.floor(dd(CFG.start,t)/7)+1}. od ${CFG.weeks} kalendarskih tjedana`);
+ {const g=goalStat();L.push('','CILJ TJELESNE TEŽINE',`Cilj: ${kg1(g.target)} kg do ${hd(g.date)}`);
+  if(!g.n)L.push(g.ended?'U ciklusu nije zabilježena tjelesna težina.':'Početna težina ciklusa još nije upisana.');
+  else{L.push(`Početna težina ciklusa: ${kg1(g.start)} kg (${hd(g.startD)})`,`${g.ended?'Rezultat ciklusa':'Zadnja težina'}: ${kg1(g.latest)} kg (${hd(g.latestD)})`,`Promjena: ${sg1(g.change)} kg`,g.reached?'Cilj dosegnut':`Do cilja: ${kg1(g.remaining)} kg`);if(g.pct!=null)L.push(`Napredak prema cilju: ${g.pct}%`)}}
+ const rg=regularity().filter(r=>!from||r.b>=from);if(rg.length){L.push('','REDOVITOST (kalendarski tjedni, planirano 4)');rg.forEach(r=>L.push(`Tj. ${r.w} (${hs(r.a)}–${hs(r.b)})${r.cur?' u tijeku':''}: potpuno ${r.completed}, djelomično ${r.partial}, zbog boli ${r.skipped_pain}, po dogovoru ${r.excused_by_coach}`))}
+ L.push('','TRENINZI');let any=false;
+ S.sessions.forEach((s,i)=>{if(s.status==='not_started')return;const ts=s.follow&&s.follow.length?Math.max(s.closedAt||0,s.updatedAt||0,...s.follow.map(f=>f.at)):(s.closedAt||s.updatedAt);if(from&&!(ts&&ymdOf(ts)>=from))return;any=true;L.push(...sessLines(i,s),'')});
+ if(!any)L.push('Nema treninga u rasponu.','');
+ L.push('VAGANJE');const all=wPoints(),wp=all.filter(p=>!from||p.d>=from);
+ if(!wp.length)L.push('Nema upisa.');else{const tot=totalCh(wp);L.push(tot?`Prvi ${hd(tot.f.d)} ${fm(tot.f.kg)} kg · zadnji ${hd(tot.l.d)} ${fm(tot.l.kg)} kg · promjena ${sgn(tot.ch)} kg · upisa ${tot.n}`:`Jedan upis: ${hd(wp[0].d)} ${fm(wp[0].kg)} kg (nema trenda)`);
+  weekly(all,CFG.start,t<CFG.start?CFG.start:t).filter(w=>!from||w.b>=from).forEach(w=>L.push(`Tj. ${w.w} (${hs(w.a)}–${hs(w.b)}): ${w.avg!=null?'prosjek '+fm(w.avg)+' kg (n='+w.n+')':'nema upisa'}`))}
+ L.push('','OBUJMOVI (cm)');const ms=Object.keys(S.meas).sort().filter(d=>!from||d>=from);
+ if(!ms.length)L.push('Nema upisa.');else ms.forEach(d=>{const m=S.meas[d];L.push(`${hd(d)}: `+METRICS.filter(([k])=>m.v[k]!=null).map(([k,l])=>`${l.toLowerCase()} ${fm(m.v[k])}${UNI.has(k)?` (${m.side[k]?SLAB[m.side[k]]:'strana –'}${m.proto[k]?', '+m.proto[k]:''})`:''}`).join(' · ')+(m.note?' · '+m.note:''))});
+ return L.join('\n')}
+function csvText(){const H=['tip','datum','vrijeme','trening_br','prog_tjedan','trening','status','vjezba','serija','kg','ponavljanja','rir','tegobe_vjezba','stanje_vjezbe','regija','strana','faza','bol','sati_nakon','mjera','cm','strana_mjere','mjerno_mjesto','napomena'];
+ const rows=[],R=o=>rows.push(H.map(k=>o[k]==null?'':o[k]));
+ S.sessions.forEach((s,i)=>{if(s.status==='not_started')return;const ts=s.closedAt||s.updatedAt,base={datum:ts?ymdOf(ts):'',vrijeme:ts?ht(ts):'',trening_br:i+1,prog_tjedan:wkOf(i),trening:kOf(i),status:s.status};
+  R(Object.assign({},base,{tip:'trening',napomena:[s.closeReason?'razlog: '+RSN[s.closeReason]:'',s.note,s.closeNote].filter(Boolean).join(' | ')}));
+  rxOf(s,i).forEach(it=>{const e=s.ex[it.k]||{},x=exState(it,e);R(Object.assign({},base,{tip:'vjezba',vjezba:it.n,kg:isLegacy(e)?dec(e.kg):'',rir:e.rir,tegobe_vjezba:e.sym,stanje_vjezbe:x+(e.omit?':'+e.omit:''),napomena:e.dev?'sprava: '+e.dev:''}));
+   Array.from({length:it.sets},(_,j)=>j).forEach(j=>{const v=(e.reps||[])[j],kv=setKg(e,j);if(v!=null||kv!=null)R(Object.assign({},base,{tip:'serija',vjezba:it.n,serija:j+1,kg:kv!=null?dec(kv):'',ponavljanja:v,napomena:isLegacy(e)?'stari zapis: jedna kilaža za sve serije':''}))})});
+  REGIONS.forEach(([r])=>{const v=s.sym[r];if(!v)return;let any=false;PHK.forEach(p=>{if(v[p]!=null){any=true;R(Object.assign({},base,{tip:'simptom',regija:r,strana:v.side,faza:p,bol:v[p]}))}});if(!any)R(Object.assign({},base,{tip:'simptom',regija:r,strana:v.side}))});
+  (s.follow||[]).forEach(f=>{const fb=Object.assign({},base,{datum:ymdOf(f.at),vrijeme:ht(f.at),tip:'kontrola',faza:phaseName(f.hours),sati_nakon:dec(f.hours)});
+   R(Object.assign({},fb,{napomena:`hod lošiji: ${f.gait||''}; sjedenje lošije: ${f.sit||''}${f.note?'; '+f.note:''}`}));
+   REGIONS.forEach(([r])=>{const x=f.reg[r];if(x)R(Object.assign({},fb,{regija:r,strana:x.side,bol:x.pain}))})})});
+ Object.keys(S.weights).sort().forEach(d=>R({tip:'vaganje',datum:d,kg:dec(S.weights[d].kg),napomena:S.weights[d].note}));
+ Object.keys(S.meas).sort().forEach(d=>{const m=S.meas[d];METRICS.forEach(([k])=>{if(m.v[k]!=null)R({tip:'mjera',datum:d,mjera:k,cm:dec(m.v[k]),strana_mjere:m.side[k],mjerno_mjesto:m.proto[k],napomena:m.note})})});
+ const q=v=>{v=String(v);if(/^[=+\-@\t\r]/.test(v)&&!/^-?\d+([.,]\d+)?$/.test(v))v="'"+v;return /[;"\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+ return '﻿'+[H].concat(rows).map(r=>r.map(q).join(';')).join('\r\n')}
+function download(name,text,type){try{const b=new Blob([text],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},1500);return true}catch(e){return false}}
+function copyText(txt,ta){const fb=()=>{try{if(!ta)return false;ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);return !!document.execCommand('copy')}catch(x){return false}};
+ try{if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(txt).then(()=>true,()=>fb())}catch(x){}return Promise.resolve(fb())}
+const stamp=()=>{const d=new Date();return today().replace(/-/g,'')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')};
+function vBackup(o){if(!o||typeof o!=='object'||Array.isArray(o))return{err:'neispravna struktura'};
+ if(o.format!=='coaching-backup')return{err:o.log&&('w' in o)?'to je kopija iz druge aplikacije (drugi klijent, stari format)':'nepoznat format kopije'};
+ if(o.clientId!==CFG.clientId)return{err:'kopija pripada drugoj klijentici'};if(o.cycleId!==CFG.cycleId)return{err:'kopija pripada drugom ciklusu'};
+ if(o.schemaVersion!==SCHEMA&&o.schemaVersion!==SCHEMA_OLD)return{err:'nepoznata verzija sheme'};if(!!o.test!==TEST)return{err:TEST?'kopija nije iz testnog načina':'kopija je iz testnog načina'};
+ const r=vState(o.data,true);return r.err?{err:r.err}:{X:r.S}}
+function vHistoryFile(o){if(!o||typeof o!=='object'||!Array.isArray(o.records))return{err:'Datoteka nema popis zapisa.'};
+ const nm=o.newCycleConfiguration&&o.newCycleConfiguration.clientDisplayName;if(nm!==CFG.clientName)return{err:'Datoteka ne pripada ovoj klijentici.'};
+ if(o.importScope!=null&&o.importScope!=='historical_records_only')return{err:'Nepoznat opseg uvoza.'};
+ const ids=new Set(),recs=[];
+ for(const r of o.records){if(r&&r.useAsNewBaseline===true)return{err:'Zapis je označen kao nova početna vrijednost – to nije dopušteno.'};
+  const c=vHistRec(Object.assign({},r,{sourceFile:o.sourceFile}));if(!c)return{err:`Neispravan zapis${r&&r.id?' '+r.id:''}.`};if(ids.has(c.id))return{err:`Ponovljen zapis ${c.id}.`};ids.add(c.id);recs.push(c)}
+ return{recs,meta:{sourceFile:str(o.sourceFile,200),sha:str(o.sourceSha256,80),importEnabled:o.importEnabled,total:o.counts&&Number.isInteger(o.counts.totalScalarRecords)?o.counts.totalScalarRecords:null,dateIssue:recs.some(r=>r.issues.includes('conflicting_workbook_start_dates'))}}}
+/* ===================== ODMOR (timer iznad navigacije) ===================== */
+const TMR={end:0,iv:null,flash:0,ac:null,wl:null};
+async function wlock(){try{if('wakeLock' in navigator&&!TMR.wl){TMR.wl=await navigator.wakeLock.request('screen');TMR.wl.addEventListener('release',()=>{TMR.wl=null})}}catch(e){}}
+function wrel(){try{if(TMR.wl){const x=TMR.wl;TMR.wl=null;x.release&&x.release().catch(()=>{})}}catch(e){}}
+function beep(){try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}try{if(TMR.ac){TMR.ac.resume&&TMR.ac.resume();const o=TMR.ac.createOscillator(),g=TMR.ac.createGain();o.connect(g);g.connect(TMR.ac.destination);o.frequency.value=880;g.gain.value=.3;o.start();o.stop(TMR.ac.currentTime+.4)}}catch(e){}}
+function tPaint(){const el=$('#tm'),mini=$('#tmini'),run=!!TMR.iv,fl=Date.now()<TMR.flash;
+ if(run){const l=Math.max(0,Math.ceil((TMR.end-Date.now())/1000)),t=`${Math.floor(l/60)}:${String(l%60).padStart(2,'0')}`;$('#tmt').textContent=t;$('#tml').textContent='odmor';$('#tmb').textContent='Zaustavi';mini.textContent='Odmor '+t;mini.classList.add('on')}
+ else if(fl){$('#tmt').textContent='';$('#tml').textContent='Odmor je završen – kreni.';$('#tmb').textContent='U redu';mini.textContent='Odmor je završen';mini.classList.add('on')}
+ else mini.classList.remove('on');
+ const was=el.hidden;el.hidden=!(run||fl);if(was!==el.hidden)fit()}
+function tTick(){if(!TMR.iv)return;if(Date.now()>=TMR.end)tDone(document.hidden||Date.now()-TMR.end>1500);else tPaint()}
+function tDone(late){clearInterval(TMR.iv);TMR.iv=null;wrel();if(!late)beep();TMR.flash=Date.now()+4000;live('Odmor je završen.');tPaint();setTimeout(tPaint,4100)}
+function tStart(sec){wlock();try{if(!TMR.ac)TMR.ac=new(window.AudioContext||window.webkitAudioContext)();TMR.ac.resume&&TMR.ac.resume()}catch(e){}
+ clearInterval(TMR.iv);TMR.flash=0;TMR.end=Date.now()+sec*1000;TMR.iv=setInterval(tTick,250);live(`Odmor ${sec} sekundi je započeo.`);tPaint()}
+function tStop(){clearInterval(TMR.iv);TMR.iv=null;TMR.flash=0;wrel();tPaint()}
+/* raspored: prostor za navigaciju i timer da ne prekriju zadnji unos */
+function fit(){const r=document.documentElement.style,kb=document.body.classList.contains('kb'),nav=$('#nav'),tm=$('#tm');
+ r.setProperty('--navh',(kb?0:nav.offsetHeight)+'px');r.setProperty('--tmh',(kb||tm.hidden?0:tm.offsetHeight)+'px')}
+const COARSE=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+const TXT='input[type=text],input[type=date],textarea';
+document.addEventListener('focusin',e=>{const t=e.target;if(t.matches&&t.matches(TXT)){if(COARSE){document.body.classList.add('kb');fit()}setTimeout(()=>{try{t.scrollIntoView({block:'center',behavior:'smooth'})}catch(x){}},300)}});
+document.addEventListener('focusout',()=>{setTimeout(()=>{const a=document.activeElement;if(!(a&&a.matches&&a.matches(TXT))){document.body.classList.remove('kb');fit()}},60)});
+window.addEventListener('resize',fit);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&TMR.iv){wlock();tTick()}});/* nema automatskog prebacivanja treninga zbog proteklog vremena */
+window.addEventListener('pageshow',()=>{if(TMR.iv)tTick()});
+/* tooltipovi na grafu */
+function ttShow(el){const ch=el.closest('.ch'),tt=ch&&ch.querySelector('.tt');if(!tt)return;const a=el.getBoundingClientRect(),b=ch.getBoundingClientRect();tt.textContent=el.dataset.tt;tt.hidden=false;
+ tt.style.left=Math.max(70,Math.min(b.width-70,a.left+a.width/2-b.left))+'px';tt.style.top=(a.top-b.top+4)+'px'}
+document.addEventListener('pointerover',e=>{const t=e.target.closest&&e.target.closest('[data-tt]');if(t)ttShow(t)});
+document.addEventListener('pointerout',e=>{const t=e.target.closest&&e.target.closest('[data-tt]');if(t){const tt=t.closest('.ch').querySelector('.tt');if(tt)tt.hidden=true}});
+/* ===================== UNOS ===================== */
+function onField(t,commit){const T=tgt();if(!T)return;const s=T.s,i=T.i,f=t.dataset.f,k=t.dataset.k;
+ if(f==='kg'||f==='rep'){const it=rxOf(s,i).find(x=>x.k===k);if(!it||!it.active)return;const e=s.ex[k]||(s.ex[k]={});if(e.omit)return;
+  const ek=k+'|'+f+t.dataset.n;
+  if(f==='kg'&&!commit&&typingNum(t.value)){delete ERR[ek];t.classList.remove('bad');return}
+  let r=f==='kg'?pNum(t.value,400):it.kind==='iso'?pIntN(t.value,300):pInt(t.value,50);let v=null;
+  if(f==='kg'&&!r.err&&r.v===0&&!it.bw){if(!commit){delete ERR[ek];t.classList.remove('bad');return}r={err:'0 kg nije valjano za ovu vježbu – sprava ili sajla uvijek ima opterećenje. Upiši stvarnu kilažu.'}}
+  if(r.err){ERR[ek]=r.err;t.classList.add('bad');t.setAttribute('aria-invalid','true')}
+  else{delete ERR[ek];t.classList.remove('bad');t.removeAttribute('aria-invalid');v=r.v;if(commit&&v!=null)t.value=f==='kg'?fm(v):String(v)}
+  if(f==='kg'){const n=+t.dataset.n;if(!(n>=0&&n<it.sets))return;const a=kgList(e,it.sets);a[n]=v;delete e.kg;if(a.some(x=>x!=null))e.kgs=a;else delete e.kgs}
+  else{const n0=+t.dataset.n;if(!(n0>=0&&n0<it.sets))return;const n=+t.dataset.n,a=Array.from({length:it.sets},(_,j)=>{const x=(e.reps||[])[j];return x==null?null:x});a[n]=v;if(a.some(x=>x!=null))e.reps=a;else delete e.reps}
+  if(!Object.keys(e).length)delete s.ex[k];
+  touch(T);save();refreshDyn(k);refreshMeta();return}
+ if(f==='var'){const it=rxOf(s,i).find(x=>x.k===k);if(!it||!it.active||!it.vary)return;const e=s.ex[k]||(s.ex[k]={});if(VARK.has(t.value))e.var=t.value;else delete e.var;if(e.var!=='druga')delete e.varTxt;if(!Object.keys(e).length)delete s.ex[k];touch(T);save();renderTrain();return}
+ if(f==='vartxt'){const it=rxOf(s,i).find(x=>x.k===k);if(!it||!it.active||!it.vary)return;const e=s.ex[k]||(s.ex[k]={});const v=t.value.trim().slice(0,60);if(v)e.varTxt=v;else delete e.varTxt;touch(T);save();if(commit)renderTrain();else refreshDyn(k);return}
+ if(f==='xpain'){const it=rxOf(s,i).find(x=>x.k===k);if(!it||!it.active||!it.pht)return;const e=s.ex[k]||(s.ex[k]={});if(t.value==='')delete e.pain;else e.pain=+t.value;if(!Object.keys(e).length)delete s.ex[k];touch(T);save();refreshDyn(k);return}
+ if(f==='dev'){const it=rxOf(s,i).find(x=>x.k===k);if(!it||!it.active)return;const e=s.ex[k]||(s.ex[k]={});const v=t.value.trim().slice(0,60);if(v)e.dev=v;else delete e.dev;if(!Object.keys(e).length)delete s.ex[k];touch(T);save();refreshDyn(k);return}
+ if(f==='note'){s.note=t.value.slice(0,1000);touch(T);save();refreshMeta();return}
+ if(f==='side'||f==='pain'||f==='symex'){const r=t.dataset.r;if(!RK.has(r))return;const o=s.sym[r]||(s.sym[r]={}),val=t.value;
+  if(f==='side'){if(SIDEK.has(val))o.side=val;else delete o.side}
+  else if(f==='pain'){const p=t.dataset.p;if(!PHK.includes(p))return;if(val==='')delete o[p];else o[p]=+val}
+  else{if(EX[val])o.ex=val;else delete o.ex}
+  if(!Object.keys(o).length)delete s.sym[r];touch(T);save();rxOf(s,i).forEach(it=>refreshDyn(it.k));refreshMeta()}}
+document.addEventListener('input',e=>{const t=e.target;if(t.tagName==='SELECT')return;if(t.dataset&&t.dataset.f)onField(t,false)});
+document.addEventListener('change',e=>{const t=e.target;
+ if(t.type==='file'){readFile(t);return}
+ if(t.dataset&&t.dataset.f){onField(t,true);return}
+ if(t.id==='xsel'){UI.prog.ex=EX[t.value]?t.value:null;renderProg();return}
+ if(t.id==='gsel'){(UI.prog.grp||(UI.prog.grp={}))[UI.prog.ex]=t.value;renderProg();return}
+ if(t.id==='msel'){UI.prog.metric=MK.has(t.value)?t.value:'waist_cm';UI.prog.picked=true;renderProg()}});
+function readFile(inp){const f=inp.files&&inp.files[0];if(!f)return;if(f.size>5e6){if(inp.id==='hfile'){UI.histMsg={t:'Datoteka je prevelika.'};renderProg()}else{UI.rmsg={t:'Datoteka je prevelika.'};renderHome()}return}
+ const rd=new FileReader();rd.onload=()=>{const txt=String(rd.result||'');
+  if(inp.id==='rfile'){const ta=$('#rtext');if(ta)ta.value=txt;ACT.rcheck();return}
+  if(inp.id==='hfile'){let o=null;try{o=JSON.parse(txt)}catch(e){}if(!o){UI.histMsg={t:'Datoteka nije valjan JSON.'};renderProg();return}
+   const r=vHistoryFile(o);if(r.err){UI.hist=null;UI.histMsg={t:r.err+' Ništa nije uvezeno.'};renderProg();return}
+   UI.hist={recs:r.recs,meta:r.meta,fileName:f.name};UI.histMsg=null;renderProg();window.scrollTo(0,0)}};
+ rd.onerror=()=>{UI.histMsg={t:'Datoteku nije moguće pročitati.'};renderProg()};rd.readAsText(f)}
+function resetT(){UI.copen=null;UI.finErr=null;UI.omitOpen=null;UI.corrAsk=false}
+function blockedByCorr(i){if(UI.CORR&&i!==UI.CORR.i){UI.msg.nav='Prvo spremi ispravak ili odustani.';renderTrain();return true}return false}
+function keepWForm(){UI.wEdit={d:$('#wd')?$('#wd').value:null,kg:pNum($('#wkg')?$('#wkg').value:'',400).v,note:$('#wnote')?$('#wnote').value:''}}
+function readMForm(){const o={d:$('#md').value,v:{},side:{},proto:{},note:$('#mnote').value.trim().slice(0,300),cp:UI.mCp||null},errs=[];
+ METRICS.forEach(([k,l])=>{const r=pNum($('#m-'+k).value,300,5);if(r.err){errs.push(`${l}: ${r.err}`);o.v[k]=null}else o.v[k]=r.v;
+  if(UNI.has(k)){o.side[k]=$('#ms-'+k).value||null;o.proto[k]=$('#mp-'+k).value.trim().slice(0,80);if(o.v[k]!=null&&!o.side[k])errs.push(`${l}: odaberi stranu.`)}});
+ return{o,errs}}
+function putM(o){const old=S.meas[o.d],snap={v:{},side:{},proto:{},note:o.note,at:Date.now(),prev:[]};
+ METRICS.forEach(([k])=>{snap.v[k]=o.v[k];if(UNI.has(k)){snap.side[k]=o.v[k]!=null?o.side[k]:null;snap.proto[k]=o.v[k]!=null?o.proto[k]:''}});
+ if(old){snap.prev=(old.prev||[]).concat([{v:old.v,side:old.side,proto:old.proto,note:old.note,at:old.at}]).slice(-10);S.audit.push({at:Date.now(),kind:'meas_replace',ref:o.d,before:old})}
+ snap.cp=o.cp||null;S.meas[o.d]=snap;UI.mPend=null;UI.mEdit=null;UI.fo.m=false;UI.mCp=null;const ok=save();UI.msg.m={ok,t:ok?`Spremljene mjere za ${hd(o.d)}${old?' (zamijenjen raniji upis)':''}.`:'Spremanje nije uspjelo.'};renderProg()}
+function putW(d,kg,note){const old=S.weights[d];S.weights[d]={kg,note,at:Date.now(),prev:old?(old.prev||[]).concat([{kg:old.kg,note:old.note,at:old.at}]).slice(-20):[]};
+ if(old)S.audit.push({at:Date.now(),kind:'weight_replace',ref:d,before:old});UI.wPend=null;UI.wEdit=null;UI.fo.w=false;const ok=save();
+ UI.msg.w={ok,t:ok?`Spremljeno: ${hd(d)} · ${fm(kg)} kg${old?` (zamijenjeno ${fm(old.kg)} kg)`:''}.`:'Spremanje nije uspjelo.'};renderProg()}
+function demoSessions(st){const base={neutral_lat_pulldown:40,bilateral_chest_supported_row:35,machine_preacher_curl:15,horizontal_machine_chest_press:30,machine_shoulder_press:20,machine_lateral_raise:8,rope_triceps_pushdown:15,reverse_pec_deck:15,cable_biceps_curl:10,incline_machine_chest_press:25,pec_deck:25,hamstring_curl:20,hip_abductor_machine:35,leg_extension:25,hip_adductor_machine:30,glute_bridge:0};
+ /* [dan od početka, način]: flat = ista kilaža, part = 2 od 3 serije uz veću kilažu (NIJE napredak), mix = različite kilaže po serijama */
+ const P=[[0,'flat'],[1,'flat'],[3,'flat'],[4,'flat'],[7,'part'],[8,'flat'],[10,'mix']];
+ P.forEach(([o,m],i)=>{const s=S.sessions[i];if(s.status!=='not_started')return;const rx=buildRx(kOf(i));s.rx=rx;s.planVersion=PLAN.version;const t=new Date(addD(st,o)+'T10:00:00').getTime();s.startedAt=t-3600000;
+  rx.filter(it=>it.active).forEach(it=>{const b=base[it.k]!=null?base[it.k]:10,n=it.sets;if(it.kind==='iso'){s.ex[it.k]={reps:Array(n).fill(m==='part'?null:35).map((v,j)=>m==='part'&&j<2?30:v),sym:'ne',pain:1};return}
+   if(m==='part')s.ex[it.k]={kgs:Array.from({length:n},(_,j)=>j<2?b+5:null),reps:Array.from({length:n},(_,j)=>j<2?it.repsMin:null),rir:2,sym:'ne',var:'lezeci'};
+   else if(m==='mix')s.ex[it.k]={kgs:Array.from({length:n},(_,j)=>j<n-1?b+2.5:b),reps:Array.from({length:n},(_,j)=>j<n-1?it.repsMin+1:it.repsMax),rir:2,sym:'ne',var:'lezeci'};
+   else s.ex[it.k]={kgs:Array(n).fill(b),reps:Array.from({length:n},(_,j)=>Math.max(it.repsMin,it.repsMax-j-(i>1?0:1))),rir:3,sym:'ne',var:'lezeci'}});
+  s.status=m==='part'?'partial':'completed';if(m==='part'){s.closeReason='time';s.closeNote='demo: nedostatak vremena'}s.closedAt=t;s.updatedAt=t})}
+const ACT={
+ continue(){UI.view=Math.min(activeIdx(),N-1);resetT();go('train')},
+ nav(ds){if(blockedByCorr(-1))return;UI.view=Math.max(0,Math.min(N-1,UI.view+(+ds.v)));resetT();renderTrain()},
+ view(ds){const i=+ds.i;if(blockedByCorr(i))return;UI.view=i;resetT();renderTrain()},
+ toactive(){if(blockedByCorr(-1))return;UI.view=Math.min(activeIdx(),N-1);resetT();renderTrain();window.scrollTo(0,0)},
+ openS(ds){const i=+ds.i;if(UI.CORR&&UI.CORR.i!==i){UI.msg.nav='Prvo spremi ispravak ili odustani.';go('train');return}UI.view=i;resetT();go('train')},
+ rir(ds){const T=tgt();if(!T)return;const e=exE(T,ds.k);if(!e||e.omit)return;const v=+ds.v;if(e.rir===v)delete e.rir;else e.rir=v;touch(T);save();paintGrp('rir-'+ds.k,e.rir);refreshDyn(ds.k);refreshMeta()},
+ exsym(ds){const T=tgt();if(!T)return;const e=exE(T,ds.k);if(!e||e.omit)return;if(e.sym===ds.v)delete e.sym;else e.sym=ds.v;touch(T);save();paintGrp('sym-'+ds.k,e.sym);refreshDyn(ds.k);refreshMeta()},
+ varlast(ds){const T=tgt();if(!T)return;const e=exE(T,ds.k);if(!e)return;const p=prevOcc(ds.k,T.i);if(!p||!varOk(p.e))return;e.var=p.e.var;if(p.e.var==='druga')e.varTxt=p.e.varTxt;touch(T);save();renderTrain()},
+ kgall(ds){const T=tgt();if(!T)return;const e=exE(T,ds.k);if(!e||e.omit)return;const it=rxOf(T.s,T.i).find(x=>x.k===ds.k);if(!it)return;const a=kgList(e,it.sets),v=a[0];if(v==null)return;e.kgs=a.map(x=>x==null?v:x);delete e.kg;touch(T);save();renderTrain()},
+ omit(ds){UI.omitOpen=ds.k;renderTrain()},
+ omitx(){UI.omitOpen=null;renderTrain()},
+ omitr(ds){const T=tgt();if(!T)return;const e=exE(T,ds.k);if(!e)return;UI.omitOpen=null;if(exHasData(e)||!OMITK.has(ds.v)){renderTrain();return}e.omit=ds.v;delete e.sym;delete e.rir;touch(T);save();renderTrain()},
+ unomit(ds){const T=tgt();if(!T)return;const e=exE(T,ds.k);if(!e)return;delete e.omit;if(!Object.keys(e).length)delete T.s.ex[ds.k];touch(T);save();renderTrain()},
+ rest(ds){tStart(+ds.v)},
+ tstop(){tStop()},
+ finish(ds){const i=+ds.i,T=tgt();if(!T||T.corr||T.i!==i)return;
+  if(!isValid(T.s,rxOf(T.s,i))){UI.finErr=i;refreshMeta();const m=$('#closemain');if(m)m.scrollIntoView({block:'center'});return}
+  const r=closeSession(i,'completed');if(r.ok)afterClose(i);else{UI.finErr=null;const m=$('#closemain');if(m){let e=m.querySelector('.er.sv');if(!e){e=document.createElement('p');e.className='er sv';e.setAttribute('role','alert');m.prepend(e)}e.textContent=r.err}}},
+ copen(ds){const T=tgt();if(!T||T.corr)return;UI.copen=ds.v;setH($('#closecf'),closeCf(T.i,T.s,rxOf(T.s,T.i),UI.copen));const c=$('#cf');if(c)c.scrollIntoView({block:'start'})},
+ ccancel(){UI.copen=null;setH($('#closecf'),'')},
+ cconfirm(ds){const i=+ds.i,st=ds.st,T=tgt();if(!T||T.corr||T.i!==i)return;const rs=$('#creason'),nt=$('#cnote'),er=$('#cerr');
+  const reason=st==='skipped_pain'?'pain':(rs?rs.value:null);
+  if(st==='partial'&&!reason){er.hidden=false;er.textContent='Odaberi razlog.';return}
+  const r=closeSession(i,st,reason,nt?nt.value:'');if(r.ok)afterClose(i);else{er.hidden=false;er.textContent=r.err}},
+ corrask(){UI.corrAsk=true;renderTrain();const t=$('#corrr');if(t)t.focus()},
+ corrstart(ds){const i=+ds.i,s=S.sessions[i];if(!s||!isClosed(s))return;const reason=($('#corrr')?$('#corrr').value:'').trim();
+  if(reason.length<3){UI.msg.corr='Upiši razlog ispravka (najmanje 3 znaka).';renderTrain();return}
+  const w=clone(s);if(!w.rx){w.rx=buildRx(kOf(i));w.planVersion=w.planVersion||PLAN.version}
+  UI.CORR={i,reason:reason.slice(0,300),before:clone(s),work:w,st:s.status};UI.corrAsk=false;renderTrain();window.scrollTo(0,0)},
+ corrst(ds){if(!UI.CORR||!CLOSED.has(ds.v))return;UI.CORR.st=ds.v;setH($('#corrft'),corrFooter())},
+ corrsave(){const C=UI.CORR;if(!C)return;const w=C.work,rx=rxOf(w,C.i);
+  if(C.st==='completed'&&!corrOk(C,rx)){UI.msg.corr='Status „potpuno odrađen” traži sve obvezne podatke (serije, RIR, tegobe, bol kod vježbi za stražnju ložu). Odaberi drugi status ili dopuni zapis.';setH($('#corrft'),corrFooter());UI.msg.corr=null;return}
+  if(C.st==='skipped_pain'&&hasWork(w)){UI.msg.corr='Status „prekinut zbog boli prije rada” nije moguć kad postoje upisane serije.';setH($('#corrft'),corrFooter());UI.msg.corr=null;return}
+  w.status=C.st;w.correctedAt=Date.now();const oldS=S.sessions[C.i],na=S.audit.length;S.audit.push({at:Date.now(),kind:'session_correction',ref:C.i,reason:C.reason,before:C.before});S.sessions[C.i]=w;
+  const ok=save();if(!ok){S.sessions[C.i]=oldS;S.audit.length=na;UI.msg.corr='Spremanje ispravka nije uspjelo – ništa nije promijenjeno. Preuzmi kopiju i pokušaj ponovno.';paintSave();setH($('#corrft'),corrFooter());UI.msg.corr=null;live('Spremanje ispravka nije uspjelo.');return}
+  UI.CORR=null;live('Ispravak je spremljen.');renderTrain()},
+ corrcancel(){UI.CORR=null;UI.corrAsk=false;UI.msg.corr=null;renderTrain()},
+ fsave(ds){const i=+ds.i,s=S.sessions[i];if(!s||!isClosed(s))return;const box=document.querySelector(`[data-ff="${i}"]`);if(!box)return;
+  const reg={};let any=false;REGIONS.forEach(([r])=>{const sd=box.querySelector(`[data-ffs="${r}"]`).value,p=box.querySelector(`[data-ffp="${r}"]`).value;if(sd||p!==''){reg[r]={side:SIDEK.has(sd)?sd:null,pain:p===''?null:+p};any=true}});
+  const g=box.querySelector('[data-ffg]').value,si=box.querySelector('[data-ffsit]').value,nt=box.querySelector('[data-ffn]').value.trim();
+  if(!any&&!g&&!si&&!nt){const er=box.querySelector('[data-fferr]');er.hidden=false;er.textContent='Nije upisan nijedan odgovor.';return}
+  const now=Date.now(),hrs=r1((now-s.closedAt)/36e5),f={at:now,hours:hrs,reg,gait:g||null,sit:si||null,note:nt.slice(0,500)};f.partial=!fComplete(f);s.follow.push(f);const ok=save();
+  const worse=fWorse(s,f),pev=painEval(s,f),unk=pev.filter(x=>x.st==='unknown');
+  UI.msg.follow=!ok?'Spremanje nije uspjelo.':f.partial?`Spremljeno kao DJELOMIČAN odgovor (${phaseName(hrs)}, ${fm(hrs)} h): za punu kontrolu odgovori na hod, sjedenje i bol, a uz bol veću od 0 izaberi stranu (lijevo, desno, obje ili „ne znam”). Kontrola ostaje otvorena.`:`Spremljeno: ${phaseName(hrs)} (${fm(hrs)} h nakon treninga).`+(worse?' Zabilježeno je pogoršanje prema dogovorenom pravilu: ne povećavaj dozu – smanji opterećenje, volumen i/ili provokativni opseg i javi treneru. Upiši i kontrolu za otprilike 24 sata. Pogledaj kada potražiti pregled.':'')+(unk.length?` Za ${unk.map(x=>RSHORT[x.r]).join(', ')} nedovoljno je podataka za usporedbu (${unk.map(x=>x.why).join('; ')}) – to nije potvrda da nema pogoršanja.`:'');
+  if(!ok){s.follow.pop();paintSave()}
+  renderHome();const fu=$('#fu');if(fu)fu.scrollIntoView({block:'start'})},
+ gomeas(ds){UI.prog.ds='cycle';UI.prog.seg=ds.v==='m'?'m':'w';if(ds.v==='m'){UI.fo.m=true;UI.mCp=ds.cp&&/^cp\d{1,4}$/.test(ds.cp)?ds.cp:null}else UI.fo.w=true;go('prog');const f=$(ds.v==='m'?'#mform':'#wform');if(f)f.scrollIntoView({block:'start'})},
+ wnew(){UI.fo.w=true;renderProg();const f=$('#wform');if(f)f.scrollIntoView({block:'start'})},
+ mnew(){UI.fo.m=true;UI.mCp=null;renderProg();const f=$('#mform');if(f)f.scrollIntoView({block:'start'})},
+ fclose(ds){UI.fo[ds.v==='m'?'m':'w']=false;if(ds.v==='m'){UI.mEdit=null;UI.mPend=null;UI.mCp=null}else{UI.wEdit=null;UI.wPend=null}UI.delPend=null;renderProg()},
+ pickmet(ds){if(MK.has(ds.v)){UI.prog.metric=ds.v;UI.prog.picked=true}renderProg()},
+ demoload(){if(!DEMO)return;const st=CFG.start,now=Date.now();
+  [[0,71.2],[2,71.0],[4,70.7],[7,70.9],[9,70.4],[11,70.3],[14,70.1]].forEach(([o,kg])=>{S.weights[addD(st,o)]={kg,note:'demo',at:now,prev:[]}});
+  [[0,'cp0',[90,72,84,96,55,36,29,25,34]],[15,'cp15',[90.5,71.5,83,96,55.5,36,29.5,25,34]]].forEach(([o,cp,v])=>{const m={v:{},side:{},proto:{},note:'demo',at:now,prev:[],cp};METRICS.forEach(([k],j)=>{m.v[k]=v[j];if(UNI.has(k)){m.side[k]='D';m.proto[k]='demo mjesto'}});S.meas[addD(st,o)]=m});
+  demoSessions(st);const ok=save();UI.msg.m=null;renderHome()},
+ 'seg-ds'(ds){UI.prog.ds=ds.v==='hist'?'hist':'cycle';UI.delPend=null;renderProg()},
+ 'seg-seg'(ds){UI.prog.seg=['s','w','m','t'].includes(ds.v)?ds.v:'w';UI.delPend=null;renderProg()},
+ 'seg-sm'(ds){UI.prog.sm=SMET[ds.v]?ds.v:'kg';renderProg()},
+ 'seg-range'(ds){UI.prog.range=ds.v==='full'?'full':ds.v==='last4'?'last4':'init';renderProg()},
+ wsave(){const d=$('#wd').value,r=pNum($('#wkg').value,400,20),note=$('#wnote').value.trim().slice(0,300),de=vDate(d);keepWForm();
+  if(de){UI.msg.w={t:de};renderProg();return}
+  if(r.err||r.v==null){UI.msg.w={t:r.err||'Upiši težinu u kg (npr. 82,5).'};renderProg();return}
+  if(S.weights[d]){UI.wPend={d,kg:r.v,note};UI.wEdit={d,kg:r.v,note};renderProg();return}
+  putW(d,r.v,note)},
+ wconfirm(){const P=UI.wPend;if(!P)return;putW(P.d,P.kg,P.note)},
+ wcancel(){UI.wPend=null;UI.delPend=null;renderProg()},
+ wedit(ds){const w=S.weights[ds.d];if(!w)return;UI.fo.w=true;UI.wEdit={d:ds.d,kg:w.kg,note:w.note};UI.wPend=null;UI.delPend=null;renderProg();const f=$('#wform');if(f)f.scrollIntoView({block:'start'})},
+ wdel(){UI.delPend='w';keepWForm();renderProg()},
+ wdelok(){const d=UI.wEdit&&UI.wEdit.d;if(!d||!S.weights[d])return;S.audit.push({at:Date.now(),kind:'weight_delete',ref:d,before:S.weights[d]});delete S.weights[d];UI.wEdit=null;UI.delPend=null;const ok=save();UI.msg.w={ok,t:ok?`Obrisano vaganje za ${hd(d)}.`:'Spremanje nije uspjelo.'};renderProg()},
+ msave(){const {o,errs}=readMForm(),de=vDate(o.d);UI.mEdit=o;
+  if(de)errs.unshift(de);if(!errs.length&&!METRICS.some(([k])=>o.v[k]!=null))errs.push('Upiši barem jednu mjeru.');
+  if(errs.length){UI.msg.m={t:errs.join(' ')};renderProg();return}
+  if(S.meas[o.d]){UI.mPend=o;renderProg();return}
+  putM(o)},
+ mconfirm(){const P=UI.mPend;if(!P)return;putM(P)},
+ mcancel(){UI.mPend=null;UI.delPend=null;renderProg()},
+ medit(ds){const m=S.meas[ds.d];if(!m)return;UI.fo.m=true;UI.mCp=m.cp||null;UI.mEdit={d:ds.d,v:Object.assign({},m.v),side:Object.assign({},m.side),proto:Object.assign({},m.proto),note:m.note};UI.mPend=null;UI.delPend=null;UI.prog.seg='m';renderProg();const f=$('#mform');if(f)f.scrollIntoView({block:'start'})},
+ mdel(){UI.delPend='m';renderProg()},
+ mfree(){try{UI.mEdit=readMForm().o}catch(e){}UI.mCp=null;if(UI.mEdit)UI.mEdit.cp=null;renderProg()},
+ cpdefer(ds){if(!/^cp\d{1,4}$/.test(ds.id))return;S.cpAct[ds.id]={kind:'defer',at:Date.now(),until:addD(today(),7)};save();render()},
+ cpomit(ds){if(!/^cp\d{1,4}$/.test(ds.id))return;S.cpAct[ds.id]={kind:'omit',at:Date.now()};save();render()},
+ cpundo(ds){delete S.cpAct[ds.id];save();render()},
+ fskip(ds){const i=+ds.i;if(!Number.isInteger(i)||i<0||i>=N)return;S.fuSkip[i]={at:Date.now()};save();renderHome()},
+ refreshday(){DIRTY=false;UI.stale=false;setH($('#stale'),'');render()},
+ mdelok(){const d=UI.mEdit&&UI.mEdit.d;if(!d||!S.meas[d])return;S.audit.push({at:Date.now(),kind:'meas_delete',ref:d,before:S.meas[d]});delete S.meas[d];UI.mEdit=null;UI.delPend=null;const ok=save();UI.msg.m={ok,t:ok?`Obrisane mjere za ${hd(d)}.`:'Spremanje nije uspjelo.'};renderProg()},
+ himport(){const H=UI.hist;if(!H)return;if(!$('#hok').checked){UI.histMsg={t:'Najprije potvrdi da su datumi provjereni.'};renderProg();return}
+  const have=new Set(S.history.records.map(r=>r.id)),now=Date.now();let add=0,skip=0;
+  H.recs.forEach(r=>{if(have.has(r.id)){skip++;return}S.history.records.push(Object.assign({},r,{dateStatus:'confirmed_by_user',confirmedAt:now}));add++});
+  S.history.importedAt=S.history.importedAt||now;S.history.sourceFile=H.meta.sourceFile;S.history.sourceSha256=H.meta.sha||null;S.audit.push({at:now,kind:'history_import',added:add,skipped:skip});
+  UI.hist=null;const ok=save();UI.histMsg={ok,t:ok?`Uvezeno ${add} zapisa${skip?`, ${skip} je već postojalo i nije duplicirano`:''}.`:'Spremanje nije uspjelo.'};renderProg()},
+ hcancel(){UI.hist=null;UI.histMsg=null;UI.delPend=null;renderProg()},
+ hdel(){UI.delPend='h';renderProg()},
+ hdelok(){S.audit.push({at:Date.now(),kind:'history_remove',count:S.history.records.length});S.history={records:[],importedAt:null,sourceFile:null,sourceSha256:null};UI.delPend=null;const ok=save();UI.histMsg={ok,t:ok?'Uvezena povijest je uklonjena s ovog uređaja.':'Spremanje nije uspjelo.'};renderProg()},
+ rprep(){const range=$('#rrange').value==='all'?'all':'14';UI.rep={range,txt:report(range)};renderHome();const r=$('#rep');if(r)r.scrollIntoView({block:'start'})},
+ async rcopy(){const R=UI.rep;if(!R)return;const ok=await copyText(R.txt,$('#rt'));R.ok=ok;R.msg=ok?'Izvještaj je kopiran.':'Kopiranje nije uspjelo: označi tekst i kopiraj ga ručno.';renderHome();const r=$('#rep');if(r)r.scrollIntoView({block:'start'})},
+ csv(){download(`maria-matas_${CFG.cycleId}_${stamp()}${TEST?'_test':''}.csv`,csvText(),'text/csv;charset=utf-8')},
+ json(){download(`maria-matas_${CFG.cycleId}_${stamp()}${TEST?'_test':''}.json`,JSON.stringify(backupObj(),null,1),'application/json')},
+ bdl(){ACT.json()},
+ btext(){UI.btext=!UI.btext;renderHome();const t=$('#bt');if(t){t.focus();t.select()}},
+ rcheck(){const ta=$('#rtext'),txt=(ta?ta.value:'').trim();UI.restore=null;
+  if(!txt){UI.rmsg={t:'Odaberi datoteku ili zalijepi tekst kopije.'};renderHome();return}
+  let o=null;try{o=JSON.parse(txt)}catch(e){}
+  if(!o){UI.rmsg={t:'Tekst nije valjana kopija. Postojeći podaci nisu promijenjeni.'};renderHome();return}
+  const r=vBackup(o);if(r.err){UI.rmsg={t:`Kopija je odbijena: ${r.err}. Postojeći podaci nisu promijenjeni.`};renderHome();return}
+  UI.rmsg={ok:true,t:'Kopija je ispravna. Pregledaj plan promjene prije potvrde.'};UI.restore={X:r.X};renderHome();const b=$('#bk');if(b)b.scrollIntoView({block:'start'})},
+ rconfirm(){if(!UI.restore)return;try{localStorage.setItem(KEY+':prev',JSON.stringify(S))}catch(e){}
+  const before=summ(S);S=UI.restore.X;S.audit.push({at:Date.now(),kind:'restore',before:{closed:before.closedN,pos:before.pos}});UI.restore=null;UI.CORR=null;UI.view=null;
+  const ok=save();UI.rmsg={ok,t:ok?'Podaci su vraćeni iz kopije. Prethodno stanje sačuvano je u ovom pregledniku kao prethodna kopija.':'Podaci su učitani, ali spremanje nije uspjelo.'};renderHome();const b=$('#bk');if(b)b.scrollIntoView({block:'start'})},
+ rcancel(){UI.restore=null;UI.rmsg=null;renderHome()},
+ rawdl(){if(RAWBAD)download(`maria-matas_osteceni-zapis_${stamp()}.json`,RAWBAD,'application/json')},
+ treset(){if(!TEST)return;if(!UI.tresetPend){UI.tresetPend=true;renderHome();return}try{localStorage.removeItem(KEY)}catch(e){}location.reload()}
+};
+document.addEventListener('click',e=>{const tt=e.target.closest&&e.target.closest('[data-tt]');if(tt){ttShow(tt);return}
+ const b=e.target.closest('button');if(!b||b.disabled)return;
+ if(b.dataset.tab){const t=b.dataset.tab;if(t==='train'){UI.view=UI.CORR?UI.CORR.i:Math.min(activeIdx(),N-1);resetT()}go(t);return}
+ const a=b.dataset.act;if(a&&ACT[a])ACT[a](b.dataset,b,e)});
+/* osvježavanje podsjetnika pri povratku iz pozadine i promjeni lokalnog dana (ponoć); nespremljeni obrazac se ne briše */
+document.addEventListener('input',e=>{const t=e.target;if(t&&t.closest&&t.closest('#v-home,#v-prog'))DIRTY=true},true);
+document.addEventListener('change',e=>{const t=e.target;if(t&&t.closest&&t.closest('#v-home,#v-prog')&&t.type!=='file')DIRTY=true},true);
+function dayCheck(){const d=today();if(LASTDAY===null){LASTDAY=d;return}if(d===LASTDAY)return;LASTDAY=d;
+ if(UI.tab==='train'){return}
+ if(DIRTY){UI.stale=true;setH($('#stale'),`<p class="bn w">Datum se promijenio. Podsjetnici i kontrole osvježit će se nakon spremanja unosa ili promjene kartice; tvoj nespremljeni unos je sačuvan. <button type="button" class="lnk sm" data-act="refreshday">Osvježi sada</button></p>`);return}
+ render()}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)dayCheck()});
+window.addEventListener('pageshow',dayCheck);window.addEventListener('focus',dayCheck);
+setInterval(dayCheck,30000);
+/* ===================== START ===================== */
+load();LASTDAY=today();
+if(TEST){const t=$('#tbn');t.hidden=false;t.textContent=DEMO?`DEMO NAČIN · izmišljeni podaci, ne Marijina mjerenja · zasebna pohrana (${KEY}) · ništa se ne miješa sa stvarnim ciklusom`:`TESTNI NAČIN · zasebni podaci (${KEY}) · nacrt plana i datum početka ne zaključavaju unos; kraj ciklusa (${hd(CFG.expiresAt)}) zaključava i ovdje`}
+window.App={get S(){return S},cycleEnded,GOALS,goalStat,regularity,counts,progS,missing,expMetrics,exComplete,approvalMissing,approved,isValidSets,fWorse,varOk,varKey,prevOccVar,PROBE,PHT_RULES,DAYS,EX,painEval,painWorse,fuReact,lowerMsg,coachTodo,weighModeTxt,approvalBlocked,devKey,prevOcc,FIRST_TXT,exSeries,setKg,setDoneTest:(it,e)=>setDone(it,e,0),cmpSets,volOf,recTxt,regSym,KEY,CFG,PLAN,REM,N,rxOf,weeklyVolume,followTargets,painWorse,fComplete,dayCheck,expMetrics,weighDue,vFollow,closeSession,activeIdx,gate,weekly,withDelta,totalCh,evalUp,exState,isValid,buildRx,checkList,checkStatus,pNum,vState,vBackup,report,csvText,followNeed,phaseName,UI,render,go};
+go('home');
+</script>
+</body>
+</html>
