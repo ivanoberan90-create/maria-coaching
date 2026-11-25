@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Coaching aplikacija · Maria Matas · verzija 17 – RC6 (upper 45 + noge 18 dinamičkih serija tjedno, izometrija se ne broji; plan NACRT; kilaža po seriji; shema podataka 3, učitava i podatke v11/v12) -->
+<!-- Coaching aplikacija · Maria Matas · verzija 17 – RC6 (upper 45 + noge 18 dinamičkih serija tjedno, izometrija se ne broji; plan ODOBREN; kilaža po seriji; shema podataka 3, učitava i podatke v11/v12) -->
 <html lang="hr">
 <head>
 <meta charset="utf-8">
@@ -202,7 +202,7 @@ const PLAN={
                             Bez unosa vrijedi redovna doza iz DAYS (3 radne serije, RIR 2–3). Aplikacija nikad sama ne smanjuje broj serija (nema automatske probne faze). */
  startLoad:{},           /* NE KORISTI SE (odluka trenera): početne kilaže se ne postavljaju; Maria nakon 1–2 uvodna seta sama bira radnu težinu. */
  lowerProgramDefined:true, /* program nogu definirao trener 23.11.2026. (DAYS): prilagođen tendinopatiji stražnje lože; bez leg pressa, čučnja, iskoraka, bugarskog čučnja i RDL-a */
- checks:{finalQA:true,measurementsConfirmed:true,startDateConfirmed:true}   /* trener 23.11.2026.: datum početka 30.11.2026. i 6 obaveznih obujmova potvrđeni; završni QA još nije napravljen. Tek nakon QA: finalQA:true, status 'odobren', approvedOn */
+ checks:{finalQA:true,measurementsConfirmed:true,startDateConfirmed:true}   /* trener: datum početka 30.11.2026. i 6 obaveznih obujmova potvrđeni; završni QA potvrđen 25.11.2026.; plan odobren */
 };
 /* Podsjetnici i kontrole (odlučuje trener): vaganje 'optional' = neobavezno, bez dogovorenog kalendara;
    (fleksibilno: bilo koji dan, korisnica bira datum, bez propuštenog vaganja). Ako trener ikad želi raspored: {mode:'weekdays',days:[…]} (0 = ned … 6 = sub) ili {mode:'daily'}. Očekivane mjere kontrole: sve ili podskup. Pravila pogoršanja boli: trener ih zadaje, aplikacija ne dijagnosticira.
