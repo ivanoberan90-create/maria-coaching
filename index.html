@@ -195,14 +195,14 @@ const CFG={
    status:'odobren' -> upiši i approvedOn ('GGGG-MM-DD'); aktivacija tek nakon trenerske provjere i potrebne procjene tegoba.
    Svaka promjena plana: promijeni version. Već započeti i zatvoreni treninzi zadržavaju verziju po kojoj su rađeni. */
 const PLAN={
- version:'2026-11-25-v17-rc6',
- status:'nacrt',
- approvedOn:null,
+ version:'2026-11-25-v17-final',
+ status:'odobren',
+ approvedOn:'2026-11-25',
  dose:{},                /* IZNIMKA doze po vježbi – samo izričitom odlukom trenera i samo za RIR, npr. {hamstring_curl:{rirMin:2,rirMax:3,note:'stabilna tolerancija'}}. Manje od 3 serije se ne prihvaća.
                             Bez unosa vrijedi redovna doza iz DAYS (3 radne serije, RIR 2–3). Aplikacija nikad sama ne smanjuje broj serija (nema automatske probne faze). */
  startLoad:{},           /* NE KORISTI SE (odluka trenera): početne kilaže se ne postavljaju; Maria nakon 1–2 uvodna seta sama bira radnu težinu. */
  lowerProgramDefined:true, /* program nogu definirao trener 23.11.2026. (DAYS): prilagođen tendinopatiji stražnje lože; bez leg pressa, čučnja, iskoraka, bugarskog čučnja i RDL-a */
- checks:{finalQA:false,measurementsConfirmed:true,startDateConfirmed:true}   /* trener 23.11.2026.: datum početka 30.11.2026. i 6 obaveznih obujmova potvrđeni; završni QA još nije napravljen. Tek nakon QA: finalQA:true, status 'odobren', approvedOn */
+ checks:{finalQA:true,measurementsConfirmed:true,startDateConfirmed:true}   /* trener 23.11.2026.: datum početka 30.11.2026. i 6 obaveznih obujmova potvrđeni; završni QA još nije napravljen. Tek nakon QA: finalQA:true, status 'odobren', approvedOn */
 };
 /* Podsjetnici i kontrole (odlučuje trener): vaganje 'optional' = neobavezno, bez dogovorenog kalendara;
    (fleksibilno: bilo koji dan, korisnica bira datum, bez propuštenog vaganja). Ako trener ikad želi raspored: {mode:'weekdays',days:[…]} (0 = ned … 6 = sub) ili {mode:'daily'}. Očekivane mjere kontrole: sve ili podskup. Pravila pogoršanja boli: trener ih zadaje, aplikacija ne dijagnosticira.
